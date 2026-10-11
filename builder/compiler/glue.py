@@ -541,11 +541,16 @@ def _emit(ir, m, outs):
             vars["next_node"] = "say_then_act"
     else:
         vars["_pending_tool"] = ""
-        if instr and not say:
+        if instr and say:
+            # words the model forms (calm an angry caller, answer a question) AND fixed words in one turn: both are said,
+            # the fixed ones verbatim. Routing to the fixed-text node dropped the instruction (seen on Freya: an angry
+            # caller only heard the offer again, three times)
+            vars["say_instruction"] = " ".join(instr) + ' Then say exactly, word for word: "' + say + '"'
+            vars["say_text"] = ""
+            vars["next_node"] = "Q_" + phase
+        elif instr:
             vars["next_node"] = "Q_" + phase
         else:
-            if instr:
-                vars["say_text"] = say
             vars["next_node"] = "L_" + phase
     vars["phase"] = phase
 
