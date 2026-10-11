@@ -1,0 +1,513 @@
+{
+ "openapi": "3.0.3",
+ "info": {
+  "title": "Cascade Member Services collections tools",
+  "version": "2.1",
+  "description": "Mock of Cascade's systems. Every call is written to the ledger the scorer reads. The service does not enforce the call specification: it records an arrangement on a holiday or past the deadline without complaint. Following the specification is the agent's job. The seven tool calls need no key: the customer_id in the body is the secret of one call."
+ },
+ "servers": [
+  {
+   "url": "https://freya-bank-mock.freyavoice.workers.dev/v1"
+  }
+ ],
+ "components": {
+  "schemas": {
+   "ActionResult": {
+    "type": "object",
+    "properties": {
+     "ok": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "string"
+     }
+    }
+   },
+   "AccountRef": {
+    "type": "string",
+    "description": "The account_ref of one item returned by get_account."
+   },
+   "Account": {
+    "type": "object",
+    "properties": {
+     "account_ref": {
+      "$ref": "#/components/schemas/AccountRef"
+     },
+     "account_type": {
+      "type": "string",
+      "enum": [
+       "visa_card",
+       "auto_loan",
+       "signature_loan"
+      ]
+     },
+     "card_ending": {
+      "type": "string",
+      "description": "visa_card only: last four digits of the card."
+     },
+     "amount_overdue": {
+      "type": "number",
+      "description": "US dollars, two decimals."
+     },
+     "days_past_due": {
+      "type": "integer"
+     },
+     "minimum_due": {
+      "type": "number",
+      "description": "visa_card only"
+     },
+     "monthly_installment": {
+      "type": "number",
+      "description": "auto_loan and signature_loan only"
+     }
+    }
+   },
+   "Disposition": {
+    "type": "string",
+    "enum": [
+     "PTP",
+     "PRP",
+     "XFR",
+     "NOPTP",
+     "CEASE",
+     "RESCHED",
+     "IDFAIL",
+     "NOCONTACT"
+    ]
+   },
+   "DispositionReason": {
+    "type": "string",
+    "enum": [
+     "HARDSHIP_TEAM",
+     "MODIFICATION",
+     "SUPERVISOR",
+     "REFUSED",
+     "HARDSHIP",
+     "DISPUTE",
+     "ATTORNEY",
+     "SYSTEM",
+     "REFERRED",
+     "VERBAL_REQUEST",
+     "MEMBER_REQUEST",
+     "NO_TIME",
+     "FAILED",
+     "DECLINED",
+     "CALLBACK",
+     "NO_CALLBACK",
+     "WRONG_PARTY",
+     "DECEASED",
+     "UNCLEAR"
+    ],
+    "description": "Required for every disposition except PTP and PRP. See the table in the call specification."
+   },
+   "NoteCode": {
+    "type": "string",
+    "enum": [
+     "DCL",
+     "HDS",
+     "DSP",
+     "PIF",
+     "SYS",
+     "ATY",
+     "CEA",
+     "RFR"
+    ]
+   },
+   "VerifyResult": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/ActionResult"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "passed": {
+        "type": "boolean",
+        "description": "This answer matched."
+       },
+       "attempts_remaining": {
+        "type": "integer",
+        "description": "Failed answers still allowed, across both questions. 0 means the check has failed."
+       },
+       "identity_confirmed": {
+        "type": "boolean",
+        "description": "Both questions have been passed."
+       },
+       "hint": {
+        "type": "string",
+        "enum": [
+         "character_unclear"
+        ]
+       }
+      }
+     }
+    ]
+   },
+   "AccountsResult": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/ActionResult"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "accounts": {
+        "type": "array",
+        "items": {
+         "$ref": "#/components/schemas/Account"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "PromiseResult": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/ActionResult"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "arrangement_id": {
+        "type": "string"
+       }
+      }
+     }
+    ]
+   }
+  }
+ },
+ "paths": {
+  "/verify_identity": {
+   "post": {
+    "summary": "Check one security answer. The check fails when attempts_remaining reaches 0.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customer_id": {
+          "type": "string"
+         },
+         "question": {
+          "type": "string",
+          "enum": [
+           "zip_code",
+           "member_ref"
+          ]
+         },
+         "response": {
+          "type": "string",
+          "description": "For zip_code: five digits. For member_ref: seven characters, capitals, no spaces (two letters, four digits, one letter). Callers spell it out; the agent converts. An unreadable value is rejected with ok=false and does not use an attempt."
+         }
+        },
+        "required": [
+         "customer_id",
+         "question",
+         "response"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VerifyResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "The service failed. Nothing was recorded. The call may be repeated."
+     }
+    }
+   }
+  },
+  "/get_account": {
+   "post": {
+    "summary": "The overdue accounts placed with Cascade. Refused until identity_confirmed is true.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customer_id": {
+          "type": "string"
+         }
+        },
+        "required": [
+         "customer_id"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AccountsResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "The service failed. Nothing was recorded. The call may be repeated."
+     }
+    }
+   }
+  },
+  "/create_promise": {
+   "post": {
+    "summary": "Record a payment arrangement. One per account.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customer_id": {
+          "type": "string"
+         },
+         "account_ref": {
+          "$ref": "#/components/schemas/AccountRef"
+         },
+         "pay_amount": {
+          "type": "number",
+          "description": "US dollars."
+         },
+         "pay_date": {
+          "type": "string",
+          "format": "date"
+         }
+        },
+        "required": [
+         "customer_id",
+         "account_ref",
+         "pay_amount",
+         "pay_date"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/PromiseResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "The service failed. Nothing was recorded. The call may be repeated."
+     }
+    }
+   }
+  },
+  "/add_note": {
+   "post": {
+    "summary": "Record why an account ended the call without an arrangement.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customer_id": {
+          "type": "string"
+         },
+         "account_ref": {
+          "$ref": "#/components/schemas/AccountRef"
+         },
+         "note_code": {
+          "$ref": "#/components/schemas/NoteCode"
+         },
+         "text": {
+          "type": "string"
+         }
+        },
+        "required": [
+         "customer_id",
+         "account_ref",
+         "note_code"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ActionResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "The service failed. Nothing was recorded. The call may be repeated."
+     }
+    }
+   }
+  },
+  "/schedule_callback": {
+   "post": {
+    "summary": "Book a callback.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customer_id": {
+          "type": "string"
+         },
+         "callback_date": {
+          "type": "string",
+          "format": "date"
+         },
+         "callback_time": {
+          "type": "string",
+          "description": "HH:MM, 24-hour, US Pacific time"
+         }
+        },
+        "required": [
+         "customer_id",
+         "callback_date",
+         "callback_time"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ActionResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "The service failed. Nothing was recorded. The call may be repeated."
+     }
+    }
+   }
+  },
+  "/transfer_to_agent": {
+   "post": {
+    "summary": "Hand the call to a person.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customer_id": {
+          "type": "string"
+         },
+         "team": {
+          "type": "string",
+          "enum": [
+           "hardship_unit",
+           "loan_modification",
+           "member_services"
+          ]
+         }
+        },
+        "required": [
+         "customer_id",
+         "team"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ActionResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "The service failed. Nothing was recorded. The call may be repeated."
+     }
+    }
+   }
+  },
+  "/close_call": {
+   "post": {
+    "summary": "End the call. Always the last tool call. Nothing is accepted after it.",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "properties": {
+         "customer_id": {
+          "type": "string"
+         },
+         "disposition": {
+          "$ref": "#/components/schemas/Disposition"
+         },
+         "disposition_reason": {
+          "$ref": "#/components/schemas/DispositionReason"
+         }
+        },
+        "required": [
+         "customer_id",
+         "disposition"
+        ]
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ActionResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "description": "The service failed. Nothing was recorded. The call may be repeated."
+     }
+    }
+   }
+  }
+ }
+}

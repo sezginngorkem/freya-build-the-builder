@@ -1,0 +1,1140 @@
+[
+ {
+  "id": "S4-01",
+  "brief": "S4_edge_variant",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Early band, accepts the first question's date (Monday)",
+  "variables": {
+   "first_name": "Hannah",
+   "last_name": "Okafor",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1989-02-11",
+   "phone_last4": "6630"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "2290",
+    "past_due": 450.0,
+    "days_late": 5,
+    "minimum_payment": 45.0
+   }
+  ],
+  "script": "Confirms. Date of birth 11 February 1989, last four 6630. Agrees to pay the full amount on Monday 23 November. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 450.0,
+     "date": "2026-11-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "opening sentence exactly 'Hello, this is the digital assistant of Kestrel Savings Bank. This call is recorded.'",
+   "first ask names Monday 23 November",
+   "exact sentence 'Your promise is saved. We will not call you about this payment before ...'",
+   "closing line 'Thank you for your time. Goodbye.'"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Eleventh of February 1989.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1989-02-11"
+    }
+   },
+   {
+    "text": "Six six three zero.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "6630"
+    }
+   },
+   {
+    "text": "Yes, Monday is fine.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-02",
+  "brief": "S4_edge_variant",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Wants to pay today: today is not a valid promise date",
+  "variables": {
+   "first_name": "Callum",
+   "last_name": "Reid",
+   "title": "Mr",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1992-06-30",
+   "phone_last4": "1184"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 600.0,
+    "days_late": 3,
+    "instalment_amount": 200.0
+   }
+  ],
+  "script": "Confirms. Says he can pay it today, right now. Accepts Monday when offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 600.0,
+     "date": "2026-11-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "exact sentence 'Payments made today do not need a promise.'",
+   "no promise recorded for 20 November"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Thirtieth of June 1992.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1992-06-30"
+    }
+   },
+   {
+    "text": "One one eight four.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "1184"
+    }
+   },
+   {
+    "text": "I can pay it today, right now.",
+    "intents": [],
+    "slots": {
+     "promise_date": "2026-11-20"
+    }
+   },
+   {
+    "text": "OK, Monday then.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-03",
+  "brief": "S4_edge_variant",
+  "family": "Identity",
+  "level": "hard",
+  "title": "Two wrong answers in total end the check",
+  "variables": {
+   "first_name": "Isla",
+   "last_name": "Mackenzie",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1990-05-13",
+   "phone_last4": "7718"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 980.0,
+    "days_late": 12,
+    "instalment_amount": 330.0
+   }
+  ],
+  "script": "Confirms. Gives date of birth 3 May 1990, then 13 May 1990. Gives last four 7781. (Would give 7718 if asked again.)",
+  "expected": {
+   "outcome": "not_verified",
+   "reason": "failed",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the check ends at the second wrong answer although the service would allow a third",
+   "exact sentence 'I could not confirm your identity, so I cannot continue this call.'"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Third of May 1990.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1990-05-03"
+    }
+   },
+   {
+    "text": "Sorry, thirteenth of May 1990.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1990-05-13"
+    }
+   },
+   {
+    "text": "Seven seven eight one.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "7781"
+    }
+   },
+   {
+    "text": "Sorry, seven seven one eight.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "7718"
+    }
+   },
+   {
+    "text": "Yes, I can pay Monday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-04",
+  "brief": "S4_edge_variant",
+  "family": "Dates",
+  "level": "hard",
+  "title": "'Next Monday' on a Friday = 30 Nov (holiday), rolls to the deadline 1 Dec",
+  "variables": {
+   "first_name": "Ravi",
+   "last_name": "Shah",
+   "title": "Mr",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1986-08-21",
+   "phone_last4": "3051"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 800.0,
+    "days_late": 6,
+    "instalment_amount": 260.0
+   }
+  ],
+  "script": "Confirms. Not this Monday; says next Monday. Accepts the day offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 800.0,
+     "date": "2026-12-01"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "'next Monday' on Friday 20 November is 30 November under rule 20 (Brief A's reading would give 23 November)",
+   "30 November is a holiday, next business day 1 December = early deadline"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-first of August 1986.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1986-08-21"
+    }
+   },
+   {
+    "text": "Three zero five one.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "3051"
+    }
+   },
+   {
+    "text": "Not this Monday. Next Monday would work.",
+    "intents": [],
+    "slots": {
+     "promise_date": "2026-11-30"
+    }
+   },
+   {
+    "text": "Tuesday is fine.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "sim_note": "promise_date is pre-resolved under rule 20; the reader's weekday semantics must be checked in the NLU layer"
+ },
+ {
+  "id": "S4-05",
+  "brief": "S4_edge_variant",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "'This Wednesday'; offers exactly the floor, which is not enough",
+  "variables": {
+   "first_name": "Olivia",
+   "last_name": "Grant",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1979-12-24",
+   "phone_last4": "9027"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 900.0,
+    "days_late": 12,
+    "instalment_amount": 300.0
+   }
+  ],
+  "script": "Confirms. Says not Monday, but this Wednesday, and only the instalment of 300. Accepts 301 on Wednesday. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 301.0,
+     "date": "2026-11-25"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "'this Wednesday' is 25 November",
+   "300.00 (= floor) is refused",
+   "301.00 is offered once"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-fourth of December 1979.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1979-12-24"
+    }
+   },
+   {
+    "text": "Nine zero two seven.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "9027"
+    }
+   },
+   {
+    "text": "Not Monday. This Wednesday, but only the instalment, three hundred.",
+    "intents": [],
+    "slots": {
+     "promise_date": "2026-11-25",
+     "promise_amount": 300.0
+    }
+   },
+   {
+    "text": "OK, three hundred and one on Wednesday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "sim_note": "promise_date pre-resolved under rule 20"
+ },
+ {
+  "id": "S4-06",
+  "brief": "S4_edge_variant",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Early band: date exactly on the rolled deadline (1 Dec)",
+  "variables": {
+   "first_name": "Mia",
+   "last_name": "Lambert",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1995-03-08",
+   "phone_last4": "4402"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "8813",
+    "past_due": 320.0,
+    "days_late": 2,
+    "minimum_payment": 32.0
+   }
+  ],
+  "script": "Confirms. Not Monday; offers Tuesday 1 December. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 320.0,
+     "date": "2026-12-01"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "deadline: 20 Nov + 10 days = 30 Nov (holiday) -> next business day 1 December; 1 December is accepted (included)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Eighth of March 1995.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1995-03-08"
+    }
+   },
+   {
+    "text": "Four four zero two.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "4402"
+    }
+   },
+   {
+    "text": "Not Monday. Tuesday the first of December.",
+    "intents": [],
+    "slots": {
+     "promise_date": "2026-12-01"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-07",
+  "brief": "S4_edge_variant",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Early band (7 days late), one day after the deadline",
+  "variables": {
+   "first_name": "Noah",
+   "last_name": "Fraser",
+   "title": "Mr",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1984-10-02",
+   "phone_last4": "5519"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 540.0,
+    "days_late": 7,
+    "instalment_amount": 180.0
+   }
+  ],
+  "script": "Confirms. Not Monday; offers Wednesday 2 December. Accepts the latest date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 540.0,
+     "date": "2026-12-01"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "7 days late is early band",
+   "1 December offered as the latest date (late band would have allowed 2 December)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Second of October 1984.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1984-10-02"
+    }
+   },
+   {
+    "text": "Five five one nine.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "5519"
+    }
+   },
+   {
+    "text": "Not Monday. Wednesday the second of December.",
+    "intents": [],
+    "slots": {
+     "promise_date": "2026-12-02"
+    }
+   },
+   {
+    "text": "OK, the first.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-08",
+  "brief": "S4_edge_variant",
+  "family": "Refusal",
+  "level": "medium",
+  "title": "Early band has zero persuasion attempts",
+  "variables": {
+   "first_name": "Ella",
+   "last_name": "Burns",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1998-04-17",
+   "phone_last4": "2266"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 700.0,
+    "days_late": 4,
+    "instalment_amount": 233.33
+   }
+  ],
+  "script": "Confirms. Says no to Monday, with no other date. (Would accept any offer the agent made afterwards.)",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "no persuasion attempt is made",
+   "close no_promise / refused right after the refusal",
+   "no add_note"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Seventeenth of April 1998.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1998-04-17"
+    }
+   },
+   {
+    "text": "Two two six six.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "2266"
+    }
+   },
+   {
+    "text": "No, I can't.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Well, if you suggest a date, maybe yes.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-09",
+  "brief": "S4_edge_variant",
+  "family": "Third party",
+  "level": "hard",
+  "title": "Callback at 10:00 (excluded), then 10:30",
+  "variables": {
+   "first_name": "George",
+   "last_name": "Patel",
+   "title": "Mr",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1975-01-19",
+   "phone_last4": "8840"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "1023",
+    "past_due": 410.0,
+    "days_late": 9,
+    "minimum_payment": 41.0
+   }
+  ],
+  "script": "His son answers. Asks why they are calling. Offers Monday at ten. When asked for another time, offers Monday at half past ten.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-11-23",
+     "time": "10:30"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "exact sentence 'I am not able to discuss this account with you.'",
+   "10:00 is refused (not included)",
+   "callback 2026-11-23 10:30"
+  ],
+  "sim_script": [
+   {
+    "text": "This is his son. Why are you calling?",
+    "intents": [
+     "third_party",
+     "ask_reason"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Call him Monday at ten.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-23",
+     "callback_time": "10:00"
+    }
+   },
+   {
+    "text": "Then Monday at half past ten.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-23",
+     "callback_time": "10:30"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S4-10",
+  "brief": "S4_edge_variant",
+  "family": "Third party",
+  "level": "hard",
+  "title": "Callback today at 19:00 (excluded), then Saturday",
+  "variables": {
+   "first_name": "Amira",
+   "last_name": "Hassan",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1991-11-05",
+   "phone_last4": "3370"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 750.0,
+    "days_late": 15,
+    "instalment_amount": 250.0
+   }
+  ],
+  "script": "Her flatmate answers. Offers seven this evening. When asked for another time, offers Saturday morning at nine.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "no_callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "19:00 refused (not included)",
+   "Saturday refused (not a business day)",
+   "no callback booked"
+  ],
+  "sim_script": [
+   {
+    "text": "I'm her flatmate, she's not in.",
+    "intents": [
+     "third_party"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "She'll be home at seven tonight.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-20",
+     "callback_time": "19:00"
+    }
+   },
+   {
+    "text": "Saturday morning then, at nine.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-21",
+     "callback_time": "09:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S4-11",
+  "brief": "S4_edge_variant",
+  "family": "Precedence",
+  "level": "hard",
+  "title": "Says both 'already paid' and 'not mine': dispute wins",
+  "variables": {
+   "first_name": "Liam",
+   "last_name": "O'Brien",
+   "title": "Mr",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1983-07-07",
+   "phone_last4": "1209"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "5577",
+    "past_due": 380.0,
+    "days_late": 15,
+    "minimum_payment": 38.0
+   }
+  ],
+  "script": "Confirms. Says he already paid it and anyway the card was never his.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "dispute",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "rule 33 before rule 32: close no_promise / dispute, not paid"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Seventh of July 1983.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1983-07-07"
+    }
+   },
+   {
+    "text": "One two zero nine.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "1209"
+    }
+   },
+   {
+    "text": "I already paid it, and anyway that card was never mine.",
+    "intents": [
+     "paid",
+     "dispute"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-12",
+  "brief": "S4_edge_variant",
+  "family": "Precedence",
+  "level": "hard",
+  "title": "Asks for a person about a payment plan: restructuring at once",
+  "variables": {
+   "first_name": "Chloe",
+   "last_name": "Evans",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1987-09-25",
+   "phone_last4": "6612"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 1100.0,
+    "days_late": 20,
+    "instalment_amount": 366.67
+   }
+  ],
+  "script": "Confirms. Says she wants to talk to a person about a new payment plan with lower instalments.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "restructuring",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "restructuring"
+    }
+   ]
+  },
+  "checks": [
+   "no 'can I help first' question",
+   "queue restructuring, not general"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-fifth of September 1987.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1987-09-25"
+    }
+   },
+   {
+    "text": "Six six one two.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "6612"
+    }
+   },
+   {
+    "text": "I want to talk to a person about a new payment plan with lower instalments.",
+    "intents": [
+     "human",
+     "restructure"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S4-13",
+  "brief": "S4_edge_variant",
+  "family": "Tool failure",
+  "level": "hard",
+  "title": "Late band: refuses attempt 1, accepts floor plus one pound; first create_promise fails",
+  "variables": {
+   "first_name": "Ethan",
+   "last_name": "Clarke",
+   "title": "Mr",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1980-02-29",
+   "phone_last4": "4093"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 1200.0,
+    "days_late": 30,
+    "instalment_amount": 400.0
+   }
+  ],
+  "script": "Confirms. Says no to Monday. Refuses the full amount on the deadline. Accepts the smaller amount on the deadline. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 401.0,
+     "date": "2026-12-02"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "attempt 1: 1200.00 on Wednesday 2 December (5th business day, skipping 26, 27 and 30 November)",
+   "attempt 2: 401.00 (floor plus one pound) on 2 December",
+   "create_promise retried once"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-ninth of February 1980.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1980-02-29"
+    }
+   },
+   {
+    "text": "Four zero nine three.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "4093"
+    }
+   },
+   {
+    "text": "No.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No, not that.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I can do that.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "fail_first": "create_promise"
+ },
+ {
+  "id": "S4-14",
+  "brief": "S4_edge_variant",
+  "family": "Identity",
+  "level": "hard",
+  "title": "Swap hint does not count; one wrong phone answer still passes; then already paid",
+  "variables": {
+   "first_name": "Freya",
+   "last_name": "Lund",
+   "title": "Ms",
+   "now": "2026-11-20T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1982-11-03",
+   "phone_last4": "5504"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "7008",
+    "past_due": 290.0,
+    "days_late": 10,
+    "minimum_payment": 29.0
+   }
+  ],
+  "script": "Confirms. Gives date of birth as 11/3/1982 (meaning 3 November). When asked for the month as a word, says 3 November 1982. Gives last four 5540, then 5504. Says she paid it yesterday at the branch.",
+  "expected": {
+   "outcome": "paid",
+   "reason": null,
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the swap retry is not a wrong answer, so one wrong phone answer leaves the check open",
+   "close paid, no add_note"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Eleven, three, nineteen eighty-two.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1982-03-11"
+    }
+   },
+   {
+    "text": "The third of November 1982.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1982-11-03"
+    }
+   },
+   {
+    "text": "Five five four zero.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "5540"
+    }
+   },
+   {
+    "text": "Sorry, five five zero four.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "5504"
+    }
+   },
+   {
+    "text": "I paid it yesterday at the branch.",
+    "intents": [
+     "paid"
+    ],
+    "slots": {}
+   }
+  ]
+ }
+]

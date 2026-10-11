@@ -1,0 +1,6 @@
+# The builder runs on the Python standard library (Python 3.10+).
+# Model access (one of the two):
+#   - the `claude` CLI logged in on this machine (default), or
+#   - ANTHROPIC_API_KEY set in the environment, which uses the Anthropic SDK:
+anthropic>=0.40
+# Freya access: kit/build-the-builder/freya.py (the kit's reference client) with FREYA_API_KEY in the environment.

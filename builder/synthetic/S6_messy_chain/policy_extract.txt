@@ -1,0 +1,152 @@
+BRIGHTWATER COMMUNITY BANK                                    INTERNAL – DO NOT DISTRIBUTE
+Consumer Collections Policy
+COL-POL-12  version 5.1                              Approved: Credit Risk Committee 12 May 2026
+                                                     Policy owner: Head of Collections
+
+[Extract prepared for the voice-agent project. Sections 1-9 and Appendix C only. Sections
+10-14 (field agents, legal referral, charge-off, debt sale, reporting) are not reproduced.]
+
+Brightwater Community Bank is fictional. All customers, balances and payments are synthetic.
+
+1   SCOPE
+1.1 This policy applies to outbound telephone contact with customers who are 1 to 89 days
+past due on a consumer credit card or personal loan. A customer may have one or two
+products in collection. It applies to collections staff and to the automated voice
+agent ("the agent").
+1.2 All dates and times are the customer's local time taken from the call variable `now`.
+The system clock must not be used.
+1.3 Call variables: `customer_id` (pass to every tool), `first_name`, `last_name`, `title`
+(address the customer as title plus last name), `now`.
+
+2   OPENING THE CALL
+2.1 The agent opens by saying it is Brightwater Community Bank's virtual agent and that
+the call may be recorded.
+2.2 Before identity is verified the agent must not mention the balance, a payment, "past
+due", "arrears", "collections" or either product, to anyone who answers.
+2.3 The agent asks "Am I speaking with {title} {last_name}?". Only an explicit confirmation
+("yes", "speaking", "that's me" or the customer's own name) counts. Anything else is asked
+once more; if still unclear the call is closed Not reached / unclear (see App. C).
+2.4 If asked whether it is a robot, the agent says it is Brightwater's virtual agent and
+continues.
+
+3   THIRD PARTIES
+3.1 If someone other than the customer answers, the agent gives no reason for the call
+and discusses no account, even if the person offers to pay or says they are a joint
+holder.
+3.2 The agent asks when the customer can be reached. A callback may be booked for the
+same day or the next business day, from 09:00 to 20:00 (both included), and must be
+later than `now`. The agent calls schedule_callback and closes Not reached / callback.
+3.3 If the time offered is outside 3.2 the agent asks once for another time. If that is
+also outside, nothing is booked: Not reached / no_callback.
+3.4 Wrong number: Not reached / wrong_number. Customer deceased: the agent says "I'm sorry
+for your loss.", asks nothing else and closes Not reached / deceased.
+
+4   IDENTITY
+4.1 Two questions, one at a time, in this order: (a) date of birth (field date_of_birth,
+sent as YYYY-MM-DD; a date said only in numbers is read month/day/year); (b) the five-
+digit ZIP code of the home address (field postcode; keep leading zeros).
+4.2 Three incorrect answers in total, across both questions, end verification: no account
+information is given, the customer is told to visit a branch or call the number on
+their statement, and the call is closed Not verified / failed.
+4.3 A customer who refuses is told once that the questions protect the account. A
+second refusal closes Not verified / declined.
+4.4 get_account is called only after both questions are passed.
+
+Brightwater Community Bank   COL-POL-12 Consumer Collections   v5.1          Page 4 of 17
+INTERNAL – DO NOT DISTRIBUTE
+
+5   COLLECTION TIERS AND CALENDAR
+5.1 Each product is placed in a collection tier according to its days past due (field
+dpd). The tier sets the latest date for which a promise may be recorded ("promise
+limit") and the number of persua-
+sion attempts.
+
+Table 5-A   Collection tiers
+Tier      Days past due     Promise limit (nth business       Persuasion
+                            day after the call date)          attempts
+1         1 - 29            8                                 1
+2         30 - 59           5                                 2
+3         60 - 89           3                                 2
+Source: Collections Risk, Q2 2026 portfolio review.
+
+5.2 Business days are Monday to Friday except bank holidays. The call date itself is not
+counted ("after the call date").
+5.3 Bank holidays (2026/27): 11 November 2026, 26 November 2026, 25 December 2026, 1
+January 2027.¹
+
+¹ Branch opening on the Friday after Thanksgiving is decided each year by Operations and
+announced by memo.
+
+6   PROMISES TO PAY
+6.1 After get_account the agent states each product in one sentence, in the order
+returned: the product in words ("credit card ending 6120" or "personal loan"), the
+balance_past_due and the days past due.
+6.2 The agent first asks whether the customer can pay everything today. If not, it works
+through the products one at a time in the order returned, without asking about today
+again.
+6.3 The agent always asks for the full balance_past_due first and proposes every amount
+itself. Floor (minimum acceptable amount): credit card min_payment; personal loan
+installment. If the customer says the full amount is too much, the agent offers the
+floor once and says the rest remains past due. Any amount from the floor up to the full
+balance (both included) is accepted; below the floor the agent says it cannot be
+recorded and offers the floor once.
+6.4 Requests for a person: the agent asks once whether it can help first. If the customer
+insists, the agent transfers to queue customer_care and closes Transferred / human.
+6.5 Promise dates: the call date or later, a business day, and not after the product's
+promise limit. A weekend day or holiday on or before the limit: offer the next business
+day. A date after the limit: offer the limit. Vague answers ("payday", "next week"): ask
+once for an exact date, then propose the limit.
+6.6 A flat refusal, or a no to paying today with no date or amount, uses one persuasion
+attempt for that product. Attempt 1: the full balance (or the floor if the customer said
+the full balance is too much) on the last business day of the current week, or of the
+following week if the call date is that day; if that date is after the promise limit,
+the promise limit. Attempt 2: the floor on the promise limit. An offer the customer has
+refused is never repeated.
+6.7 One date for several products: a product whose limit is earlier is recorded on its
+own limit and the read-back says so.
+6.8 The agent reads all promises back together and asks "Do you confirm?". After an
+explicit yes it calls create_promise once per product. On failure it retries once; if it
+fails again it tells the customer and adds a note service_error for that product.
+6.9 After at least one promise is recorded: "You will get a text message confirming your
+promise."
+6.10 No waivers, refunds of fees, interest reductions or payment plans are offered.
+
+Brightwater Community Bank   COL-POL-12 Consumer Collections   v5.1          Page 5 of 17
+INTERNAL – DO NOT DISTRIBUTE
+
+7   SPECIAL SITUATIONS
+7.1 Hardship (illness, bereavement, job loss, reduced income): one sentence of sympathy,
+no persuasion attempt, offer of a transfer to the Hardship Desk (queue hardship_desk).
+Accepted: Transferred / hardship. Declined: no promise unless the customer names a date
+or amount themselves; each product without a promise is noted hardship. 7.1 comes
+before 6.6.
+7.2 Already paid: payments can take one business day to post; note the product paid and
+continue with the other product.
+7.3 Dispute ("not mine", "never had this card", "paid that off last year"): do not argue;
+note the product dispute; continue. A product said to have been paid off or settled in
+the past is a dispute, not 7.2.
+7.4 Payment plan, deferral or loan modification request: transfer to queue
+collections_supervisor, Transferred / restructuring. Promises already recorded stay;
+promises not yet recorded are not recorded.
+7.5 On any transfer the agent adds no notes.
+
+8   NOTES
+8.1 Every product that ends the call without a promise gets exactly one add_note with its
+product_id and reason (Appendix C, level N), except on a transfer (7.5). This includes a
+customer with one product.
+
+9   ENDING THE CALL
+9.1 One close_call, after a goodbye, as the last tool call.
+9.2 Promise if at least one promise was recorded (except 7.4). Without a promise: Paid if
+every product was noted paid; otherwise No promise with the reason of the first product,
+in the order returned, whose note is not paid. Identity, third-party and transfer
+results as in sections 2 to 7.
+9.3 Appendix C is authoritative for the spelling of outcomes and reasons sent to the
+system.
+
+Brightwater Community Bank   COL-POL-12 Consumer Collections   v5.1          Page 6 of 17
+INTERNAL – DO NOT DISTRIBUTE
+
+APPENDIX C – DISPOSITION CODES
+Maintained by Collections MI as a separate list (file "disposition codes"). The list in
+force on the day of the call applies; this appendix is not reproduced here.

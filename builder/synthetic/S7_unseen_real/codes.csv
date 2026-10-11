@@ -1,0 +1,30 @@
+code,category,description,close_outcome,close_reason,add_note_reason,status,effective_from,comments
+PTP,RESULT,Promise to pay taken (one or more accounts),promise,,,ACTIVE,2019-07-01,"close reason left blank; outcome only"
+PAI,RESULT,Member states payment already made,paid,,paid,ACTIVE,2019-07-01,"add_note_reason added 2026-10-21 per Compliance email (M. Okafor)"
+RTP,RESULT,Refused to pay / attempts exhausted / does not want to talk,no_promise,refused,refused,ACTIVE,2019-07-01,
+HDS,RESULT,"Hardship stated, Member Support declined",no_promise,hardship,hardship,ACTIVE,2022-02-14,
+DMP,RESULT,Working with credit counselor - 30 day hold,no_promise,hardship,hardship,ACTIVE,2026-10-19,"COMP-MEMO 26-14 item 2; note text starts DMP HOLD 30D"
+DSP,RESULT,Member disputes debt,no_promise,dispute,dispute,ACTIVE,2019-07-01,"do not argue; route to disputes queue via note"
+SVE,RESULT,System error - promise could not be recorded,no_promise,service_error,service_error,ACTIVE,2023-05-01,
+ATY,RESULT,Member represented by attorney re this debt,no_promise,attorney,,ACTIVE,2021-11-30,"Reg F 1006.6(b)(2); no note"
+XFS,TRANSFER,Transferred to Member Support (financial counseling),transferred,support,,ACTIVE,2022-02-14,queue=support
+XFW,TRANSFER,Transferred to Loan Workout,transferred,restructuring,,ACTIVE,2019-07-01,queue=restructuring
+XFH,TRANSFER,Member asked for a person,transferred,human,,ACTIVE,2019-07-01,queue=general
+IDF,VERIFY,Failed security questions (3 wrong),not_verified,failed,,ACTIVE,2019-07-01,
+IDD,VERIFY,Declined security questions / will not talk before verification,not_verified,declined,,ACTIVE,2019-07-01,
+CBK,CONTACT,Third party - callback booked,not_reached,callback,,ACTIVE,2019-07-01,
+NCB,CONTACT,Third party - no valid callback time,not_reached,no_callback,,ACTIVE,2019-07-01,
+WRN,CONTACT,Wrong number,not_reached,wrong_number,,ACTIVE,2019-07-01,
+DEC,CONTACT,Member deceased (reported by third party),not_reached,deceased,,ACTIVE,2019-07-01,refer to Recovery
+NCU,CONTACT,Could not confirm right party (unclear),not_reached,unclear,,ACTIVE,2019-07-01,
+TPM,CONTACT,Message left with third party,not_reached,third_party,,INACTIVE,2019-07-01,"retired 2021-11-30 (Reg F effective date); use CBK or NCB"
+LVM,CONTACT,Left voicemail (limited-content message),not_reached,voicemail,,INACTIVE,2021-11-30,"not used by voice assistant; dialer only"
+PTP-P,RESULT,Partial promise (below floor),promise,partial,,INACTIVE,2019-07-01,"retired 2024-01; below-floor promises are not recorded (7.8.4)"
+002,DLQ_REASON,Illness of Borrower,,,,ACTIVE,,investor reporting code - use at start of note text
+003,DLQ_REASON,Illness of Borrower's Family Member,,,,ACTIVE,,
+004,DLQ_REASON,Death of Borrower's Family Member,,,,ACTIVE,,
+005,DLQ_REASON,Marital Difficulties,,,,ACTIVE,,
+006,DLQ_REASON,Curtailment of Income,,,,ACTIVE,,reduced hours / lost overtime
+016,DLQ_REASON,Unemployment,,,,ACTIVE,,
+027,DLQ_REASON,Payment Dispute,,,,ACTIVE,,
+031,DLQ_REASON,Unable to Contact Borrower,,,,ACTIVE,,not used on a connected call

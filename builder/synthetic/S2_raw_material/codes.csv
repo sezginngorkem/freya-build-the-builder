@@ -1,0 +1,30 @@
+COL-CODES Collections Code List,,,,,,
+"Updated 2026-10-19 for memo CO-26-14. Authoritative for code spelling (POL-COL-07 s.9.3).",,,,,,
+code,use,outcome,reason,queue,description,status
+PTP,close,promise,,,"At least one promise to pay recorded",ACTIVE
+PIF,close,paid,,,"No promise; every product noted as already paid",ACTIVE
+NP-REF,close,no_promise,refused,,"Member refused, attempts used up",ACTIVE
+NP-DSP,close,no_promise,dispute,,"Member disputes the debt, the product, or says it was settled in the past",ACTIVE
+NP-HS,close,no_promise,hardship,,"Hardship, member declined transfer",RETIRED 2026-11-02 - use NP-FH
+NP-FH,close,no_promise,financial_hardship,,"Hardship (illness, bereavement, job loss, reduced hours), member declined transfer",ACTIVE from 2026-11-02
+NP-SVC,close,no_promise,service_error,,"Promise could not be recorded after a retry",ACTIVE
+TR-RST,close,transferred,restructuring,restructuring,"Payment plan, modification or deferment request",ACTIVE
+TR-HUM,close,transferred,human,member_services,"Member asked for a person",ACTIVE
+TR-HS,close,transferred,hardship,hardship_team,"Hardship, member accepted transfer",RETIRED 2026-11-02 - use TR-FH
+TR-FH,close,transferred,financial_hardship,hardship_team,"Hardship, member accepted transfer",ACTIVE from 2026-11-02
+TR-CMP,close,transferred,complaint,complaints,"Formal complaint, routed to the Complaints Unit",ACTIVE
+NV-FL,close,not_verified,failed,,"Three incorrect security answers",ACTIVE
+NV-DC,close,not_verified,declined,,"Member refused security questions twice",ACTIVE
+UR-CB,close,unreached,callback,,"Third party, callback booked",ACTIVE
+UR-NC,close,unreached,no_callback,,"Third party, no valid callback time",ACTIVE
+UR-WN,close,unreached,wrong_number,,"Number does not belong to the member",ACTIVE
+UR-DC,close,unreached,deceased,,"Member reported deceased",ACTIVE
+UR-UC,close,unreached,unclear,,"Could not confirm who answered",ACTIVE
+UR-LM,close,unreached,left_message,,"Voicemail message left",RETIRED 2025-03-01
+NT-REF,note,,refused,,"Product refused",ACTIVE
+NT-DSP,note,,dispute,,"Product disputed",ACTIVE
+NT-PD,note,,paid,,"Member says this product is already paid",ACTIVE
+NT-HS,note,,hardship,,"Hardship on this product",RETIRED 2026-11-02 - use NT-FH
+NT-FH,note,,financial_hardship,,"Hardship on this product",ACTIVE from 2026-11-02
+NT-SVC,note,,service_error,,"Promise for this product failed twice",ACTIVE
+

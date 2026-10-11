@@ -1,0 +1,4217 @@
+{
+ "version": 0,
+ "name": "Kittiwake Bank - CR-07 section 5 early arrears outbound calls (v4.2 + email 07/10/2026 + CPN-2026-019)",
+ "calendar": {
+  "workdays": [
+   "Mon",
+   "Tue",
+   "Wed",
+   "Thu",
+   "Fri"
+  ],
+  "holidays": [
+   "2026-01-01",
+   "2026-04-03",
+   "2026-04-06",
+   "2026-05-04",
+   "2026-05-25",
+   "2026-08-31",
+   "2026-10-23",
+   "2026-12-25",
+   "2026-12-28",
+   "2027-01-01",
+   "2027-03-26",
+   "2027-03-29",
+   "2027-05-03",
+   "2027-05-31",
+   "2027-08-30",
+   "2027-12-27",
+   "2027-12-28"
+  ],
+  "weekday_words": {
+   "this": "upcoming",
+   "bare": "upcoming"
+  },
+  "src": "D2.s040,D2.s043,D2.s044,D2.s048,D1.s032,D3.s001,D3.s002,D3.s004,D3.s011,D3.s012,D3.s013,D3.s014,D3.s015,D3.s016"
+ },
+ "time": {
+  "now_var": "now"
+ },
+ "vocabulary": {
+  "tools": {
+   "verify_identity": {
+    "write": false
+   },
+   "get_account": {
+    "write": false
+   },
+   "create_promise": {
+    "write": true
+   },
+   "add_note": {
+    "write": true
+   },
+   "schedule_callback": {
+    "write": true
+   },
+   "transfer_to_agent": {
+    "write": true
+   },
+   "close_call": {
+    "write": true
+   }
+  }
+ },
+ "closing": {
+  "tool": "close_call",
+  "extra_args": {
+   "customer_id": "call.customer_id"
+  }
+ },
+ "initial_phase": "opening",
+ "slots": {
+  "id_phone_last4": {
+   "kind": "digits",
+   "length": 4,
+   "phases": [
+    "id_phone"
+   ],
+   "description": "the last four digits of the customer's phone number, given as the answer to the security question",
+   "src": "D2.s027,D2.s028"
+  },
+  "id_date_of_birth": {
+   "kind": "birth_date",
+   "numeric_order": "DMY",
+   "phases": [
+    "id_dob"
+   ],
+   "description": "the customer's date of birth, given as the answer to the security question",
+   "src": "D2.s027,D2.s028,D2.s029,D2.s030"
+  },
+  "promise_date": {
+   "kind": "date",
+   "phases": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "description": "the day the customer says they can pay",
+   "src": "D2.s058,D2.s059,D2.s045"
+  },
+  "promise_amount": {
+   "kind": "amount",
+   "phases": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "description": "an amount of money the customer says they can pay",
+   "src": "D2.s055,D2.s056,D2.s057,D2.s059"
+  },
+  "next_weekday": {
+   "kind": "enum",
+   "values": [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+   ],
+   "phases": [
+    "ask_all",
+    "negotiate"
+   ],
+   "description": "the weekday the customer named with the word 'next' in front of it (as in 'next Friday'); empty when they did not say 'next' with a weekday",
+   "src": "D1.s006,D1.s015,D1.s028,D1.s029"
+  },
+  "which_option": {
+   "kind": "enum",
+   "values": [
+    "first",
+    "second"
+   ],
+   "phases": [
+    "ask_all",
+    "negotiate"
+   ],
+   "description": "which of the two dates the agent just named the customer chose: the earlier one (first) or the later one (second)",
+   "src": "D1.s029,D1.s031"
+  },
+  "product_ref": {
+   "kind": "text",
+   "phases": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "description": "which of the customer's products they are talking about, as said (e.g. 'the car loan', 'the card ending 4821')",
+   "src": "D2.s115,D2.s120"
+  },
+  "callback_date": {
+   "kind": "date",
+   "phases": [
+    "third_party"
+   ],
+   "description": "the day on which the customer can be reached",
+   "src": "D2.s019,D2.s020,D2.s023"
+  },
+  "callback_time": {
+   "kind": "time",
+   "phases": [
+    "third_party"
+   ],
+   "description": "the time of day at which the customer can be reached",
+   "src": "D2.s020,D2.s021,D2.s023"
+  }
+ },
+ "slots_sticky": [],
+ "intents": [
+  {
+   "id": "breathing_space",
+   "priority": 100,
+   "description": "says they ARE in a breathing space under the Debt Respite Scheme (a standard breathing space or a mental health crisis breathing space), even if they also mention a debt adviser (not: only about to apply for a breathing space)",
+   "src": "D3.s018,D3.s019,D3.s020,D2.s085"
+  },
+  {
+   "id": "deceased",
+   "priority": 96,
+   "description": "says the customer has died",
+   "src": "D2.s024"
+  },
+  {
+   "id": "wrong_number",
+   "priority": 95,
+   "description": "says this number does not belong to the customer / no such person at this number",
+   "src": "D2.s024"
+  },
+  {
+   "id": "debt_advice",
+   "priority": 90,
+   "description": "says they are getting help from a debt adviser (for example StepChange, Citizens Advice, National Debtline or a MoneyHelper adviser), or that they are about to apply for a breathing space (not: already in a breathing space)",
+   "src": "D2.s086"
+  },
+  {
+   "id": "vulnerable",
+   "priority": 80,
+   "description": "tells about a physical or mental health condition, a disability, a serious illness, a bereavement, caring for someone, an addiction or domestic abuse, or says they find the call hard to understand (not: loss of a job or income, which is hardship)",
+   "src": "D2.s076,D2.s067"
+  },
+  {
+   "id": "hardship",
+   "priority": 70,
+   "description": "says they have lost their job or their income, that their income has fallen, that they cannot afford the minimum payment or instalment offered, or asks for a payment plan or lower monthly payments (not: only saying the full arrears amount is too much; not: a discount, refund, waiver or interest freeze)",
+   "src": "D2.s066,D2.s067,D2.s075,D2.s054,D2.s106"
+  },
+  {
+   "id": "human",
+   "priority": 60,
+   "description": "asks to be put through to a person, a human or an adviser (not: asking whether the agent is a person)",
+   "src": "D2.s094"
+  },
+  {
+   "id": "confirm_identity",
+   "priority": 55,
+   "description": "says 'yes', 'speaking', 'that's me', or gives the customer's name as their own (not: 'Hello?', 'Who is this?', 'What's it about?')",
+   "src": "D2.s015,D2.s016"
+  },
+  {
+   "id": "third_party",
+   "priority": 50,
+   "description": "says the customer is not there or not available, or that they are someone else such as a family member (not: the number does not belong to the customer; not: the customer has died)",
+   "src": "D2.s018"
+  },
+  {
+   "id": "offer_on_behalf",
+   "priority": 49,
+   "description": "someone other than the customer offers to pay, to pass on a message, or to answer the security questions for the customer",
+   "src": "D2.s019,D2.s036"
+  },
+  {
+   "id": "paid",
+   "priority": 48,
+   "description": "says they have already paid this product's arrears (the past-due amount) (not: a part of it; not: the account was closed or paid off in the past, which is a dispute)",
+   "src": "D2.s088,D2.s091"
+  },
+  {
+   "id": "dispute",
+   "priority": 48,
+   "description": "'This isn't mine', 'I never had this', 'I closed that account', or says the account was closed or paid off in the past",
+   "src": "D2.s091,D2.s092"
+  },
+  {
+   "id": "concession",
+   "priority": 46,
+   "description": "asks for a discount, a refund or waiver of fees or interest, an interest freeze or token payments (not: a payment plan or lower monthly payments, which is hardship)",
+   "src": "D2.s104,D2.s105,D1.s013"
+  },
+  {
+   "id": "change_promise",
+   "priority": 45,
+   "description": "asks to change or cancel a promise already made in this call",
+   "src": "D2.s110"
+  },
+  {
+   "id": "not_want_talk",
+   "priority": 40,
+   "description": "says they do not want to talk / do not want this call at all (not: declining one offer or one question)",
+   "src": "D2.s103"
+  },
+  {
+   "id": "no_callback_time",
+   "priority": 38,
+   "description": "cannot or will not say when the customer can be reached",
+   "src": "D2.s024"
+  },
+  {
+   "id": "too_much",
+   "priority": 35,
+   "description": "says the full arrears AMOUNT is too much or more than they can pay (not: cannot pay today or on that day, which is about the day; not: naming a smaller amount; not: lost job or income)",
+   "src": "D2.s054"
+  },
+  {
+   "id": "refuse_pay",
+   "priority": 30,
+   "description": "says no to paying at all / will not pay, with no date and no amount (not: only 'not today'; not: cannot afford it or lost income)",
+   "src": "D2.s059,D2.s060"
+  },
+  {
+   "id": "vague_date",
+   "priority": 25,
+   "description": "gives only a vague time instead of a day ('next week', 'end of the month', 'when I get paid') (not: a weekday or a date)",
+   "src": "D2.s047"
+  },
+  {
+   "id": "ask_bot",
+   "priority": 20,
+   "description": "asks whether the agent is a robot, an AI or a real person",
+   "src": "D2.s097"
+  },
+  {
+   "id": "ask_scam",
+   "priority": 20,
+   "description": "asks whether this call is a scam or genuinely from the bank",
+   "src": "D2.s098"
+  },
+  {
+   "id": "ask_reason",
+   "priority": 15,
+   "description": "asks what the call is about or why we are calling",
+   "src": "D2.s016,D2.s017,D2.s036"
+  },
+  {
+   "id": "decline",
+   "priority": 10,
+   "description": "refuses to answer the question asked",
+   "src": "D2.s035,D2.s059"
+  },
+  {
+   "id": "other_question",
+   "priority": 5,
+   "description": "asks a question the agent cannot answer from the account details (e.g. interest, fees, balances, what a plan would cost)",
+   "src": "D2.s101,D2.s102"
+  },
+  {
+   "id": "yes",
+   "priority": 0,
+   "description": "says yes / agrees to what the agent just asked or offered",
+   "src": "D2.s109,D2.s071,D2.s080"
+  },
+  {
+   "id": "no",
+   "priority": 0,
+   "description": "says no to what the agent just asked or offered",
+   "src": "D2.s059,D2.s064,D2.s072,D2.s081"
+  }
+ ],
+ "templates": {
+  "opening": {
+   "text": "Hello, this is Kittiwake Bank's digital assistant. We record this call.",
+   "exact": false,
+   "src": "D2.s013"
+  },
+  "ask_name": {
+   "text": "May I speak to {call.first_name} {call.last_name}, please?",
+   "exact": true,
+   "src": "D2.s015"
+  },
+  "reason_pre": {
+   "text": "I'm Kittiwake Bank's digital assistant, and I can only discuss the reason for my call with {call.first_name} {call.last_name}.",
+   "exact": false,
+   "src": "D2.s017,D2.s018"
+  },
+  "tp_ask_when": {
+   "text": "When would be a good time to reach {call.first_name} {call.last_name}?",
+   "exact": false,
+   "src": "D2.s019"
+  },
+  "tp_only_customer": {
+   "text": "Thank you, but I can only speak to {call.first_name} {call.last_name}.",
+   "exact": false,
+   "src": "D2.s019,D2.s020,D2.s036"
+  },
+  "tp_reason": {
+   "text": "I'm sorry, I can only discuss that with {call.first_name} {call.last_name}.",
+   "exact": false,
+   "src": "D2.s018"
+  },
+  "cb_ask_date": {
+   "text": "Which day would suit?",
+   "exact": false,
+   "src": "D2.s023"
+  },
+  "cb_ask_time": {
+   "text": "And at what time?",
+   "exact": false,
+   "src": "D2.s023"
+  },
+  "cb_invalid": {
+   "text": "I'm sorry, I can't book a call back then. Could you give me another day and time?",
+   "exact": false,
+   "src": "D2.s023"
+  },
+  "cb_booked": {
+   "text": "Thank you. We will call back on {day_label(var.cb_date)} at {var.cb_time}.",
+   "exact": false,
+   "src": "D2.s023"
+  },
+  "cb_failed": {
+   "text": "I'm sorry, I couldn't book that call back.",
+   "exact": false,
+   "src": "D2.s024"
+  },
+  "sorry_loss": {
+   "text": "I'm very sorry for your loss.",
+   "exact": true,
+   "src": "D2.s024"
+  },
+  "goodbye": {
+   "text": "Thank you for your time. Goodbye.",
+   "exact": false,
+   "src": "D2.s129"
+  },
+  "ask_phone": {
+   "text": "Before we go on, I need to ask you two security questions. First, what are the last four digits of the phone number we hold for you?",
+   "exact": false,
+   "src": "D2.s027"
+  },
+  "ask_phone_again": {
+   "text": "Could you give me the last four digits of the phone number we hold for you, please?",
+   "exact": false,
+   "src": "D2.s030,D2.s033"
+  },
+  "ask_dob": {
+   "text": "Thank you. Now, what is your date of birth?",
+   "exact": false,
+   "src": "D2.s027"
+  },
+  "ask_dob_again": {
+   "text": "Could you give me your date of birth, please?",
+   "exact": false,
+   "src": "D2.s030,D2.s033"
+  },
+  "ask_month_word": {
+   "text": "Could you say your date of birth again, with the month as a word, for example 5 December?",
+   "exact": false,
+   "src": "D2.s031,D2.s032"
+  },
+  "not_read": {
+   "text": "Sorry, I didn't catch that.",
+   "exact": false,
+   "src": "D2.s033"
+  },
+  "wrong_answer": {
+   "text": "I'm sorry, that doesn't match our records.",
+   "exact": false,
+   "src": "D2.s030"
+  },
+  "id_failed": {
+   "text": "I'm sorry, I can't go any further with this call. Please call the Bank on the number on our website or on any letter or statement from us, or visit a branch.",
+   "exact": false,
+   "src": "D2.s033,D2.s034"
+  },
+  "id_protect": {
+   "text": "These questions are there to protect your account. I can only continue once you've answered them.",
+   "exact": false,
+   "src": "D2.s035"
+  },
+  "bs_security_first": {
+   "text": "I need to finish the security questions first so that the right account is updated.",
+   "exact": false,
+   "src": "D3.s028"
+  },
+  "arrears_intro": {
+   "text": "I'm calling from Kittiwake Bank's Arrears Support team about missed payments.",
+   "exact": false,
+   "src": "D2.s037"
+  },
+  "product_line": {
+   "text": "Your {item.label} is £{money(item.past_due)} in arrears and has been in arrears for {item.days_late} days.",
+   "exact": false,
+   "src": "D2.s038"
+  },
+  "nosia": {
+   "text": "You will also receive a letter called a Notice of Sums in Arrears, with an information sheet from the Financial Conduct Authority.",
+   "exact": true,
+   "src": "D2.s039"
+  },
+  "ask_today": {
+   "text": "Can you pay the full arrears of £{money(item.past_due)} today?",
+   "exact": true,
+   "src": "D2.s058"
+  },
+  "ask_all_today": {
+   "text": "Can you pay the full arrears on all of them today, £{money(var.total)} in total?",
+   "exact": false,
+   "src": "D2.s116,D2.s117"
+  },
+  "ask_by_date": {
+   "text": "By what date can you pay the full arrears of £{money(item.past_due)} on your {item.label}?",
+   "exact": false,
+   "src": "D2.s058,D2.s117,D2.s118"
+  },
+  "ask_date_for_amt": {
+   "text": "By what date can you pay £{money(item.amt)} on your {item.label}?",
+   "exact": false,
+   "src": "D2.s059"
+  },
+  "ask_exact_date": {
+   "text": "Could you give me an exact date for your {item.label}?",
+   "exact": false,
+   "src": "D2.s047"
+  },
+  "credit_ref": {
+   "text": "Anything left unpaid stays in arrears and may be reported to credit reference agencies.",
+   "exact": true,
+   "src": "D2.s054"
+  },
+  "floor_offer": {
+   "text": "Could you pay the {item.fname} of £{money(item.floor)} on your {item.label}{when_words(var.pend_date)} instead?",
+   "exact": false,
+   "src": "D2.s054"
+  },
+  "below_floor_offer": {
+   "text": "I'm sorry, I can't record an amount below the {item.fname} of £{money(item.floor)}. Could you pay the {item.fname} of £{money(item.floor)}{when_words(var.pend_date)}?",
+   "exact": false,
+   "src": "D2.s056"
+  },
+  "below_floor_no": {
+   "text": "I'm sorry, I can't record an amount below the {item.fname} of £{money(item.floor)}.",
+   "exact": false,
+   "src": "D2.s056"
+  },
+  "past_date": {
+   "text": "I'm sorry, I can only take a date from today onwards.",
+   "exact": false,
+   "src": "D2.s045"
+  },
+  "latest_offer": {
+   "text": "The latest date I can record for your {item.label} is {day_label(item.latest)}. Could you pay {amt_words(item.amt, item.past_due, item.floor, item.fname)} by {day_label(item.latest)}?",
+   "exact": false,
+   "src": "D2.s046"
+  },
+  "propose_latest": {
+   "text": "Could you pay {amt_words(item.amt, item.past_due, item.floor, item.fname)} on your {item.label} by {day_label(item.latest)}?",
+   "exact": false,
+   "src": "D2.s047,D2.s048"
+  },
+  "alt_offer": {
+   "text": "{day_label(var.cand)} is not a banking day. Could you pay {amt_words(item.amt, item.past_due, item.floor, item.fname)} on {day_label(var.offer_date)} instead?",
+   "exact": false,
+   "src": "D2.s045,D2.s046"
+  },
+  "alt_all_offer": {
+   "text": "{day_label(var.cand)} is not a banking day. Could you pay on {day_label(var.offer_date)} instead?",
+   "exact": false,
+   "src": "D2.s045,D2.s118"
+  },
+  "persuasion": {
+   "text": "Could you pay the {item.fname} of £{money(item.floor)} on your {item.label} by {day_label(item.latest)}?",
+   "exact": false,
+   "src": "D2.s060,D2.s061,D2.s063"
+  },
+  "which_next": {
+   "text": "Do you mean {day_label(var.nwd_a)} or {day_label(var.nwd_b)}?",
+   "exact": true,
+   "src": "D1.s029,D1.s030"
+  },
+  "readback_intro": {
+   "text": "Let me read that back.",
+   "exact": false,
+   "src": "D2.s107,D2.s119"
+  },
+  "readback_line": {
+   "text": "For your {item.label}: £{money(item.ok_amt)} on {day_label(item.ok_date)}{cap_note(item.capped)}.",
+   "exact": false,
+   "src": "D2.s107,D2.s118"
+  },
+  "confirm": {
+   "text": "Is that correct?",
+   "exact": true,
+   "src": "D2.s108,D2.s119"
+  },
+  "ask_change": {
+   "text": "What would you like to change?",
+   "exact": false,
+   "src": "D2.s109"
+  },
+  "ask_which_product": {
+   "text": "Which product would you like to change, and what is the new amount?",
+   "exact": false,
+   "src": "D2.s109"
+  },
+  "trying_again": {
+   "text": "Sorry, something went wrong. I'm trying again.",
+   "exact": false,
+   "src": "D2.s112"
+  },
+  "promise_recorded": {
+   "text": "Your promise for your {item.label} is recorded.",
+   "exact": false,
+   "src": "D2.s111"
+  },
+  "not_recorded": {
+   "text": "I'm sorry, I could not record the promise for your {item.label}.",
+   "exact": false,
+   "src": "D2.s113"
+  },
+  "letter": {
+   "text": "We will send you a letter confirming your promise to pay.",
+   "exact": true,
+   "src": "D2.s114"
+  },
+  "moneyhelper": {
+   "text": "Free, impartial debt advice is available from MoneyHelper.",
+   "exact": true,
+   "src": "D2.s068"
+  },
+  "review_offer": {
+   "text": "The Financial Support team can go through your income and outgoings with you and look at the options. Would you like me to transfer you to them now?",
+   "exact": false,
+   "src": "D2.s069,D2.s070"
+  },
+  "vuln_thanks": {
+   "text": "Thank you for telling me.",
+   "exact": true,
+   "src": "D2.s077"
+  },
+  "vuln_offer": {
+   "text": "The Bank wants to make sure you get the right support. Would you like me to transfer you to our Specialist Support team?",
+   "exact": false,
+   "src": "D2.s077,D2.s078,D2.s079"
+  },
+  "ack_ok": {
+   "text": "That's fine.",
+   "exact": false,
+   "src": "D2.s072,D2.s081"
+  },
+  "transfer_goodbye": {
+   "text": "Thank you. I'm transferring you now. Goodbye.",
+   "exact": false,
+   "src": "D2.s129,D2.s071,D2.s080,D2.s095"
+  },
+  "human_help": {
+   "text": "I may be able to help you with that myself. Would you like me to try first?",
+   "exact": false,
+   "src": "D2.s094"
+  },
+  "bot": {
+   "text": "I'm Kittiwake Bank's automated digital assistant.",
+   "exact": false,
+   "src": "D2.s097"
+  },
+  "scam": {
+   "text": "You can hang up and call the Bank on the number on our website or on any letter or statement from us.",
+   "exact": false,
+   "src": "D2.s098,D2.s099,D2.s100"
+  },
+  "no_info": {
+   "text": "I'm sorry, I don't have that information.",
+   "exact": false,
+   "src": "D2.s101,D2.s102"
+  },
+  "no_concession": {
+   "text": "I'm sorry, I can't agree that.",
+   "exact": false,
+   "src": "D2.s104,D2.s105,D1.s013"
+  },
+  "change_recorded": {
+   "text": "I can't change that promise in this call. You can call the Bank on the number on our website or on any letter or statement from us.",
+   "exact": false,
+   "src": "D2.s110"
+  },
+  "nwt_ack": {
+   "text": "I understand.",
+   "exact": false,
+   "src": "D2.s103"
+  },
+  "bs_post": {
+   "text": "Thank you for telling me. We will pause collection on your accounts and will not ask you for any payment during the breathing space.",
+   "exact": true,
+   "src": "D3.s021,D3.s022"
+  },
+  "debt_advice": {
+   "text": "We will put collection on hold for 30 days to give you time to get advice.",
+   "exact": true,
+   "src": "D2.s086"
+  },
+  "paid_ack": {
+   "text": "Thank you. Payments can take up to two banking days to show.",
+   "exact": false,
+   "src": "D2.s088"
+  },
+  "dispute_ack": {
+   "text": "Thank you for letting me know. I won't ask you for a payment on that.",
+   "exact": false,
+   "src": "D2.s092"
+  },
+  "service_problem": {
+   "text": "I'm sorry, I can't get the details I need right now.",
+   "exact": false,
+   "src": "D2.s037"
+  }
+ },
+ "functions": {
+  "latest_date": {
+   "params": [
+    "dl"
+   ],
+   "expr": "prev_business_day(add_days(today, 14), True) if dl <= 14 else (add_business_days(today, 7) if dl <= 30 else add_business_days(today, 3))",
+   "src": "D2.s040,D2.s041,D2.s042,D3.s005,D3.s006,D3.s007,D3.s008,D3.s015,D3.s016"
+  },
+  "floor_of": {
+   "params": [
+    "t",
+    "mp",
+    "ia"
+   ],
+   "expr": "mp if t == 'credit_card' else ia",
+   "src": "D2.s054"
+  },
+  "floor_name": {
+   "params": [
+    "t"
+   ],
+   "expr": "'minimum payment' if t == 'credit_card' else 'monthly instalment'",
+   "src": "D2.s054"
+  },
+  "label_of": {
+   "params": [
+    "t",
+    "l4"
+   ],
+   "expr": "'credit card ending ' + str_(l4) if t == 'credit_card' else ('personal loan' if t == 'personal_loan' else 'car finance agreement')",
+   "src": "D2.s038"
+  },
+  "amt_words": {
+   "params": [
+    "a",
+    "pd",
+    "fl",
+    "fname"
+   ],
+   "expr": "'the full arrears of £' + money(pd) if a == pd else ('the ' + fname + ' of £' + money(fl) if a == fl else '£' + money(a))",
+   "src": "D2.s053,D2.s055"
+  },
+  "when_words": {
+   "params": [
+    "d"
+   ],
+   "expr": "((' today' if d == today else ' by ' + day_label(d)) if is_set(d) else '')",
+   "src": "D2.s054"
+  },
+  "cap_note": {
+   "params": [
+    "c"
+   ],
+   "expr": "', which is the latest date I can record for it' if c else ''",
+   "src": "D2.s118"
+  },
+  "rank_idx": {
+   "params": [
+    "r",
+    "r0",
+    "r1"
+   ],
+   "expr": "0 if r0 == r else (1 if r1 == r else 2)",
+   "src": "D2.s115,D2.s116"
+  },
+  "next_after": {
+   "params": [
+    "n",
+    "d"
+   ],
+   "expr": "add_days(d, 1) if lower(n) in lower(day_label(add_days(d, 1))) else (add_days(d, 2) if lower(n) in lower(day_label(add_days(d, 2))) else (add_days(d, 3) if lower(n) in lower(day_label(add_days(d, 3))) else (add_days(d, 4) if lower(n) in lower(day_label(add_days(d, 4))) else (add_days(d, 5) if lower(n) in lower(day_label(add_days(d, 5))) else (add_days(d, 6) if lower(n) in lower(day_label(add_days(d, 6))) else add_days(d, 7))))))",
+   "src": "D1.s029,D1.s030"
+  },
+  "cb_ok": {
+   "params": [
+    "d",
+    "t",
+    "nt"
+   ],
+   "expr": "date_ge(d, today) and date_le(d, add_days(today, 7)) and (d != today or t > nt) and not (is_holiday(d) and d != '2026-10-23') and not ('sunday' in lower(day_label(d))) and ((date_ge(d, '2026-10-24') and time_in_window(t, '09:00', '13:00')) if 'saturday' in lower(day_label(d)) else time_in_window(t, '08:00', '20:00'))",
+   "src": "D2.s020,D2.s021,D2.s022,D3.s017,D3.s031,D3.s032,D3.s033,D3.s034,D3.s035,D1.s007,D1.s019,D1.s020"
+  }
+ },
+ "procedures": {
+  "ask_current": [
+   {
+    "if": "var.q == 'name'",
+    "then": [
+     {
+      "say": "ask_name",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'id_phone'",
+    "then": [
+     {
+      "say": "ask_phone_again",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'id_dob'",
+    "then": [
+     {
+      "say": "ask_dob_again",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'all_today'",
+    "then": [
+     {
+      "say": "ask_all_today",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'today'",
+    "then": [
+     {
+      "say": "ask_today",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'by_date'",
+    "then": [
+     {
+      "say": "ask_by_date",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'amt_date'",
+    "then": [
+     {
+      "say": "ask_date_for_amt",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'exact_date'",
+    "then": [
+     {
+      "say": "ask_exact_date",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'floor'",
+    "then": [
+     {
+      "say": "floor_offer",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'alt_date'",
+    "then": [
+     {
+      "say": "alt_offer",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'alt_all'",
+    "then": [
+     {
+      "say": "alt_all_offer",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'latest'",
+    "then": [
+     {
+      "say": "latest_offer",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'persuasion'",
+    "then": [
+     {
+      "say": "persuasion",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'which_next'",
+    "then": [
+     {
+      "say": "which_next",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'confirm'",
+    "then": [
+     {
+      "say": "confirm",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'change'",
+    "then": [
+     {
+      "say": "ask_change",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'which_product'",
+    "then": [
+     {
+      "say": "ask_which_product",
+      "prompt": true
+     }
+    ]
+   },
+   {
+    "if": "var.q == 'tp'",
+    "then": [
+     {
+      "say": "tp_ask_when",
+      "prompt": true
+     }
+    ]
+   }
+  ],
+  "opening_reask": [
+   {
+    "if": "counter.name_asks < 2",
+    "then": [
+     {
+      "incr": "counter.name_asks",
+      "by": 1
+     },
+     {
+      "say": "ask_name",
+      "prompt": true
+     }
+    ],
+    "else": [
+     {
+      "say": "goodbye"
+     },
+     {
+      "close": {
+       "outcome": "'not_reached'",
+       "reason": "'no_rpc'"
+      }
+     }
+    ]
+   }
+  ],
+  "advance": [
+   {
+    "incr": "var.pos",
+    "by": 1
+   },
+   {
+    "if": "var.pos < var.n",
+    "then": [
+     {
+      "set": {
+       "var.cur": "rank_idx(var.pos, var.r0, var.r1)"
+      }
+     },
+     {
+      "set_cursor": "var.cur"
+     },
+     {
+      "set": {
+       "var.q": "'next'"
+      }
+     },
+     {
+      "goto": "negotiate"
+     }
+    ],
+    "else": [
+     {
+      "goto": "readback"
+     }
+    ]
+   }
+  ],
+  "flat_refusal": [
+   {
+    "if": "item.attempt_used or flag.no_persuasion",
+    "then": [
+     {
+      "set": {
+       "item.outcome": "'hardship' if flag.no_persuasion else 'refused'",
+       "item.ok_date": "None"
+      }
+     },
+     {
+      "run": "advance"
+     }
+    ],
+    "else": [
+     {
+      "set": {
+       "item.attempt_used": "true",
+       "item.amt": "item.floor",
+       "var.offer_date": "item.latest",
+       "var.q": "'persuasion'"
+      }
+     },
+     {
+      "say": "persuasion",
+      "prompt": true
+     }
+    ]
+   }
+  ],
+  "item_agreed": [
+   {
+    "set": {
+     "item.ok_amt": "item.amt",
+     "item.ok_date": "var.cand",
+     "item.capped": "false"
+    }
+   },
+   {
+    "if": "flag.changing",
+    "then": [
+     {
+      "goto": "readback"
+     }
+    ],
+    "else": [
+     {
+      "run": "advance"
+     }
+    ]
+   }
+  ],
+  "check_date": [
+   {
+    "if": "date_lt(var.cand, today)",
+    "then": [
+     {
+      "say": "past_date"
+     },
+     {
+      "run": "ask_current"
+     }
+    ],
+    "else": [
+     {
+      "if": "date_lt(item.latest, var.cand)",
+      "then": [
+       {
+        "set": {
+         "var.offer_date": "item.latest",
+         "var.q": "'latest'"
+        }
+       },
+       {
+        "say": "latest_offer",
+        "prompt": true
+       }
+      ],
+      "else": [
+       {
+        "if": "not is_business_day(var.cand)",
+        "then": [
+         {
+          "set": {
+           "var.offer_date": "item.latest if date_lt(item.latest, next_business_day(var.cand)) else next_business_day(var.cand)",
+           "var.q": "'alt_date'"
+          }
+         },
+         {
+          "say": "alt_offer",
+          "prompt": true
+         }
+        ],
+        "else": [
+         {
+          "run": "item_agreed"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "handle_offer": [
+   {
+    "if": "var.pending_yn == 'review' or var.pending_yn == 'support'",
+    "then": [
+     {
+      "set": {
+       "flag.no_persuasion": "true",
+       "var.pending_yn": "None"
+      }
+     }
+    ]
+   },
+   {
+    "if": "is_set(var.in_amt) and min(var.in_amt, item.past_due) < item.floor",
+    "then": [
+     {
+      "if": "not item.floor_offered",
+      "then": [
+       {
+        "set": {
+         "item.floor_offered": "true",
+         "item.amt": "item.floor",
+         "var.pend_date": "var.in_date",
+         "var.q": "'floor'"
+        }
+       },
+       {
+        "say": "below_floor_offer",
+        "prompt": true
+       }
+      ],
+      "else": [
+       {
+        "say": "below_floor_no"
+       },
+       {
+        "run": "flat_refusal"
+       }
+      ]
+     }
+    ],
+    "else": [
+     {
+      "if": "is_set(var.in_amt)",
+      "then": [
+       {
+        "set": {
+         "item.amt": "min(var.in_amt, item.past_due)"
+        }
+       }
+      ]
+     },
+     {
+      "set": {
+       "var.cand": "var.in_date if is_set(var.in_date) else (var.offer_date if (var.q == 'alt_date' or var.q == 'latest' or var.q == 'persuasion') else (var.pend_date if var.q == 'floor' else (item.prev_date if flag.changing else None)))"
+      }
+     },
+     {
+      "if": "is_set(var.cand)",
+      "then": [
+       {
+        "run": "check_date"
+       }
+      ],
+      "else": [
+       {
+        "set": {
+         "var.q": "'amt_date'"
+        }
+       },
+       {
+        "say": "ask_date_for_amt",
+        "prompt": true
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "apply_all_date": [
+   {
+    "for_each_item": [
+     {
+      "if": "not is_set(item.outcome)",
+      "then": [
+       {
+        "set": {
+         "item.ok_amt": "item.ok_amt if is_set(item.ok_amt) else item.past_due",
+         "item.capped": "date_lt(item.latest, var.cand)",
+         "item.ok_date": "item.latest if date_lt(item.latest, var.cand) else var.cand"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "set_cursor": "var.cur"
+   }
+  ],
+  "all_date_check": [
+   {
+    "if": "date_lt(var.cand, today)",
+    "then": [
+     {
+      "say": "past_date"
+     },
+     {
+      "run": "ask_current"
+     }
+    ],
+    "else": [
+     {
+      "if": "not is_business_day(var.cand)",
+      "then": [
+       {
+        "set": {
+         "var.offer_date": "next_business_day(var.cand)",
+         "var.q": "'alt_all'"
+        }
+       },
+       {
+        "say": "alt_all_offer",
+        "prompt": true
+       }
+      ],
+      "else": [
+       {
+        "run": "apply_all_date"
+       },
+       {
+        "goto": "readback"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "per_product": [
+   {
+    "set": {
+     "var.pos": "0",
+     "var.cur": "rank_idx(0, var.r0, var.r1)"
+    }
+   },
+   {
+    "set_cursor": "var.cur"
+   },
+   {
+    "set": {
+     "var.q": "'next'"
+    }
+   },
+   {
+    "goto": "negotiate"
+   }
+  ],
+  "per_product_refire": [
+   {
+    "set": {
+     "var.pos": "0",
+     "var.cur": "rank_idx(0, var.r0, var.r1)"
+    }
+   },
+   {
+    "set_cursor": "var.cur"
+   },
+   {
+    "set": {
+     "var.q": "'silent'"
+    }
+   },
+   {
+    "goto": "negotiate"
+   },
+   {
+    "refire": "user"
+   }
+  ],
+  "mark_claim": [
+   {
+    "if": "var.stage == 'ask_all' and var.ref < 0",
+    "then": [
+     {
+      "for_each_item": [
+       {
+        "if": "not is_set(item.outcome)",
+        "then": [
+         {
+          "set": {
+           "item.outcome": "var.claim",
+           "item.ok_date": "None"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "set_cursor": "var.cur"
+     }
+    ],
+    "else": [
+     {
+      "set": {
+       "var.t": "var.ref if var.ref >= 0 else var.cur"
+      }
+     },
+     {
+      "set_cursor": "var.t"
+     },
+     {
+      "set": {
+       "item.outcome": "var.claim",
+       "item.ok_date": "None"
+      }
+     },
+     {
+      "set_cursor": "var.cur"
+     }
+    ]
+   },
+   {
+    "if": "var.stage == 'ask_all'",
+    "then": [
+     {
+      "run": "per_product"
+     }
+    ],
+    "else": [
+     {
+      "if": "var.stage == 'readback'",
+      "then": [
+       {
+        "goto": "readback"
+       }
+      ],
+      "else": [
+       {
+        "if": "var.t == var.cur",
+        "then": [
+         {
+          "run": "advance"
+         }
+        ],
+        "else": [
+         {
+          "run": "ask_current"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "transfer_restructuring": [
+   {
+    "say": "transfer_goodbye"
+   },
+   {
+    "call": "transfer_to_agent",
+    "args": {
+     "customer_id": "call.customer_id",
+     "queue": "'restructuring'"
+    }
+   },
+   {
+    "close": {
+     "outcome": "'transferred'",
+     "reason": "'income_review'"
+    }
+   }
+  ],
+  "transfer_support": [
+   {
+    "say": "transfer_goodbye"
+   },
+   {
+    "call": "transfer_to_agent",
+    "args": {
+     "customer_id": "call.customer_id",
+     "queue": "'support'"
+    }
+   },
+   {
+    "close": {
+     "outcome": "'transferred'",
+     "reason": "'specialist_support'"
+    }
+   }
+  ],
+  "transfer_general": [
+   {
+    "say": "transfer_goodbye"
+   },
+   {
+    "call": "transfer_to_agent",
+    "args": {
+     "customer_id": "call.customer_id",
+     "queue": "'general'"
+    }
+   },
+   {
+    "close": {
+     "outcome": "'transferred'",
+     "reason": "'human'"
+    }
+   }
+  ]
+ },
+ "rules": [
+  {
+   "id": "opening_enter",
+   "phase": "opening",
+   "on": "enter",
+   "do": [
+    {
+     "set": {
+      "var.q": "'name'",
+      "counter.name_asks": "1"
+     }
+    },
+    {
+     "say": "opening"
+    },
+    {
+     "say": "ask_name",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s010,D2.s011,D2.s012,D2.s013,D2.s014,D2.s015"
+  },
+  {
+   "id": "opening_confirm",
+   "phase": "opening",
+   "on": "intent:confirm_identity",
+   "do": [
+    {
+     "goto": "id_phone"
+    }
+   ],
+   "src": "D2.s015,D2.s016"
+  },
+  {
+   "id": "opening_yes",
+   "phase": "opening",
+   "on": "intent:yes",
+   "if": "var.q == 'name'",
+   "do": [
+    {
+     "goto": "id_phone"
+    }
+   ],
+   "src": "D2.s015"
+  },
+  {
+   "id": "opening_no",
+   "phase": "opening",
+   "on": "intent:no",
+   "if": "var.q == 'name'",
+   "do": [
+    {
+     "goto": "third_party"
+    }
+   ],
+   "src": "D2.s018"
+  },
+  {
+   "id": "opening_third_party",
+   "phase": "opening",
+   "on": "intent:third_party",
+   "do": [
+    {
+     "goto": "third_party"
+    }
+   ],
+   "src": "D2.s018"
+  },
+  {
+   "id": "wrong_number",
+   "phase": [
+    "opening",
+    "third_party"
+   ],
+   "on": "intent:wrong_number",
+   "do": [
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'not_reached'",
+      "reason": "'wrong_number'"
+     }
+    }
+   ],
+   "src": "D2.s024,D4.t1"
+  },
+  {
+   "id": "deceased",
+   "phase": [
+    "opening",
+    "third_party"
+   ],
+   "on": "intent:deceased",
+   "do": [
+    {
+     "say": "sorry_loss"
+    },
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'not_reached'",
+      "reason": "'bereavement'"
+     }
+    }
+   ],
+   "src": "D2.s024,D2.s129,D4.t1"
+  },
+  {
+   "id": "opening_bot",
+   "phase": "opening",
+   "on": "intent:ask_bot",
+   "priority": 10,
+   "do": [
+    {
+     "say": "bot"
+    },
+    {
+     "run": "opening_reask"
+    }
+   ],
+   "src": "D2.s017,D2.s097"
+  },
+  {
+   "id": "opening_scam",
+   "phase": "opening",
+   "on": "intent:ask_scam",
+   "priority": 10,
+   "do": [
+    {
+     "say": "scam"
+    },
+    {
+     "run": "opening_reask"
+    }
+   ],
+   "src": "D2.s017,D2.s098,D2.s099"
+  },
+  {
+   "id": "opening_reason",
+   "phase": "opening",
+   "on": "intent:ask_reason",
+   "priority": 10,
+   "do": [
+    {
+     "say": "reason_pre"
+    },
+    {
+     "run": "opening_reask"
+    }
+   ],
+   "src": "D2.s016,D2.s017,D2.s014"
+  },
+  {
+   "id": "opening_other",
+   "phase": "opening",
+   "on": "intent:other_question",
+   "priority": 10,
+   "do": [
+    {
+     "say": "no_info"
+    },
+    {
+     "run": "opening_reask"
+    }
+   ],
+   "src": "D2.s017,D2.s101"
+  },
+  {
+   "id": "opening_unclear",
+   "phase": "opening",
+   "on": "user",
+   "do": [
+    {
+     "run": "opening_reask"
+    }
+   ],
+   "src": "D2.s016,D2.s017"
+  },
+  {
+   "id": "tp_enter",
+   "phase": "third_party",
+   "on": "enter",
+   "do": [
+    {
+     "set": {
+      "var.q": "'tp'"
+     }
+    },
+    {
+     "say": "tp_ask_when",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s018,D2.s019,D2.s014,D2.s015"
+  },
+  {
+   "id": "tp_customer_takes_phone",
+   "phase": "third_party",
+   "on": "intent:confirm_identity",
+   "do": [
+    {
+     "goto": "id_phone"
+    }
+   ],
+   "src": "D2.s015"
+  },
+  {
+   "id": "tp_on_behalf",
+   "phase": "third_party",
+   "on": "intent:offer_on_behalf",
+   "do": [
+    {
+     "say": "tp_only_customer"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s019,D2.s020,D2.s036"
+  },
+  {
+   "id": "tp_reason",
+   "phase": "third_party",
+   "on": "intent:ask_reason",
+   "priority": 10,
+   "do": [
+    {
+     "say": "tp_reason"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s018"
+  },
+  {
+   "id": "tp_no_time",
+   "phase": "third_party",
+   "on": "intent:no_callback_time",
+   "do": [
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'not_reached'",
+      "reason": "'no_callback'"
+     }
+    }
+   ],
+   "src": "D2.s024,D4.t1"
+  },
+  {
+   "id": "tp_decline",
+   "phase": "third_party",
+   "on": "intent:decline",
+   "do": [
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'not_reached'",
+      "reason": "'no_callback'"
+     }
+    }
+   ],
+   "src": "D2.s024"
+  },
+  {
+   "id": "tp_callback",
+   "phase": "third_party",
+   "on": "user",
+   "priority": 10,
+   "if": "is_set(slot.callback_date) or is_set(slot.callback_time)",
+   "do": [
+    {
+     "set": {
+      "var.cb_date": "slot.callback_date if is_set(slot.callback_date) else var.cb_date",
+      "var.cb_time": "slot.callback_time if is_set(slot.callback_time) else var.cb_time"
+     }
+    },
+    {
+     "if": "is_set(var.cb_date) and is_set(var.cb_time)",
+     "then": [
+      {
+       "if": "cb_ok(var.cb_date, var.cb_time, time_of(call.now))",
+       "then": [
+        {
+         "call": "schedule_callback",
+         "args": {
+          "customer_id": "call.customer_id",
+          "date": "var.cb_date",
+          "time": "var.cb_time"
+         }
+        }
+       ],
+       "else": [
+        {
+         "if": "counter.cb_retry < 1",
+         "then": [
+          {
+           "incr": "counter.cb_retry",
+           "by": 1
+          },
+          {
+           "set": {
+            "var.cb_date": "None",
+            "var.cb_time": "None"
+           }
+          },
+          {
+           "say": "cb_invalid",
+           "prompt": true
+          }
+         ],
+         "else": [
+          {
+           "say": "goodbye"
+          },
+          {
+           "close": {
+            "outcome": "'not_reached'",
+            "reason": "'no_callback'"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "if": "is_set(var.cb_date)",
+       "then": [
+        {
+         "say": "cb_ask_time",
+         "prompt": true
+        }
+       ],
+       "else": [
+        {
+         "say": "cb_ask_date",
+         "prompt": true
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "src": "D2.s019,D2.s020,D2.s021,D2.s022,D2.s023,D2.s024,D3.s017,D3.s031,D3.s032,D3.s033,D3.s034,D3.s035"
+  },
+  {
+   "id": "tp_cb_ok",
+   "phase": "third_party",
+   "on": "tool:schedule_callback",
+   "priority": 10,
+   "if": "result.ok",
+   "do": [
+    {
+     "say": "cb_booked"
+    },
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'not_reached'",
+      "reason": "'callback_booked'"
+     }
+    }
+   ],
+   "src": "D2.s023,D4.t1"
+  },
+  {
+   "id": "tp_cb_fail",
+   "phase": "third_party",
+   "on": "tool:schedule_callback",
+   "do": [
+    {
+     "say": "cb_failed"
+    },
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'not_reached'",
+      "reason": "'no_callback'"
+     }
+    }
+   ],
+   "src": "D2.s024"
+  },
+  {
+   "id": "tp_other",
+   "phase": "third_party",
+   "on": "user",
+   "do": [
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s018,D2.s020"
+  },
+  {
+   "id": "id_phone_enter",
+   "phase": "id_phone",
+   "on": "enter",
+   "do": [
+    {
+     "set": {
+      "var.q": "'id_phone'"
+     }
+    },
+    {
+     "say": "ask_phone",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s027"
+  },
+  {
+   "id": "id_phone_answer",
+   "phase": "id_phone",
+   "on": "user",
+   "priority": 10,
+   "if": "is_set(slot.id_phone_last4)",
+   "do": [
+    {
+     "call": "verify_identity",
+     "args": {
+      "customer_id": "call.customer_id",
+      "field": "'phone_last4'",
+      "answer": "slot.id_phone_last4"
+     }
+    }
+   ],
+   "src": "D2.s028,D2.s036"
+  },
+  {
+   "id": "id_phone_unread",
+   "phase": "id_phone",
+   "on": "tool:verify_identity",
+   "priority": 30,
+   "if": "not result.ok",
+   "do": [
+    {
+     "say": "not_read"
+    },
+    {
+     "run": "ask_current"
+    }
+   ],
+   "src": "D2.s033"
+  },
+  {
+   "id": "id_phone_pass",
+   "phase": "id_phone",
+   "on": "tool:verify_identity",
+   "priority": 20,
+   "if": "result.verified",
+   "do": [
+    {
+     "goto": "id_dob"
+    }
+   ],
+   "src": "D2.s027"
+  },
+  {
+   "id": "id_phone_wrong",
+   "phase": "id_phone",
+   "on": "tool:verify_identity",
+   "do": [
+    {
+     "incr": "counter.wrong",
+     "by": 1
+    },
+    {
+     "if": "counter.wrong >= 2",
+     "then": [
+      {
+       "say": "id_failed"
+      },
+      {
+       "say": "goodbye"
+      },
+      {
+       "close": {
+        "outcome": "'not_verified'",
+        "reason": "'id_failed'"
+       }
+      }
+     ],
+     "else": [
+      {
+       "say": "wrong_answer"
+      },
+      {
+       "run": "ask_current"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s030,D2.s031,D2.s033,D2.s034,D2.s035,D4.t1"
+  },
+  {
+   "id": "id_dob_enter",
+   "phase": "id_dob",
+   "on": "enter",
+   "do": [
+    {
+     "set": {
+      "var.q": "'id_dob'"
+     }
+    },
+    {
+     "say": "ask_dob",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s027"
+  },
+  {
+   "id": "id_dob_answer",
+   "phase": "id_dob",
+   "on": "user",
+   "priority": 10,
+   "if": "is_set(slot.id_date_of_birth)",
+   "do": [
+    {
+     "call": "verify_identity",
+     "args": {
+      "customer_id": "call.customer_id",
+      "field": "'date_of_birth'",
+      "answer": "slot.id_date_of_birth"
+     }
+    }
+   ],
+   "src": "D2.s028,D2.s029,D2.s030,D2.s036"
+  },
+  {
+   "id": "id_dob_unread",
+   "phase": "id_dob",
+   "on": "tool:verify_identity",
+   "priority": 30,
+   "if": "not result.ok",
+   "do": [
+    {
+     "say": "not_read"
+    },
+    {
+     "run": "ask_current"
+    }
+   ],
+   "src": "D2.s033"
+  },
+  {
+   "id": "id_dob_swapped",
+   "phase": "id_dob",
+   "on": "tool:verify_identity",
+   "priority": 25,
+   "if": "result.hint == 'day_month_swapped'",
+   "do": [
+    {
+     "say": "ask_month_word",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s031,D2.s032"
+  },
+  {
+   "id": "id_dob_pass",
+   "phase": "id_dob",
+   "on": "tool:verify_identity",
+   "priority": 20,
+   "if": "result.verified",
+   "do": [
+    {
+     "set": {
+      "flag.verified": "true"
+     }
+    },
+    {
+     "call": "get_account",
+     "args": {
+      "customer_id": "call.customer_id"
+     }
+    }
+   ],
+   "src": "D2.s037"
+  },
+  {
+   "id": "id_dob_wrong",
+   "phase": "id_dob",
+   "on": "tool:verify_identity",
+   "do": [
+    {
+     "incr": "counter.wrong",
+     "by": 1
+    },
+    {
+     "if": "counter.wrong >= 2",
+     "then": [
+      {
+       "say": "id_failed"
+      },
+      {
+       "say": "goodbye"
+      },
+      {
+       "close": {
+        "outcome": "'not_verified'",
+        "reason": "'id_failed'"
+       }
+      }
+     ],
+     "else": [
+      {
+       "say": "wrong_answer"
+      },
+      {
+       "run": "ask_current"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s030,D2.s031,D2.s033,D2.s034,D2.s035,D4.t1"
+  },
+  {
+   "id": "id_decline",
+   "phase": [
+    "id_phone",
+    "id_dob"
+   ],
+   "on": "intent:decline",
+   "priority": 10,
+   "do": [
+    {
+     "if": "counter.id_explained < 1",
+     "then": [
+      {
+       "incr": "counter.id_explained",
+       "by": 1
+      },
+      {
+       "say": "id_protect"
+      },
+      {
+       "run": "ask_current"
+      }
+     ],
+     "else": [
+      {
+       "say": "goodbye"
+      },
+      {
+       "close": {
+        "outcome": "'not_verified'",
+        "reason": "'id_declined'"
+       }
+      }
+     ]
+    }
+   ],
+   "src": "D2.s035,D2.s036,D4.t1"
+  },
+  {
+   "id": "id_ask_reason",
+   "phase": [
+    "id_phone",
+    "id_dob"
+   ],
+   "on": "intent:ask_reason",
+   "priority": 10,
+   "do": [
+    {
+     "if": "counter.id_explained < 1",
+     "then": [
+      {
+       "incr": "counter.id_explained",
+       "by": 1
+      },
+      {
+       "say": "id_protect"
+      },
+      {
+       "run": "ask_current"
+      }
+     ],
+     "else": [
+      {
+       "say": "goodbye"
+      },
+      {
+       "close": {
+        "outcome": "'not_verified'",
+        "reason": "'id_declined'"
+       }
+      }
+     ]
+    }
+   ],
+   "src": "D2.s035,D2.s036"
+  },
+  {
+   "id": "bs_before_checks",
+   "phase": [
+    "opening",
+    "id_phone",
+    "id_dob"
+   ],
+   "on": "intent:breathing_space",
+   "do": [
+    {
+     "say": "bs_security_first"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D3.s028"
+  },
+  {
+   "id": "id_other",
+   "phase": [
+    "id_phone",
+    "id_dob"
+   ],
+   "on": "user",
+   "do": [
+    {
+     "run": "ask_current"
+    }
+   ],
+   "src": "D2.s027"
+  },
+  {
+   "id": "account_ok",
+   "phase": "id_dob",
+   "on": "tool:get_account",
+   "priority": 10,
+   "if": "result.ok",
+   "do": [
+    {
+     "set": {
+      "items": "copy_list(result.products)"
+     }
+    },
+    {
+     "set": {
+      "var.n": "len(items)",
+      "var.i": "0",
+      "var.total": "0"
+     }
+    },
+    {
+     "for_each_item": [
+      {
+       "set": {
+        "item.idx": "var.i"
+       }
+      },
+      {
+       "if": "var.i == 0",
+       "then": [
+        {
+         "set": {
+          "var.d0": "item.days_late"
+         }
+        }
+       ]
+      },
+      {
+       "if": "var.i == 1",
+       "then": [
+        {
+         "set": {
+          "var.d1": "item.days_late"
+         }
+        }
+       ]
+      },
+      {
+       "if": "var.i == 2",
+       "then": [
+        {
+         "set": {
+          "var.d2": "item.days_late"
+         }
+        }
+       ]
+      },
+      {
+       "incr": "var.i",
+       "by": 1
+      }
+     ]
+    },
+    {
+     "for_each_item": [
+      {
+       "set": {
+        "item.rank": "(1 if var.d0 > item.days_late else 0) + (1 if var.d1 > item.days_late else 0) + (1 if var.d2 > item.days_late else 0) + (1 if (var.d0 == item.days_late and item.idx > 0) else 0) + (1 if (var.d1 == item.days_late and item.idx > 1) else 0)"
+       }
+      },
+      {
+       "set": {
+        "item.latest": "latest_date(item.days_late)",
+        "item.floor": "floor_of(item.type, item.minimum_payment, item.instalment_amount)",
+        "item.fname": "floor_name(item.type)",
+        "item.label": "label_of(item.type, item.card_last4)"
+       }
+      },
+      {
+       "incr": "var.total",
+       "by": "item.past_due"
+      },
+      {
+       "if": "item.days_late >= 28",
+       "then": [
+        {
+         "set": {
+          "flag.nosia": "true"
+         }
+        }
+       ]
+      },
+      {
+       "if": "item.idx == 0",
+       "then": [
+        {
+         "set": {
+          "var.r0": "item.rank"
+         }
+        }
+       ]
+      },
+      {
+       "if": "item.idx == 1",
+       "then": [
+        {
+         "set": {
+          "var.r1": "item.rank"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "say": "arrears_intro"
+    },
+    {
+     "set_cursor": "rank_idx(0, var.r0, var.r1)"
+    },
+    {
+     "say": "product_line"
+    },
+    {
+     "if": "var.n > 1",
+     "then": [
+      {
+       "set_cursor": "rank_idx(1, var.r0, var.r1)"
+      },
+      {
+       "say": "product_line"
+      }
+     ]
+    },
+    {
+     "if": "var.n > 2",
+     "then": [
+      {
+       "set_cursor": "rank_idx(2, var.r0, var.r1)"
+      },
+      {
+       "say": "product_line"
+      }
+     ]
+    },
+    {
+     "if": "flag.nosia",
+     "then": [
+      {
+       "say": "nosia"
+      }
+     ]
+    },
+    {
+     "set": {
+      "var.pos": "0",
+      "var.cur": "rank_idx(0, var.r0, var.r1)"
+     }
+    },
+    {
+     "set_cursor": "var.cur"
+    },
+    {
+     "if": "var.n == 1",
+     "then": [
+      {
+       "set": {
+        "var.q": "'start_today'"
+       }
+      },
+      {
+       "goto": "negotiate"
+      }
+     ],
+     "else": [
+      {
+       "goto": "ask_all"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s037,D2.s038,D2.s039,D2.s040,D2.s041,D2.s042,D2.s054,D2.s115,D2.s116,D2.s117,D2.s118,D3.s005,D3.s006,D3.s007"
+  },
+  {
+   "id": "account_fail",
+   "phase": "id_dob",
+   "on": "tool:get_account",
+   "do": [
+    {
+     "say": "service_problem"
+    },
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'no_promise'",
+      "reason": "'service_error'"
+     }
+    }
+   ],
+   "src": "D2.s037,D2.s101"
+  },
+  {
+   "id": "ask_all_enter",
+   "phase": "ask_all",
+   "on": "enter",
+   "do": [
+    {
+     "set": {
+      "var.stage": "'ask_all'",
+      "var.q": "'all_today'"
+     }
+    },
+    {
+     "say": "ask_all_today",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s116,D2.s117"
+  },
+  {
+   "id": "next_weekday",
+   "phase": [
+    "ask_all",
+    "negotiate"
+   ],
+   "on": "user",
+   "priority": 30,
+   "if": "is_set(slot.next_weekday)",
+   "do": [
+    {
+     "set": {
+      "var.nwd_a": "next_after(slot.next_weekday, today)"
+     }
+    },
+    {
+     "set": {
+      "var.nwd_b": "add_days(var.nwd_a, 7)",
+      "var.nwd_amt": "slot.promise_amount",
+      "var.q_before": "var.q"
+     }
+    },
+    {
+     "set": {
+      "var.q": "'which_next'"
+     }
+    },
+    {
+     "say": "which_next",
+     "prompt": true
+    }
+   ],
+   "src": "D1.s006,D1.s014,D1.s015,D1.s016,D1.s017,D1.s018,D1.s028,D1.s029,D1.s030,D2.s049,D3.s036"
+  },
+  {
+   "id": "ask_all_which_answer",
+   "phase": "ask_all",
+   "on": "user",
+   "priority": 25,
+   "if": "var.q == 'which_next' and (is_set(slot.promise_date) or is_set(slot.which_option))",
+   "do": [
+    {
+     "set": {
+      "var.cand": "slot.promise_date if is_set(slot.promise_date) else (var.nwd_a if slot.which_option == 'first' else var.nwd_b)",
+      "var.q": "'all_today'"
+     }
+    },
+    {
+     "run": "all_date_check"
+    }
+   ],
+   "src": "D1.s031,D2.s118"
+  },
+  {
+   "id": "ask_all_offer",
+   "phase": "ask_all",
+   "on": "user",
+   "priority": 20,
+   "if": "is_set(slot.promise_date) or is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "is_set(slot.promise_amount)",
+     "then": [
+      {
+       "run": "per_product_refire"
+      }
+     ],
+     "else": [
+      {
+       "set": {
+        "var.cand": "slot.promise_date"
+       }
+      },
+      {
+       "run": "all_date_check"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s118,D2.s119,D2.s059"
+  },
+  {
+   "id": "ask_all_yes",
+   "phase": "ask_all",
+   "on": "intent:yes",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "var.q == 'all_today'",
+     "then": [
+      {
+       "set": {
+        "var.cand": "today"
+       }
+      },
+      {
+       "run": "all_date_check"
+      }
+     ],
+     "else": [
+      {
+       "if": "var.q == 'alt_all'",
+       "then": [
+        {
+         "set": {
+          "var.cand": "var.offer_date"
+         }
+        },
+        {
+         "run": "apply_all_date"
+        },
+        {
+         "goto": "readback"
+        }
+       ],
+       "else": [
+        {
+         "run": "ask_current"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "src": "D2.s117,D2.s045"
+  },
+  {
+   "id": "ask_all_no",
+   "phase": "ask_all",
+   "on": "intent:no",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "var.q == 'all_today' or var.q == 'alt_all'",
+     "then": [
+      {
+       "run": "per_product"
+      }
+     ],
+     "else": [
+      {
+       "run": "ask_current"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s117,D2.s118,D2.s060"
+  },
+  {
+   "id": "ask_all_too_much",
+   "phase": "ask_all",
+   "on": "intent:too_much",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "run": "per_product_refire"
+    }
+   ],
+   "src": "D2.s117"
+  },
+  {
+   "id": "ask_all_refuse",
+   "phase": "ask_all",
+   "on": "intent:refuse_pay",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "run": "per_product_refire"
+    }
+   ],
+   "src": "D2.s117,D2.s118"
+  },
+  {
+   "id": "ask_all_decline",
+   "phase": "ask_all",
+   "on": "intent:decline",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "run": "per_product_refire"
+    }
+   ],
+   "src": "D2.s117"
+  },
+  {
+   "id": "ask_all_vague",
+   "phase": "ask_all",
+   "on": "intent:vague_date",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "run": "per_product_refire"
+    }
+   ],
+   "src": "D2.s117,D2.s047"
+  },
+  {
+   "id": "ask_all_other",
+   "phase": "ask_all",
+   "on": "user",
+   "do": [
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s117"
+  },
+  {
+   "id": "neg_enter_skip",
+   "phase": "negotiate",
+   "on": "enter",
+   "priority": 20,
+   "if": "is_set(item.outcome) or is_set(item.ok_date)",
+   "do": [
+    {
+     "run": "advance"
+    }
+   ],
+   "src": "D2.s120,D2.s117"
+  },
+  {
+   "id": "neg_enter_today",
+   "phase": "negotiate",
+   "on": "enter",
+   "priority": 10,
+   "if": "var.q == 'start_today'",
+   "do": [
+    {
+     "set": {
+      "var.stage": "'negotiate'",
+      "var.q": "'today'",
+      "item.amt": "item.past_due"
+     }
+    },
+    {
+     "say": "ask_today",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s052,D2.s053,D2.s058"
+  },
+  {
+   "id": "neg_enter_silent",
+   "phase": "negotiate",
+   "on": "enter",
+   "priority": 9,
+   "if": "var.q == 'silent'",
+   "do": [
+    {
+     "set": {
+      "var.stage": "'negotiate'",
+      "var.q": "'by_date'",
+      "item.amt": "item.amt if is_set(item.amt) else item.past_due"
+     }
+    }
+   ],
+   "src": "D2.s117,D2.s109"
+  },
+  {
+   "id": "neg_enter",
+   "phase": "negotiate",
+   "on": "enter",
+   "do": [
+    {
+     "set": {
+      "var.stage": "'negotiate'",
+      "var.q": "'by_date'",
+      "item.amt": "item.past_due"
+     }
+    },
+    {
+     "say": "ask_by_date",
+     "prompt": true
+    }
+   ],
+   "src": "D2.s058,D2.s117,D2.s118,D2.s052"
+  },
+  {
+   "id": "neg_which_answer",
+   "phase": "negotiate",
+   "on": "user",
+   "priority": 25,
+   "if": "var.q == 'which_next' and (is_set(slot.promise_date) or is_set(slot.which_option))",
+   "do": [
+    {
+     "set": {
+      "var.in_date": "slot.promise_date if is_set(slot.promise_date) else (var.nwd_a if slot.which_option == 'first' else var.nwd_b)",
+      "var.in_amt": "var.nwd_amt",
+      "var.q": "var.q_before"
+     }
+    },
+    {
+     "run": "handle_offer"
+    }
+   ],
+   "src": "D1.s031,D2.s045"
+  },
+  {
+   "id": "neg_offer",
+   "phase": "negotiate",
+   "on": "user",
+   "priority": 20,
+   "if": "is_set(slot.promise_date) or is_set(slot.promise_amount)",
+   "do": [
+    {
+     "set": {
+      "var.in_date": "slot.promise_date",
+      "var.in_amt": "slot.promise_amount"
+     }
+    },
+    {
+     "run": "handle_offer"
+    }
+   ],
+   "src": "D2.s045,D2.s046,D2.s055,D2.s056,D2.s057,D2.s058,D2.s059,D2.s073,D2.s082,D2.s109"
+  },
+  {
+   "id": "neg_yes",
+   "phase": "negotiate",
+   "on": "intent:yes",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "var.q == 'today'",
+     "then": [
+      {
+       "set": {
+        "item.amt": "item.past_due",
+        "var.cand": "today"
+       }
+      },
+      {
+       "run": "check_date"
+      }
+     ],
+     "else": [
+      {
+       "if": "var.q == 'floor'",
+       "then": [
+        {
+         "set": {
+          "item.amt": "item.floor"
+         }
+        },
+        {
+         "if": "is_set(var.pend_date)",
+         "then": [
+          {
+           "set": {
+            "var.cand": "var.pend_date"
+           }
+          },
+          {
+           "run": "check_date"
+          }
+         ],
+         "else": [
+          {
+           "set": {
+            "var.q": "'amt_date'"
+           }
+          },
+          {
+           "say": "ask_date_for_amt",
+           "prompt": true
+          }
+         ]
+        }
+       ],
+       "else": [
+        {
+         "if": "var.q == 'alt_date' or var.q == 'latest' or var.q == 'persuasion'",
+         "then": [
+          {
+           "set": {
+            "var.cand": "var.offer_date"
+           }
+          },
+          {
+           "run": "check_date"
+          }
+         ],
+         "else": [
+          {
+           "run": "ask_current"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "src": "D2.s058,D2.s045,D2.s046,D2.s055,D2.s060"
+  },
+  {
+   "id": "neg_no",
+   "phase": "negotiate",
+   "on": "intent:no",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "var.q == 'today'",
+     "then": [
+      {
+       "set": {
+        "var.q": "'by_date'"
+       }
+      },
+      {
+       "say": "ask_by_date",
+       "prompt": true
+      }
+     ],
+     "else": [
+      {
+       "if": "var.q == 'which_next'",
+       "then": [
+        {
+         "run": "ask_current"
+        }
+       ],
+       "else": [
+        {
+         "run": "flat_refusal"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "src": "D2.s058,D2.s059,D2.s060,D2.s047,D2.s055,D2.s063,D2.s064"
+  },
+  {
+   "id": "neg_refuse",
+   "phase": "negotiate",
+   "on": "intent:refuse_pay",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "run": "flat_refusal"
+    }
+   ],
+   "src": "D2.s059,D2.s060,D2.s064,D2.s118"
+  },
+  {
+   "id": "neg_decline",
+   "phase": "negotiate",
+   "on": "intent:decline",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "run": "flat_refusal"
+    }
+   ],
+   "src": "D2.s059,D2.s064"
+  },
+  {
+   "id": "neg_too_much",
+   "phase": "negotiate",
+   "on": "intent:too_much",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "not item.floor_offered and var.q != 'persuasion' and var.q != 'floor'",
+     "then": [
+      {
+       "set": {
+        "var.pend_date": "today if var.q == 'today' else (var.offer_date if (var.q == 'alt_date' or var.q == 'latest') else None)"
+       }
+      },
+      {
+       "set": {
+        "item.floor_offered": "true",
+        "item.amt": "item.floor",
+        "var.q": "'floor'"
+       }
+      },
+      {
+       "say": "credit_ref"
+      },
+      {
+       "say": "floor_offer",
+       "prompt": true
+      }
+     ],
+     "else": [
+      {
+       "run": "flat_refusal"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s054,D2.s055"
+  },
+  {
+   "id": "neg_vague",
+   "phase": "negotiate",
+   "on": "intent:vague_date",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "not item.vague_asked",
+     "then": [
+      {
+       "set": {
+        "item.vague_asked": "true",
+        "var.q": "'exact_date'"
+       }
+      },
+      {
+       "say": "ask_exact_date",
+       "prompt": true
+      }
+     ],
+     "else": [
+      {
+       "set": {
+        "var.offer_date": "item.latest",
+        "var.q": "'latest'"
+       }
+      },
+      {
+       "say": "propose_latest",
+       "prompt": true
+      }
+     ]
+    }
+   ],
+   "src": "D2.s047,D2.s048"
+  },
+  {
+   "id": "neg_other",
+   "phase": "negotiate",
+   "on": "user",
+   "do": [
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s058"
+  },
+  {
+   "id": "readback_enter",
+   "phase": "readback",
+   "on": "enter",
+   "do": [
+    {
+     "set": {
+      "var.stage": "'readback'",
+      "flag.changing": "false"
+     }
+    },
+    {
+     "if": "count_set(items, 'ok_date') == 0",
+     "then": [
+      {
+       "goto": "wrapup"
+      }
+     ],
+     "else": [
+      {
+       "say": "readback_intro"
+      },
+      {
+       "set_cursor": "rank_idx(0, var.r0, var.r1)"
+      },
+      {
+       "if": "is_set(item.ok_date)",
+       "then": [
+        {
+         "say": "readback_line"
+        }
+       ]
+      },
+      {
+       "if": "var.n > 1",
+       "then": [
+        {
+         "set_cursor": "rank_idx(1, var.r0, var.r1)"
+        },
+        {
+         "if": "is_set(item.ok_date)",
+         "then": [
+          {
+           "say": "readback_line"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "if": "var.n > 2",
+       "then": [
+        {
+         "set_cursor": "rank_idx(2, var.r0, var.r1)"
+        },
+        {
+         "if": "is_set(item.ok_date)",
+         "then": [
+          {
+           "say": "readback_line"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "set_cursor": "var.cur"
+      },
+      {
+       "set": {
+        "var.q": "'confirm'"
+       }
+      },
+      {
+       "say": "confirm",
+       "prompt": true
+      }
+     ]
+    }
+   ],
+   "src": "D2.s107,D2.s108,D2.s115,D2.s116,D2.s118,D2.s119"
+  },
+  {
+   "id": "readback_yes",
+   "phase": "readback",
+   "on": "intent:yes",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "var.q == 'confirm'",
+     "then": [
+      {
+       "set": {
+        "var.rec_rank": "0"
+       }
+      },
+      {
+       "goto": "recording"
+      }
+     ],
+     "else": [
+      {
+       "if": "var.q == 'alt_all'",
+       "then": [
+        {
+         "set": {
+          "var.cand": "var.offer_date"
+         }
+        },
+        {
+         "run": "apply_all_date"
+        },
+        {
+         "goto": "readback"
+        }
+       ],
+       "else": [
+        {
+         "run": "ask_current"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "src": "D2.s109,D2.s120"
+  },
+  {
+   "id": "readback_no",
+   "phase": "readback",
+   "on": "intent:no",
+   "if": "not is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+   "do": [
+    {
+     "if": "var.q == 'confirm'",
+     "then": [
+      {
+       "set": {
+        "var.q": "'change'"
+       }
+      },
+      {
+       "say": "ask_change",
+       "prompt": true
+      }
+     ],
+     "else": [
+      {
+       "if": "var.q == 'alt_all'",
+       "then": [
+        {
+         "goto": "readback"
+        }
+       ],
+       "else": [
+        {
+         "run": "ask_current"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "src": "D2.s109"
+  },
+  {
+   "id": "readback_change",
+   "phase": "readback",
+   "on": "user",
+   "priority": 20,
+   "if": "is_set(slot.promise_date) or is_set(slot.promise_amount)",
+   "do": [
+    {
+     "set": {
+      "var.ref": "item_index(items, slot.product_ref) if is_set(slot.product_ref) else -1"
+     }
+    },
+    {
+     "if": "var.ref >= 0 or count_set(items, 'ok_date') == 1",
+     "then": [
+      {
+       "set": {
+        "var.t": "var.ref if var.ref >= 0 else find_index(items, ['ok_date'], [])"
+       }
+      },
+      {
+       "set_cursor": "var.t"
+      },
+      {
+       "set": {
+        "var.cur": "var.t"
+       }
+      },
+      {
+       "set": {
+        "item.prev_date": "item.ok_date"
+       }
+      },
+      {
+       "set": {
+        "item.amt": "item.ok_amt"
+       }
+      },
+      {
+       "set": {
+        "item.ok_date": "None",
+        "flag.changing": "true",
+        "var.q": "'silent'"
+       }
+      },
+      {
+       "goto": "negotiate"
+      },
+      {
+       "refire": "user"
+      }
+     ],
+     "else": [
+      {
+       "if": "is_set(slot.promise_date) and not is_set(slot.promise_amount)",
+       "then": [
+        {
+         "set": {
+          "var.cand": "slot.promise_date"
+         }
+        },
+        {
+         "run": "all_date_check"
+        }
+       ],
+       "else": [
+        {
+         "set": {
+          "var.q": "'which_product'"
+         }
+        },
+        {
+         "say": "ask_which_product",
+         "prompt": true
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "src": "D2.s109,D2.s118,D2.s119"
+  },
+  {
+   "id": "readback_other",
+   "phase": "readback",
+   "on": "user",
+   "do": [
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s108"
+  },
+  {
+   "id": "recording_enter",
+   "phase": "recording",
+   "on": "enter",
+   "do": [
+    {
+     "if": "var.rec_rank >= var.n",
+     "then": [
+      {
+       "goto": "rec_done"
+      }
+     ]
+    },
+    {
+     "set_cursor": "rank_idx(var.rec_rank, var.r0, var.r1)"
+    },
+    {
+     "if": "is_set(item.ok_date) and not is_set(item.outcome)",
+     "then": [
+      {
+       "call": "create_promise",
+       "args": {
+        "customer_id": "call.customer_id",
+        "product_id": "item.product_id",
+        "amount": "item.ok_amt",
+        "date": "item.ok_date"
+       }
+      }
+     ],
+     "else": [
+      {
+       "incr": "var.rec_rank",
+       "by": 1
+      },
+      {
+       "goto": "recording"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s109,D2.s110,D2.s120"
+  },
+  {
+   "id": "promise_ok",
+   "phase": "recording",
+   "on": "tool:create_promise",
+   "priority": 10,
+   "if": "result.ok",
+   "do": [
+    {
+     "set": {
+      "item.outcome": "'promise'",
+      "item.recorded": "true",
+      "flag.promise_recorded": "true"
+     }
+    },
+    {
+     "say": "promise_recorded"
+    },
+    {
+     "incr": "var.rec_rank",
+     "by": 1
+    },
+    {
+     "goto": "recording"
+    }
+   ],
+   "src": "D2.s111"
+  },
+  {
+   "id": "promise_fail",
+   "phase": "recording",
+   "on": "tool:create_promise",
+   "do": [
+    {
+     "if": "item.retries < 1",
+     "then": [
+      {
+       "incr": "item.retries",
+       "by": 1
+      },
+      {
+       "say": "trying_again"
+      },
+      {
+       "goto": "recording"
+      }
+     ],
+     "else": [
+      {
+       "set": {
+        "item.outcome": "'service_error'"
+       }
+      },
+      {
+       "say": "not_recorded"
+      },
+      {
+       "incr": "var.rec_rank",
+       "by": 1
+      },
+      {
+       "goto": "recording"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s112,D2.s113,D2.s121"
+  },
+  {
+   "id": "rec_done_enter",
+   "phase": "rec_done",
+   "on": "enter",
+   "do": [
+    {
+     "if": "flag.promise_recorded",
+     "then": [
+      {
+       "say": "letter"
+      }
+     ]
+    },
+    {
+     "goto": "wrapup"
+    }
+   ],
+   "src": "D2.s114"
+  },
+  {
+   "id": "wrapup_enter",
+   "phase": "wrapup",
+   "on": "enter",
+   "do": [
+    {
+     "for_each_item": [
+      {
+       "if": "not is_set(item.outcome)",
+       "then": [
+        {
+         "set": {
+          "item.outcome": "'hardship' if flag.no_persuasion else 'refused'"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "set": {
+      "var.best": "99",
+      "var.first_reason": "None"
+     }
+    },
+    {
+     "for_each_item": [
+      {
+       "if": "item.outcome != 'paid' and item.outcome != 'promise' and item.rank < var.best",
+       "then": [
+        {
+         "set": {
+          "var.best": "item.rank",
+          "var.first_reason": "item.outcome"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "set_cursor": "0"
+    },
+    {
+     "goto": "notes"
+    }
+   ],
+   "src": "D2.s074,D2.s083,D2.s122,D2.s123,D2.s127"
+  },
+  {
+   "id": "notes_enter",
+   "phase": "notes",
+   "on": "enter",
+   "do": [
+    {
+     "if": "item.outcome != 'promise'",
+     "then": [
+      {
+       "call": "add_note",
+       "args": {
+        "customer_id": "call.customer_id",
+        "product_id": "item.product_id",
+        "reason": "item.outcome"
+       }
+      }
+     ]
+    },
+    {
+     "next_item": "notes",
+     "done": "notes_done"
+    }
+   ],
+   "src": "D2.s089,D2.s093,D2.s064,D2.s113,D2.s122,D2.s123"
+  },
+  {
+   "id": "notes_done_enter",
+   "phase": "notes_done",
+   "on": "enter",
+   "do": [
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'promise' if flag.promise_recorded else ('paid' if count_where(items, 'outcome', 'paid') == var.n else 'no_promise')",
+      "reason": "None if (flag.promise_recorded or count_where(items, 'outcome', 'paid') == var.n) else var.first_reason"
+     }
+    }
+   ],
+   "src": "D2.s090,D2.s125,D2.s126,D2.s127,D2.s128,D2.s129,D4.t1"
+  },
+  {
+   "id": "breathing_space",
+   "phase": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "on": "intent:breathing_space",
+   "do": [
+    {
+     "say": "bs_post"
+    },
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'no_promise'",
+      "reason": "'breathing_space'"
+     }
+    }
+   ],
+   "src": "D2.s085,D3.s018,D3.s019,D3.s020,D3.s021,D3.s022,D3.s023,D3.s024,D3.s025,D3.s026,D3.s027,D3.s029,D3.s030,D2.s124,D4.t1"
+  },
+  {
+   "id": "debt_advice",
+   "phase": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "on": "intent:debt_advice",
+   "do": [
+    {
+     "say": "debt_advice"
+    },
+    {
+     "say": "goodbye"
+    },
+    {
+     "close": {
+      "outcome": "'no_promise'",
+      "reason": "'debt_advice'"
+     }
+    }
+   ],
+   "src": "D2.s086,D2.s087,D2.s124,D4.t1"
+  },
+  {
+   "id": "vulnerable",
+   "phase": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "on": "intent:vulnerable",
+   "do": [
+    {
+     "if": "flag.vuln_offered",
+     "then": [
+      {
+       "say": "vuln_thanks"
+      },
+      {
+       "set": {
+        "flag.no_persuasion": "true"
+       }
+      },
+      {
+       "run": "ask_current"
+      }
+     ],
+     "else": [
+      {
+       "set": {
+        "flag.vuln": "true",
+        "flag.vuln_offered": "true",
+        "var.pending_yn": "'support'"
+       }
+      },
+      {
+       "say": "vuln_thanks"
+      },
+      {
+       "say": "vuln_offer",
+       "prompt": true
+      }
+     ]
+    }
+   ],
+   "src": "D2.s076,D2.s077,D2.s078,D2.s079,D2.s084,D2.s064"
+  },
+  {
+   "id": "hardship",
+   "phase": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "on": "intent:hardship",
+   "do": [
+    {
+     "if": "flag.vuln or flag.review_offered",
+     "then": [
+      {
+       "set": {
+        "flag.no_persuasion": "true"
+       }
+      },
+      {
+       "run": "ask_current"
+      }
+     ],
+     "else": [
+      {
+       "set": {
+        "flag.review_offered": "true",
+        "var.pending_yn": "'review'"
+       }
+      },
+      {
+       "say": "moneyhelper"
+      },
+      {
+       "say": "review_offer",
+       "prompt": true
+      }
+     ]
+    }
+   ],
+   "src": "D2.s054,D2.s066,D2.s067,D2.s068,D2.s069,D2.s070,D2.s075,D2.s084,D2.s106"
+  },
+  {
+   "id": "review_yes",
+   "phase": "*",
+   "on": "intent:yes",
+   "priority": 50,
+   "if": "var.pending_yn == 'review'",
+   "do": [
+    {
+     "run": "transfer_restructuring"
+    }
+   ],
+   "src": "D2.s071,D2.s120,D2.s121,D2.s124,D4.t1"
+  },
+  {
+   "id": "review_no",
+   "phase": "*",
+   "on": "intent:no",
+   "priority": 50,
+   "if": "var.pending_yn == 'review'",
+   "do": [
+    {
+     "set": {
+      "var.pending_yn": "None",
+      "flag.no_persuasion": "true"
+     }
+    },
+    {
+     "say": "ack_ok"
+    },
+    {
+     "run": "ask_current"
+    }
+   ],
+   "src": "D2.s072,D2.s073,D2.s074,D2.s064"
+  },
+  {
+   "id": "support_yes",
+   "phase": "*",
+   "on": "intent:yes",
+   "priority": 50,
+   "if": "var.pending_yn == 'support'",
+   "do": [
+    {
+     "run": "transfer_support"
+    }
+   ],
+   "src": "D2.s080,D2.s120,D2.s121,D2.s124,D4.t1"
+  },
+  {
+   "id": "support_no",
+   "phase": "*",
+   "on": "intent:no",
+   "priority": 50,
+   "if": "var.pending_yn == 'support'",
+   "do": [
+    {
+     "set": {
+      "var.pending_yn": "None",
+      "flag.no_persuasion": "true"
+     }
+    },
+    {
+     "say": "ack_ok"
+    },
+    {
+     "run": "ask_current"
+    }
+   ],
+   "src": "D2.s081,D2.s082,D2.s083,D2.s064"
+  },
+  {
+   "id": "human",
+   "phase": "*",
+   "not_phase": [
+    "third_party"
+   ],
+   "on": "intent:human",
+   "do": [
+    {
+     "if": "counter.human_asked < 1",
+     "then": [
+      {
+       "incr": "counter.human_asked",
+       "by": 1
+      },
+      {
+       "set": {
+        "var.pending_yn": "'human'"
+       }
+      },
+      {
+       "say": "human_help",
+       "prompt": true
+      }
+     ],
+     "else": [
+      {
+       "run": "transfer_general"
+      }
+     ]
+    }
+   ],
+   "src": "D2.s094,D2.s095,D2.s096,D2.s103,D2.s120,D2.s121,D4.t1"
+  },
+  {
+   "id": "human_try_yes",
+   "phase": "*",
+   "on": "intent:yes",
+   "priority": 50,
+   "if": "var.pending_yn == 'human'",
+   "do": [
+    {
+     "set": {
+      "var.pending_yn": "None"
+     }
+    },
+    {
+     "run": "ask_current"
+    }
+   ],
+   "src": "D2.s094"
+  },
+  {
+   "id": "human_try_no",
+   "phase": "*",
+   "on": "intent:no",
+   "priority": 50,
+   "if": "var.pending_yn == 'human'",
+   "do": [
+    {
+     "run": "transfer_general"
+    }
+   ],
+   "src": "D2.s095"
+  },
+  {
+   "id": "paid_claim",
+   "phase": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "on": "intent:paid",
+   "do": [
+    {
+     "set": {
+      "var.ref": "item_index(items, slot.product_ref) if is_set(slot.product_ref) else -1",
+      "var.claim": "'paid'"
+     }
+    },
+    {
+     "say": "paid_ack"
+    },
+    {
+     "run": "mark_claim"
+    }
+   ],
+   "src": "D2.s088,D2.s089,D2.s090,D2.s120"
+  },
+  {
+   "id": "dispute_claim",
+   "phase": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "on": "intent:dispute",
+   "do": [
+    {
+     "set": {
+      "var.ref": "item_index(items, slot.product_ref) if is_set(slot.product_ref) else -1",
+      "var.claim": "'dispute'"
+     }
+    },
+    {
+     "say": "dispute_ack"
+    },
+    {
+     "run": "mark_claim"
+    }
+   ],
+   "src": "D2.s091,D2.s092,D2.s093,D2.s120"
+  },
+  {
+   "id": "not_want_talk",
+   "phase": "*",
+   "not_phase": [
+    "third_party"
+   ],
+   "on": "intent:not_want_talk",
+   "do": [
+    {
+     "incr": "counter.nwt",
+     "by": 1
+    },
+    {
+     "if": "counter.nwt >= 2",
+     "then": [
+      {
+       "if": "flag.verified",
+       "then": [
+        {
+         "for_each_item": [
+          {
+           "if": "item.outcome != 'promise'",
+           "then": [
+            {
+             "set": {
+              "item.outcome": "'refused'",
+              "item.ok_date": "None"
+             }
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "goto": "wrapup"
+        }
+       ],
+       "else": [
+        {
+         "say": "goodbye"
+        },
+        {
+         "close": {
+          "outcome": "'not_verified'",
+          "reason": "'id_declined'"
+         }
+        }
+       ]
+      }
+     ],
+     "else": [
+      {
+       "say": "nwt_ack"
+      },
+      {
+       "reprompt": true
+      }
+     ]
+    }
+   ],
+   "src": "D2.s103,D4.t1"
+  },
+  {
+   "id": "concession",
+   "phase": "*",
+   "on": "intent:concession",
+   "do": [
+    {
+     "say": "no_concession"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s009,D2.s104,D2.s105,D1.s004,D1.s005,D1.s012,D1.s013,D1.s025,D1.s026,D1.s027"
+  },
+  {
+   "id": "change_promise",
+   "phase": "*",
+   "on": "intent:change_promise",
+   "if": "flag.promise_recorded",
+   "do": [
+    {
+     "say": "change_recorded"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s110"
+  },
+  {
+   "id": "ask_bot",
+   "phase": "*",
+   "not_phase": [
+    "opening"
+   ],
+   "on": "intent:ask_bot",
+   "do": [
+    {
+     "say": "bot"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s097"
+  },
+  {
+   "id": "ask_scam",
+   "phase": "*",
+   "not_phase": [
+    "opening"
+   ],
+   "on": "intent:ask_scam",
+   "do": [
+    {
+     "say": "scam"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s098,D2.s099,D2.s100"
+  },
+  {
+   "id": "other_question",
+   "phase": "*",
+   "not_phase": [
+    "opening"
+   ],
+   "on": "intent:other_question",
+   "do": [
+    {
+     "say": "no_info"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s101,D2.s102"
+  },
+  {
+   "id": "ask_reason_post",
+   "phase": [
+    "ask_all",
+    "negotiate",
+    "readback"
+   ],
+   "on": "intent:ask_reason",
+   "do": [
+    {
+     "say": "arrears_intro"
+    },
+    {
+     "reprompt": true
+    }
+   ],
+   "src": "D2.s037"
+  }
+ ],
+ "restricted_words": [
+  {
+   "words": [
+    "arrears",
+    "debt",
+    "collections",
+    "collection",
+    "owed",
+    "missed",
+    "loan",
+    "card",
+    "finance",
+    "overdue"
+   ],
+   "until": "flag.verified",
+   "src": "D2.s014,D2.s015,D2.s018,D2.s020,D2.s033"
+  },
+  {
+   "words": [
+    "recorded"
+   ],
+   "until": "flag.promise_recorded",
+   "src": "D2.s111"
+  },
+  {
+   "words": [
+    "refund",
+    "waiver",
+    "waive",
+    "discount",
+    "freeze"
+   ],
+   "until": "false",
+   "src": "D1.s004,D1.s005,D1.s012,D1.s013,D1.s025,D1.s026,D1.s027,D2.s009,D2.s104"
+  }
+ ],
+ "coverage": {
+  "D1.s001": "non-normative: email header",
+  "D1.s002": "non-normative: greeting",
+  "D1.s003": "non-normative: introduction",
+  "D1.s008": "non-normative: sign-off",
+  "D1.s009": "non-normative: signature",
+  "D1.s010": "non-normative: email header",
+  "D1.s011": "non-normative: agreement statement",
+  "D1.s021": "non-normative: sign-off",
+  "D1.s022": "non-normative: signature",
+  "D1.s023": "non-normative: email header",
+  "D1.s024": "non-normative: greeting",
+  "D1.s033": "non-normative: sign-off",
+  "D1.s034": "non-normative: signature and disclaimer",
+  "D1.s035": "non-normative: disclaimer",
+  "D1.s036": "non-normative: email header",
+  "D1.s037": "non-normative: greeting",
+  "D1.s038": "non-normative: context (go-live date)",
+  "D1.s039": "non-normative: rejected proposal (refund not built; see restricted_words)",
+  "D1.s040": "non-normative: context",
+  "D1.s041": "non-normative: context",
+  "D1.s042": "non-normative: restates the old rule",
+  "D1.s043": "non-normative: question",
+  "D1.s044": "non-normative: question",
+  "D1.s045": "non-normative: context",
+  "D1.s046": "non-normative: sign-off",
+  "D1.s047": "non-normative: mail footer",
+  "D2.s001": "non-normative: document header",
+  "D2.s002": "non-normative: extract scope note",
+  "D2.s003": "non-normative: extract scope note",
+  "D2.s004": "non-normative: Appendix C is D4, used in close rules",
+  "D2.s005": "non-normative: section heading",
+  "D2.s006": "non-normative: scope of calls; the products come from get_account",
+  "D2.s007": "non-normative: overview of the call flow implemented by all phases",
+  "D2.s008": "non-normative: customers over 60 days are not called; footnote",
+  "D2.s025": "non-normative: page footer",
+  "D2.s026": "non-normative: footer and footnote",
+  "D2.s050": "non-normative: page footer",
+  "D2.s051": "non-normative: footer and footnote",
+  "D2.s062": "non-normative: page footer",
+  "D2.s065": "non-normative: deleted section moved to 5.20",
+  "D2.s130": "non-normative: figure not reproduced",
+  "D2.s131": "non-normative: document history",
+  "D2.s132": "non-normative: history (superseded)",
+  "D2.s133": "non-normative: history (superseded)",
+  "D2.s134": "non-normative: history (superseded)",
+  "D2.s135": "non-normative: history",
+  "D2.s136": "non-normative: history",
+  "D2.s137": "non-normative: history",
+  "D2.s138": "non-normative: footnotes",
+  "D2.s139": "non-normative: page footer",
+  "D2.s140": "non-normative: page footer",
+  "D3.s003": "non-normative: distribution list",
+  "D3.s009": "non-normative: rationale",
+  "D3.s010": "non-normative: rationale",
+  "D3.s037": "non-normative: heading",
+  "D3.s038": "non-normative: build team deadline",
+  "D3.s039": "non-normative: operations action",
+  "D3.s040": "non-normative: MI action",
+  "D3.s041": "non-normative: end marker",
+  "D2.s027": "non-normative: header (the 5.5.1 rule is captured in its unit)",
+  "D2.s052": "non-normative: header (5.8.1 captured)"
+ },
+ "ambiguities": [
+  {
+   "src": "D3.s005,D3.s006,D3.s007,D2.s042",
+   "question": "amendment",
+   "decision": "Stage 1 latest promise date: old 21 calendar days after today, new 14 calendar days after today (last banking day before it if needed). Only the new value is built.",
+   "why": "CPN-2026-019 item 1 applies to every call from 14/10/2026, the go-live date of the assistant."
+  },
+  {
+   "src": "D3.s011,D3.s012,D3.s013,D3.s014,D3.s015,D3.s016,D3.s017",
+   "question": "amendment",
+   "decision": "Old: banking days = Mon-Fri except Table 5.2. New: 23/10/2026 is also a non-banking day for promises (in calendar.holidays); callbacks ignore it (cb_ok excludes 2026-10-23 from the holiday test).",
+   "why": "CPN item 2; callbacks are explicitly unaffected."
+  },
+  {
+   "src": "D1.s006,D1.s014,D1.s015,D1.s016,D1.s017,D1.s018,D1.s029,D1.s031,D2.s049,D3.s036",
+   "question": "amendment",
+   "decision": "Old: 'next <weekday>' = that weekday in the following Monday-Sunday week. New: ask 'Do you mean <first such day after today> or <one week later>?' and use the answer as the date, then the normal checks. Applied to promise dates only.",
+   "why": "Email of 07/10/2026 is the instruction until v4.3; 5.7.7 is about promise dates."
+  },
+  {
+   "src": "D3.s018,D3.s019,D3.s020,D3.s021,D3.s022,D3.s023,D3.s024,D3.s025,D3.s026,D3.s027,D3.s028,D3.s029,D3.s030,D2.s085",
+   "question": "amendment",
+   "decision": "Old 5.13: transfer to queue support, close transferred / breathing_space_referral (R13). New 5.13: say the pause script, no transfer, record nothing more, close no_promise / breathing_space (R20); before the checks say the security questions must be finished first.",
+   "why": "CPN item 3 replaces 5.13 and retires R13 from 14/10/2026."
+  },
+  {
+   "src": "D3.s031,D3.s032,D3.s033,D3.s034,D3.s035,D2.s022",
+   "question": "amendment",
+   "decision": "Old: no Saturday callbacks. New: Saturdays on or after 24/10/2026, 09:00-13:00 inclusive; 7-day limit and weekday hours unchanged.",
+   "why": "CPN item 4; the email said not to build it from the thread."
+  },
+  {
+   "src": "D1.s004,D1.s005,D1.s012,D1.s013,D2.s104",
+   "question": "amendment",
+   "decision": "Old: never offer or agree a refund/waiver. New: never offer, mention or agree any refund, waiver or reduction of fees or interest; the fee-refund proposal is not built. Encoded as restricted words never allowed.",
+   "why": "Email of 07/10/2026."
+  },
+  {
+   "src": "D2.s031,D2.s135",
+   "question": "The tool says three wrong answers end the check; the policy says two.",
+   "decision": "Two wrong answers in total end the checks (counter.wrong), regardless of wrong_answers_left.",
+   "why": "Policy v4.1+ is explicit."
+  },
+  {
+   "src": "D1.s032,D2.s048",
+   "question": "How to encode 'this <weekday>' / bare weekday ('first such day on or after today').",
+   "decision": "weekday_words this = upcoming, bare = upcoming.",
+   "why": "Closest available encoding of 'the coming Friday'."
+  },
+  {
+   "src": "D2.s066,D2.s072,D2.s081",
+   "question": "After a declined review or Specialist Support offer, does the call continue?",
+   "decision": "The pending payment question is asked again; persuasion is replaced by noting the product hardship.",
+   "why": "5.12(d) says continue the call; 5.11(e) is parallel."
+  },
+  {
+   "src": "D2.s076",
+   "question": "Does 5.12 apply before the security checks?",
+   "decision": "Handled only after the checks have passed.",
+   "why": "Narrowest reading; the transfer and the hardship notes are account actions."
+  },
+  {
+   "src": "D2.s088,D2.s116",
+   "question": "An 'already paid' or dispute claim with no product named at the all-products question.",
+   "decision": "Applied to every unresolved product.",
+   "why": "The question was about all of them."
+  },
+  {
+   "src": "D2.s037",
+   "question": "get_account fails.",
+   "decision": "Say the details are not available, say goodbye and close as no_promise / service_error.",
+   "why": "The spec is silent; service_error is the code for a technical failure."
+  }
+ ],
+ "_reader": {
+  "seconds": 873.5,
+  "inventory_units": 109,
+  "remaining_problems": [],
+  "amendments": [
+   {
+    "sids": [
+     "D1.s015",
+     "D1.s016",
+     "D1.s017",
+     "D1.s029",
+     "D1.s031"
+    ],
+    "target_sids": [
+     "D2.s049"
+    ],
+    "op": "replace",
+    "old": "'Next <weekday>' means that weekday in the following week (Monday to Sunday).",
+    "new": "Ask which date they mean, naming the next such weekday after today and the same weekday one week later; the customer's answer is the date, then the normal checks apply.",
+    "scope": "5.7.7 last sentence only; the first sentence is unchanged",
+    "effective": "Go-live 14/10/2026 (until v4.3)"
+   },
+   {
+    "sids": [
+     "D1.s013"
+    ],
+    "target_sids": [
+     "D2.s104"
+    ],
+    "op": "add",
+    "old": "Never offer or agree a refund/waiver of fees or interest",
+    "new": "Must not even mention any refund, waiver or reduction of fees or interest, whatever or whenever the customer pays",
+    "scope": "all calls",
+    "effective": "go-live 14/10/2026"
+   },
+   {
+    "sids": [
+     "D3.s005",
+     "D3.s006",
+     "D3.s007"
+    ],
+    "target_sids": [
+     "D2.s042"
+    ],
+    "op": "replace",
+    "old": "21 calendar days after today",
+    "new": "14 calendar days after today",
+    "scope": "Table 5.1 Stage 1 only",
+    "effective": "calls on or after 14/10/2026"
+   },
+   {
+    "sids": [
+     "D3.s013",
+     "D3.s014",
+     "D3.s015"
+    ],
+    "target_sids": [
+     "D2.s040",
+     "D2.s045"
+    ],
+    "op": "add",
+    "old": "",
+    "new": "23/10/2026 is a non-banking day for promises and for latest-promise-date counting",
+    "scope": "promises only, not callbacks",
+    "effective": "calls on or after 14/10/2026"
+   },
+   {
+    "sids": [
+     "D3.s018",
+     "D3.s019",
+     "D3.s020",
+     "D3.s021",
+     "D3.s022",
+     "D3.s023",
+     "D3.s024",
+     "D3.s025",
+     "D3.s026",
+     "D3.s027",
+     "D3.s028"
+    ],
+    "target_sids": [
+     "D2.s085"
+    ],
+    "op": "replace",
+    "old": "transfer to queue support, close transferred / breathing_space_referral",
+    "new": "say the pause script, no transfer, record nothing more, close no_promise / breathing_space; before the checks, finish security first",
+    "scope": "5.13",
+    "effective": "calls on or after 14/10/2026"
+   },
+   {
+    "sids": [
+     "D3.s029",
+     "D3.s030"
+    ],
+    "target_sids": [
+     "D4.t1"
+    ],
+    "op": "replace",
+    "old": "R13 transferred/breathing_space_referral",
+    "new": "R20 no_promise/breathing_space",
+    "scope": "Appendix C",
+    "effective": "14/10/2026"
+   },
+   {
+    "sids": [
+     "D3.s031",
+     "D3.s032",
+     "D3.s033",
+     "D3.s034",
+     "D3.s035"
+    ],
+    "target_sids": [
+     "D2.s021",
+     "D2.s022"
+    ],
+    "op": "add",
+    "old": "No callbacks on Saturdays",
+    "new": "Saturdays on or after 24/10/2026, 09:00–13:00 inclusive",
+    "scope": "5.4.3 callbacks",
+    "effective": "Saturdays from 24/10/2026 (bookable from 14/10 within the 7-day window)"
+   },
+   {
+    "sids": [
+     "D2.s065",
+     "D2.s137"
+    ],
+    "target_sids": [
+     "D2.s104"
+    ],
+    "op": "delete",
+    "old": "5.10",
+    "new": "content in 5.20",
+    "scope": "",
+    "effective": "01/09/2026"
+   }
+  ],
+  "ambiguities_seen": [
+   {
+    "sids": [
+     "D2.s031",
+     "D2.s135"
+    ],
+    "question": "The verify_identity tool summary says three wrong answers end the check; the policy says two.",
+    "readings": [
+     "Follow the policy: end the checks after 2 wrong answers, regardless of wrong_answers_left.",
+     "Follow the tool counter."
+    ]
+   },
+   {
+    "sids": [
+     "D1.s029",
+     "D2.s048"
+    ],
+    "question": "With the new 'next <weekday>' rule, if today is that weekday, is 'the next such day after today' today+7 (and the alternative today+14)?",
+    "readings": [
+     "Strictly after today: +7 and +14.",
+     "Include today."
+    ]
+   },
+   {
+    "sids": [
+     "D2.s020",
+     "D3.s032"
+    ],
+    "question": "Can a Saturday 24/10/2026 callback be booked on a call made before 14/10/2026 (item 4 has its own effective rule)?",
+    "readings": [
+     "Yes; the only condition is that the Saturday is on or after 24/10 and within 7 days.",
+     "Only from 14/10/2026."
+    ]
+   },
+   {
+    "sids": [
+     "D2.s090",
+     "D2.s127"
+    ],
+    "question": "With multiple products, some paid and some disputed or refused, the outcome is no_promise with the first non-paid note reason.",
+    "readings": [
+     "Per 5.26(f)."
+    ]
+   },
+   {
+    "sids": [
+     "D3.s019",
+     "D2.s086"
+    ],
+    "question": "Does 'about to apply for a breathing space' still fall under 5.14 after the CPN?",
+    "readings": [
+     "Yes; only being in a breathing space triggers new 5.13."
+    ]
+   }
+  ]
+ }
+}

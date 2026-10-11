@@ -1,0 +1,104 @@
+[synthetic test material - fictional bank and people]
+
+From:    Gareth Hughes <g.hughes@pennine-wharfe.example>
+Sent:    Thursday, 12 November 2026 09:41
+To:      Digital Voice Build <voice-build@pennine-wharfe.example>
+Subject: FW: Assistant - open questions (Saturdays / LPA / fee waiver / Breathing Space)
+
+Team - this is the whole chain with Compliance's final answers. Build to Rhiannon's answers, not
+to my original asks. Note her reply from this morning on Saturdays, and ignore my reminder of
+2 Nov about the 20th (the migration moved, see memo 14).
+
+Gareth Hughes | Collections Operations Manager | Pennine & Wharfe Bank
+
+-----Original Message-----
+From:    Rhiannon Price <r.price@pennine-wharfe.example>
+Sent:    Thursday, 12 November 2026 08:15
+To:      Gareth Hughes
+Subject: RE: Assistant - open questions (Saturdays / LPA / fee waiver / Breathing Space)
+
+Gareth,
+
+No. Memo 14 does not touch callbacks at all, so memo 11 item 4 stays in force: no Saturday
+callbacks. And yes, the 20th is a normal working day again since memo 14 went out on Monday -
+the closure is Friday the 27th now.
+
+Rhiannon
+
+-----Original Message-----
+From:    Gareth Hughes
+Sent:    Wednesday, 11 November 2026 17:02
+To:      Rhiannon Price
+Subject: RE: Assistant - open questions (Saturdays / LPA / fee waiver / Breathing Space)
+
+Rhiannon - now that memo 14 has replaced bits of memo 11, does that bring Saturday callbacks back?
+Teams are asking.
+
+G.
+
+-----Original Message-----
+From:    Gareth Hughes
+Sent:    Monday, 2 November 2026 08:30
+To:      Collections - All Staff; Digital Voice Build
+Subject: Reminder - closed Fri 20 Nov
+
+All - reminder that we are closed on Friday 20 November for the migration (memo 11 item 2). No
+promises dated the 20th please, and no callbacks that day.
+
+G.
+
+-----Original Message-----
+From:    Rhiannon Price
+Sent:    Thursday, 8 October 2026 16:47
+To:      Gareth Hughes; Siobhan Kerr
+Subject: RE: Assistant - open questions (Saturdays / LPA / fee waiver / Breathing Space)
+
+Hi both, answers inline marked [RP]. Where I say "agreed" it applies from tomorrow (9 Oct).
+
+> From: Gareth Hughes
+> Sent: Wednesday, 7 October 2026 11:20
+>
+> 1) Fee waiver. Could the assistant tell customers we'll waive the 12 pound late payment fee
+> if they pay the full arrears today? The colleagues on the phones say it closes a lot of calls.
+>
+> [RP] Not approved. 5.11.7 stands: the assistant offers no waiver, refund or concession of any
+> kind. Fee waivers are a Customer Support Unit decision after an I&E (CONC 7.3.5G). Ops created
+> a code FWV in the list for this before asking - it must never be used.
+>
+> 2) Lasting Power of Attorney. Sons and daughters with an LPA keep picking up and asking to sort
+> the account out. Could the assistant ask them the customer's date of birth and postcode and
+> then take the promise from them?
+>
+> [RP] Not approved. The assistant cannot check an LPA registration on a call. Anyone who is not
+> the customer is a third party under 5.4 for this call, LPA or not: no account information, no
+> security questions, no promise. Book a callback for the customer as normal. LPAs are registered
+> by post with the Bereavement & Power of Attorney team.
+>
+> 3) Does memo 11 item 4 (no Saturday callbacks) apply to the assistant as well as to colleagues?
+>
+> [RP] Yes, to both.
+>
+> From: Siobhan Kerr (Vulnerable Customers Lead)
+> Sent: Wednesday, 7 October 2026 14:05
+>
+> 4) Mental Health Crisis Breathing Space. Customers in a mental health crisis breathing space
+> often say so on the call. Under 5.10.2 the assistant would transfer them, which means yet another
+> conversation with a stranger at the worst time. Can we treat both kinds of Breathing Space the
+> same way, and leave something on the account so collectors can see it?
+>
+> [RP] Agreed. From 9 Oct:
+>   - 5.10.3 covers BOTH a standard Breathing Space and a Mental Health Crisis Breathing Space,
+>     and it comes before 5.10.2 (no transfer).
+>   - The assistant says: "Thank you for telling us. We won't ask you for any payment while your
+>     Breathing Space is in place."
+>   - Every account without a recorded promise gets an add_note with reason "breathing_space".
+>     Not "moratorium" - the notes system retired that reason; it is only kept for old records.
+>   - Close with the new code BSP. BRS is retired. Gareth, please have Ops update Appendix C.
+>
+> Thanks,
+> Siobhan
+
+--
+Rhiannon Price | Compliance Manager, Conduct & Consumer Duty | Pennine & Wharfe Bank plc
+This e-mail is confidential and may be legally privileged. If you have received it in error,
+please notify the sender and delete it.

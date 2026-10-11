@@ -1,0 +1,67 @@
+[synthetic test material - fictional institution]
+
+COBALT RIDGE FEDERAL CREDIT UNION
+INTERNAL MEMORANDUM                                             Ref: COMP-MEMO 26-14
+
+TO:       Collections & Recovery; Contact Center Operations; Digital Channels (Voice Assistant)
+FROM:     Compliance & Risk (M. Okafor, BSA/Compliance Officer)
+CC:       VP Collections & Recovery; Internal Audit
+DATE:     October 19, 2026
+SUBJECT:  Amendments to COL-104 Section 7 (Outbound Telephone Contact) - items 1 to 3
+
+This memo amends COL-104 Rev. 7 until Rev. 8 is published. Where this memo and Section 7
+differ, this memo governs. Items not mentioned here are unchanged.
+
+-------------------------------------------------------------------------------------------
+ITEM 1 - Callback window (amends 7.4.2(a) and 7.4.2(b))
+EFFECTIVE: for calls placed on or after Monday, November 2, 2026
+           (the dialer schedule is being changed that weekend).
+-------------------------------------------------------------------------------------------
+Background: Q3 complaint review found 11 complaints about callbacks booked for 8:00-8:59 a.m.
+and 8:00-9:00 p.m. Under Reg F 1006.6(b)(1) a time the collector "knows or should know is
+inconvenient" is prohibited regardless of the 8 a.m.-9 p.m. default. To keep a buffer:
+
+   7.4.2(a) now reads: between 9:00 a.m. and 8:00 p.m. (both included), member's local time.
+   7.4.2(b) now reads: on a business day, and no later than the 2nd business day after today
+            (today itself may be used if the callback time is later than now).
+
+7.4.2(c) and 7.4.3 (ask once for another time) are unchanged.
+
+-------------------------------------------------------------------------------------------
+ITEM 2 - Members working with a credit counselor (new 7.9.6)
+EFFECTIVE: immediately (date of this memo)
+-------------------------------------------------------------------------------------------
+Following the examiner's comment at the 2026 exam and industry practice (cf. FCA CONC
+7.3.11R/7.3.12G: suspend active recovery for a reasonable period, generally 30 days, where a
+debt counsellor or the customer is developing a repayment plan), add:
+
+   7.9.6  If the member says they are working with a credit counseling / debt management
+          agency on a repayment plan, the Assistant makes no persuasion attempt and does NOT
+          offer a transfer. It says the account will be placed on hold for 30 days, adds a note
+          with reason "hardship" for each account discussed (text begins "DMP HOLD 30D"), and
+          closes (code DMP). 7.9.6 comes before 7.9.2 and 7.9.4.
+
+-------------------------------------------------------------------------------------------
+ITEM 3 - Loss-mitigation offer on loans 36+ days delinquent (new 7.9.7)
+EFFECTIVE: immediately (date of this memo)
+-------------------------------------------------------------------------------------------
+Aligning the consumer loan book with the early-intervention standard we already apply to
+mortgages (Reg X 12 CFR 1024.39: live contact by the 36th day of delinquency and, where
+appropriate, information about loss mitigation options):
+
+   7.9.7  For a personal loan or auto loan that is 36 or more days delinquent, the first time
+          the member gives a flat refusal (7.9.2) or says the full amount is too much (7.8.3),
+          and BEFORE any persuasion attempt or floor offer, the Assistant tells the member that
+          the Loan Workout team may be able to discuss options and offers to connect them.
+          - Accepts: transfer_to_agent queue "restructuring", close (code XFW).
+          - Declines: continue under 7.8.3 / 7.9.2 as normal. The offer is made only once.
+          Credit cards are not covered by 7.9.7.
+
+-------------------------------------------------------------------------------------------
+Not changed (for the avoidance of doubt): stages and promise-date limits (7.7.2), floors (7.8),
+identity (7.5), fixed sentences in 7.6.2 and 7.10.4.
+
+Please direct questions to compliance@ (internal) - do not reply-all.
+
+M. Okafor
+Compliance & Risk

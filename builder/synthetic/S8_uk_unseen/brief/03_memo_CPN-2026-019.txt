@@ -1,0 +1,75 @@
+KITTIWAKE BANK PLC
+POLICY CHANGE NOTICE                                                      CPN-2026-019
+--------------------------------------------------------------------------------------
+Title:        Changes to CR-07 section 5 (early arrears calls by the digital assistant)
+Issued:       Friday 09/10/2026
+Owner:        Nadia Okafor, Head of Collections Policy
+Approved by:  Collections Conduct Committee, 08/10/2026
+Amends:       CR-07 v4.2 section 5, and Appendix C (call result codes)
+Effective:    Items 1 to 3 apply to every call made on or after Wednesday 14/10/2026.
+              Item 4 applies as described in the item.
+Distribution: Contact Centre Operations; Voice Assistant Build Team; Conduct Risk;
+              Specialist Support; Financial Support
+--------------------------------------------------------------------------------------
+
+Calls made before 14/10/2026 follow CR-07 v4.2 unchanged.
+
+1. Stage 1 latest promise date (Table 5.1)
+   Change "21 calendar days after today" to "14 calendar days after today".
+   The rest of the row does not change: if that day is not a banking day, the latest
+   promise date is the last banking day before it. Stages 2 and 3 do not change.
+   Example: for a call on Monday 02/11/2026, the latest Stage 1 promise date is
+   Monday 16/11/2026.
+   Why: the 21-day window was a pilot setting. Conduct Committee asked for a shorter
+   window at Stage 1 and earlier referral to Financial Support instead.
+
+2. Non-processing day: Friday 23/10/2026
+   The payments platform moves to the new provider over the weekend of 23-25/10/2026.
+   No customer payments will be processed on Friday 23/10/2026.
+   For promises, treat 23/10/2026 as a non-banking day, in addition to Table 5.2:
+   - it cannot be a promise date;
+   - it is not counted as a banking day when you work out a latest promise date.
+   Example: for a call on Monday 19/10/2026, the 3rd banking day after today is
+   Thursday 22/10/2026 and the 4th is Monday 26/10/2026.
+   The contact centre is open as normal that day, so callbacks are not affected.
+
+3. Breathing space: paragraph 5.13 is replaced by the following text.
+
+   5.13 Breathing space
+   (a) 5.13 applies when the customer says they are in a breathing space under the
+       Debt Respite Scheme (a standard breathing space or a mental health crisis
+       breathing space), at any point after the security checks have passed. It
+       applies even if the customer also mentions a debt adviser; 5.14 does not apply
+       then.
+   (b) Say: "Thank you for telling me. We will pause collection on your accounts and
+       will not ask you for any payment during the breathing space."
+   (c) Ask for nothing more: no payment, no date, no proof and no reference number.
+       Do not transfer the call.
+   (d) Record nothing more: no promise (not even one the customer has agreed but that
+       has not been recorded yet) and no notes. Promises already recorded earlier in
+       the call stay recorded; do not try to cancel them.
+   (e) Thank the customer, say goodbye and close as no_promise / breathing_space. This
+       applies even if a promise was recorded earlier in the call (5.26 (a)).
+   (f) If the customer mentions a breathing space before the security checks have
+       passed, say that you need to finish the security questions first so that the
+       right account is updated, and continue with 5.5.
+
+   Appendix C: R13 (transferred / breathing_space_referral) is retired from
+   14/10/2026. Use R20 (no_promise / breathing_space).
+
+4. Saturday callbacks (amends 5.4.3)
+   From Saturday 24/10/2026 the contact centre opens on Saturdays, 09:00 to 13:00.
+   A callback may be booked for a Saturday on or after 24/10/2026, at a time from
+   09:00 to 13:00, both included. No callback may be booked for any Saturday before
+   24/10/2026. Sundays and bank holidays stay closed. The 7-day limit in 5.4.3 and the
+   weekday hours (Monday to Friday, 08:00 to 20:00) do not change.
+
+Everything else in CR-07 v4.2 section 5 stays as it is, together with the email
+instruction of 07/10/2026 on "next <weekday>" (5.7.7).
+
+Actions
+- Voice Assistant Build Team: assistant updated and tested before 08:00 on 14/10/2026.
+- Contact Centre Operations: Saturday rota from 24/10/2026.
+- MI: R20 live in reporting from 14/10/2026.
+
+-- End of notice --

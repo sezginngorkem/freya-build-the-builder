@@ -1,0 +1,26 @@
+code,group,description,close_outcome,close_reason,note_reason,queue,status,valid_from,valid_to,comment
+PTP,RESULT,Promise to pay recorded (one or more accounts),promise,,,,ACTIVE,01/04/2019,,
+PTS,RESULT,Split promise (two dates on one account),promise,split,,,RETIRED,01/04/2019,31/12/2023,one promise per account since 2024
+PAI,RESULT,Customer states arrears already paid,paid,,paid,,ACTIVE,01/04/2019,,
+RTP,RESULT,Refused / attempts used up / does not want to talk,no_promise,refused,refused,,ACTIVE,01/04/2019,,
+HRD,RESULT,Financial difficulty - Customer Support Unit declined,no_promise,hardship,hardship,,ACTIVE,01/04/2019,,
+DSP,RESULT,Customer disputes the account,no_promise,dispute,dispute,,ACTIVE,01/04/2019,,do not argue
+SVE,RESULT,System error - promise could not be recorded,no_promise,service_error,service_error,,ACTIVE,14/02/2022,,
+DAH,RESULT,Debt advice - 30 day hold,no_promise,debt_advice,debt_advice,,ACTIVE,12/10/2026,,CR-MEMO-2026-11 item 3
+BRS,RESULT,Breathing Space (Debt Respite Scheme),no_promise,moratorium,,,RETIRED,04/05/2021,08/10/2026,replaced by BSP (Compliance e-mail 08/10/2026)
+BSP,RESULT,Breathing Space - standard or mental health crisis,no_promise,breathing_space,breathing_space,,ACTIVE,09/10/2026,,Compliance e-mail 08/10/2026
+FWV,RESULT,Late fee waived for same-day payment,promise,fee_waiver,,,DRAFT - NOT APPROVED,,,created in error - never use (Compliance e-mail 08/10/2026)
+XSU,TRANSFER,Transferred to Customer Support Unit (financial difficulty),transferred,support,,support,ACTIVE,01/04/2019,,
+XSV,TRANSFER,Transferred - vulnerability,transferred,vulnerable,,support,ACTIVE,01/03/2021,,FG21/1
+XPP,TRANSFER,Payment plan request - Collections team,transferred,payment_plan,,collections_team,ACTIVE,01/04/2019,15/11/2026,from 16/11/2026 use XFS (CR-MEMO-2026-14 item 3)
+XFS,TRANSFER,Payment plan request - Financial Support team,transferred,financial_support,,financial_support,ACTIVE,16/11/2026,,CR-MEMO-2026-14 item 3
+XHU,TRANSFER,Customer asked for a colleague,transferred,human,,general,ACTIVE,01/04/2019,,
+IDF,VERIFY,Failed security questions (3 wrong),not_verified,failed,,,ACTIVE,01/04/2019,,
+IDD,VERIFY,Declined security questions,not_verified,declined,,,ACTIVE,01/04/2019,,
+CBK,CONTACT,Third party - callback booked,not_reached,callback,,,ACTIVE,01/04/2019,,
+NCB,CONTACT,Third party - no valid callback time,not_reached,no_callback,,,ACTIVE,01/04/2019,,
+WNO,CONTACT,Wrong number,not_reached,wrong_number,,,ACTIVE,01/04/2019,,
+DEC,CONTACT,Customer deceased (reported by third party),not_reached,deceased,,,ACTIVE,01/04/2019,,refer to Bereavement team by post
+NCU,CONTACT,Right party not confirmed,not_reached,unclear,,,ACTIVE,01/04/2019,,
+TPP,CONTACT,Promise taken from third party,promise,third_party,,,RETIRED,01/04/2019,30/06/2021,third parties may not promise (CONC 7.9.10R)
+LMS,CONTACT,Message left on answerphone,not_reached,voicemail,,,RETIRED,01/04/2019,31/03/2024,assistant never leaves messages

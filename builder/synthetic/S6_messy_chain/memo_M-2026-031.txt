@@ -1,0 +1,37 @@
+BRIGHTWATER COMMUNITY BANK
+POLICY CHANGE MEMORANDUM
+
+Ref:            M-2026-031
+Date issued:    22 October 2026
+Effective:      2 November 2026, unless a later date is given for an item below
+From:           Policy Governance (for the Credit Risk Committee)
+To:             Collections; Contact Centre; Digital Channels
+Subject:        COL-POL-12 v5.1 – amendments following the Q3 contact-strategy review
+
+The Committee approved the following changes to COL-POL-12 v5.1. All other provisions
+are unchanged.
+
+A1  Section 5, Table 5-A, Tier 2.
+    The promise limit for Tier 2 (30-59 days past due) changes from the 5th to the 4th
+    business day after the call date. Tiers 1 and 3 are not affected.
+
+A2  Section 4.1(b), second security question.
+    The ZIP code question is replaced by "the last four digits of the phone number on
+    file" (field phone_last4). Because the IVR and customer records must be updated
+    first, A2 takes effect on 23 November 2026.
+
+A3  Section 5, Table 5-A, Tier 3.
+    Persuasion attempts for Tier 3 (60-89 days past due) change from 2 to 1. Attempt 2 of
+    6.6 therefore applies to Tier 2 only.
+
+A4  Section 5.3, bank holidays.
+    Friday 27 November 2026 is added as a bank holiday (branches and payment operations
+    closed).
+
+A5  Section 6.9, confirmation sentence.
+    Replace the sentence with: "You will receive a text message confirming your promise
+    today."
+
+Distribution of the consolidated v5.2 text will follow once all open items are closed.
+
+Policy Governance | M-2026-031 | page 1 of 1

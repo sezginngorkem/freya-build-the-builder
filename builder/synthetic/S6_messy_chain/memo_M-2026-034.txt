@@ -1,0 +1,34 @@
+BRIGHTWATER COMMUNITY BANK
+POLICY CHANGE MEMORANDUM
+
+Ref:            M-2026-034
+Date issued:    12 November 2026
+Effective:      16 November 2026 (all calls on or after this date), except item 5
+From:           Policy Governance (for the Credit Risk Committee)
+To:             Collections; Contact Centre; Digital Channels
+Subject:        Amendments to M-2026-031 and to COL-POL-12 v5.1
+Supersedes:     M-2026-031 items A1 and A2 only
+
+1.  M-2026-031 A1 (Tier 2 promise limit) is replaced. From the effective date of this memo
+    the Tier 2 promise limit is the 3rd business day after the call date. (Between 2 and
+    15 November 2026 the 4th business day under M-2026-031 A1 applied.)
+
+2.  M-2026-031 A2 (phone_last4 security question) is withdrawn before taking effect. The
+    IVR change has been postponed with no new date. Section 4.1(b) of the policy (ZIP code)
+    continues to apply.
+
+3.  For the avoidance of doubt, M-2026-031 A3, A4 and A5 remain in force.
+
+4.  New section 7.6 – requests to stop calling.
+    If the customer asks the bank to stop calling them, the agent says "Understood. We will
+    stop calling you about this account.", makes no further request or offer, adds a note
+    with reason cease_contact for every product without a promise, and closes the call No
+    promise / cease_contact. One request is enough. This is not a hardship case and not a
+    refusal under 6.6.
+
+5.  Tier 1 promise limit – NOT YET IN FORCE.
+    Subject to ALCO sign-off, from 1 December 2026 the Tier 1 promise limit will become the
+    6th business day after the call date. Until then Table 5-A applies to Tier 1 as
+    written. A further memo will confirm.
+
+Policy Governance | M-2026-034 | page 1 of 1

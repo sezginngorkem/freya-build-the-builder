@@ -1,0 +1,1157 @@
+[
+ {
+  "id": "S3-01",
+  "brief": "S3_insurance_premium",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Motor policy, pays today",
+  "variables": {
+   "first_name": "Sofia",
+   "last_name": "Brandt",
+   "title": "Mrs",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1979-03-12",
+   "postcode": "80331"
+  },
+  "products": [
+   {
+    "type": "motor",
+    "policy_last4": "5512",
+    "premium_overdue": 380.0,
+    "days_overdue": 6,
+    "lapse_date": "2027-01-08"
+   }
+  ],
+  "script": "Confirms. Date of birth 12 March 1979. Postcode 80331. Pays the full premium today. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 380.0,
+     "date": "2026-12-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "no 'premium' or 'policy type' said before identity is verified",
+   "lapse date stated with the premium",
+   "the exact sentence 'Your cover stays in place as long as the payment arrives by the date we agreed.'"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twelfth of March 1979.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1979-03-12"
+    }
+   },
+   {
+    "text": "Eight zero three three one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "80331"
+    }
+   },
+   {
+    "text": "Yes, I'll pay it today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-02",
+  "brief": "S3_insurance_premium",
+  "family": "Identity",
+  "level": "hard",
+  "title": "Date of birth with day and month swapped",
+  "variables": {
+   "first_name": "Lena",
+   "last_name": "Vogel",
+   "title": "Ms",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1985-04-07",
+   "postcode": "10115"
+  },
+  "products": [
+   {
+    "type": "home",
+    "policy_last4": "0931",
+    "premium_overdue": 240.0,
+    "days_overdue": 10,
+    "monthly_premium": 80.0,
+    "lapse_date": "2027-01-11"
+   }
+  ],
+  "script": "Confirms. Gives date of birth as 4/7/1985 (meaning 7 April). When asked for the month as a word, says 7 April 1985. Postcode 10115. Cannot pay today; pays the full premium this Friday. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 240.0,
+     "date": "2026-12-18"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the swap hint is not counted as a wrong answer",
+   "the agent asks for the month as a word"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Four, seven, nineteen eighty-five.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1985-07-04"
+    }
+   },
+   {
+    "text": "The seventh of April 1985.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1985-04-07"
+    }
+   },
+   {
+    "text": "One zero one one five.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "10115"
+    }
+   },
+   {
+    "text": "Not today. This Friday, the eighteenth.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-18"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-03",
+  "brief": "S3_insurance_premium",
+  "family": "Third party",
+  "level": "medium",
+  "title": "Husband answers, callback tomorrow at 08:00 (included)",
+  "variables": {
+   "first_name": "Marta",
+   "last_name": "Silva",
+   "title": "Mrs",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1970-09-30",
+   "postcode": "20095"
+  },
+  "products": [
+   {
+    "type": "home",
+    "policy_last4": "4410",
+    "premium_overdue": 310.0,
+    "days_overdue": 9,
+    "monthly_premium": 103.33,
+    "lapse_date": "2027-01-06"
+   }
+  ],
+  "script": "Her husband answers. Says she is at work. Says she can be reached tomorrow at eight in the morning.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-12-15",
+     "time": "08:00"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "callback asked only because the person is her spouse",
+   "callback 2026-12-15 08:00"
+  ],
+  "sim_script": [
+   {
+    "text": "This is her husband, she's at work.",
+    "intents": [
+     "third_party",
+     "spouse_partner"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Tomorrow at eight in the morning.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-12-15",
+     "callback_time": "08:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S3-04",
+  "brief": "S3_insurance_premium",
+  "family": "Third party",
+  "level": "medium",
+  "title": "Flatmate offers a callback time: not allowed",
+  "variables": {
+   "first_name": "Jonas",
+   "last_name": "Weber",
+   "title": "Mr",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1993-01-22",
+   "postcode": "50667"
+  },
+  "products": [
+   {
+    "type": "motor",
+    "policy_last4": "7781",
+    "premium_overdue": 295.0,
+    "days_overdue": 11,
+    "lapse_date": "2027-01-09"
+   }
+  ],
+  "script": "His flatmate answers. Says Jonas is out and offers: call him tomorrow at ten.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "other_party",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "no callback booked although a time inside the window was offered",
+   "the agent says it will try again another time"
+  ],
+  "sim_script": [
+   {
+    "text": "I'm his flatmate. He's out, call him tomorrow at ten.",
+    "intents": [
+     "third_party"
+    ],
+    "slots": {
+     "callback_date": "2026-12-15",
+     "callback_time": "10:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S3-05",
+  "brief": "S3_insurance_premium",
+  "family": "Third party",
+  "level": "hard",
+  "title": "Partner offers today 19:00, then tomorrow 20:30",
+  "variables": {
+   "first_name": "Clara",
+   "last_name": "Moreau",
+   "title": "Ms",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1988-06-15",
+   "postcode": "69002"
+  },
+  "products": [
+   {
+    "type": "home",
+    "policy_last4": "2204",
+    "premium_overdue": 270.0,
+    "days_overdue": 17,
+    "monthly_premium": 90.0,
+    "lapse_date": "2026-12-31"
+   }
+  ],
+  "script": "Her partner answers. Offers this evening at seven. When asked for another time, offers tomorrow at half past eight in the evening.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "no_callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "today is refused (callback never today)",
+   "20:30 is refused (window ends 20:00)",
+   "only one more time is asked"
+  ],
+  "sim_script": [
+   {
+    "text": "I'm her partner. She's not home.",
+    "intents": [
+     "third_party",
+     "spouse_partner"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Call her this evening at seven.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-12-14",
+     "callback_time": "19:00"
+    }
+   },
+   {
+    "text": "Tomorrow evening then, half past eight.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-12-15",
+     "callback_time": "20:30"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S3-06",
+  "brief": "S3_insurance_premium",
+  "family": "Dates",
+  "level": "hard",
+  "title": "Grace band: 14 calendar days lands on a holiday, rolls BACK to 23 Dec",
+  "variables": {
+   "first_name": "Pieter",
+   "last_name": "de Vries",
+   "title": "Mr",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1975-11-02",
+   "postcode": "30159"
+  },
+  "products": [
+   {
+    "type": "home",
+    "policy_last4": "6623",
+    "premium_overdue": 300.0,
+    "days_overdue": 12,
+    "monthly_premium": 100.0,
+    "lapse_date": "2027-01-12"
+   }
+  ],
+  "script": "Confirms. Cannot pay today; wants to pay after Christmas, on 29 December. Accepts the latest date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 300.0,
+     "date": "2026-12-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "deadline = 28 Dec (14 calendar days) is a holiday, 25 and 24 too, so 23 December",
+   "promise 2026-12-23"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Second of November 1975.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1975-11-02"
+    }
+   },
+   {
+    "text": "Three zero one five nine.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "30159"
+    }
+   },
+   {
+    "text": "Not today. After Christmas, on the twenty-ninth.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-29"
+    }
+   },
+   {
+    "text": "Alright, the twenty-third.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-07",
+  "brief": "S3_insurance_premium",
+  "family": "Tool failure",
+  "level": "hard",
+  "title": "Final notice band, date exactly on the 5th business day; first create_promise fails",
+  "variables": {
+   "first_name": "Ahmed",
+   "last_name": "Karim",
+   "title": "Mr",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1981-02-27",
+   "postcode": "40210"
+  },
+  "products": [
+   {
+    "type": "motor",
+    "policy_last4": "9902",
+    "premium_overdue": 410.0,
+    "days_overdue": 20,
+    "lapse_date": "2026-12-31"
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Monday 21 December for the full premium. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 410.0,
+     "date": "2026-12-21"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "21 December accepted (deadline, included)",
+   "create_promise retried once",
+   "'recorded' only after ok: true"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-seventh of February 1981.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1981-02-27"
+    }
+   },
+   {
+    "text": "Four zero two one zero.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "40210"
+    }
+   },
+   {
+    "text": "Not today. Monday the twenty-first.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-21"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "fail_first": "create_promise"
+ },
+ {
+  "id": "S3-08",
+  "brief": "S3_insurance_premium",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Final notice band, one business day after the deadline",
+  "variables": {
+   "first_name": "Elif",
+   "last_name": "Yilmaz",
+   "title": "Ms",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1990-08-19",
+   "postcode": "70173"
+  },
+  "products": [
+   {
+    "type": "home",
+    "policy_last4": "3318",
+    "premium_overdue": 520.0,
+    "days_overdue": 25,
+    "monthly_premium": 130.0,
+    "lapse_date": "2027-01-02"
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Tuesday 22 December. Accepts the latest date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 520.0,
+     "date": "2026-12-21"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the agent offers Monday 21 December as the latest date"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteenth of August 1990.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1990-08-19"
+    }
+   },
+   {
+    "text": "Seven zero one seven three.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "70173"
+    }
+   },
+   {
+    "text": "Not today. Tuesday the twenty-second.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-22"
+    }
+   },
+   {
+    "text": "OK, Monday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-09",
+  "brief": "S3_insurance_premium",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "Motor: offers half the premium, only the full premium can be recorded",
+  "variables": {
+   "first_name": "Luca",
+   "last_name": "Romano",
+   "title": "Mr",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1987-12-01",
+   "postcode": "20121"
+  },
+  "products": [
+   {
+    "type": "motor",
+    "policy_last4": "1150",
+    "premium_overdue": 600.0,
+    "days_overdue": 4,
+    "lapse_date": "2027-01-09"
+   }
+  ],
+  "script": "Confirms. Offers 300 euros on Friday. Accepts the full premium on Friday when told only the full premium can be recorded. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 600.0,
+     "date": "2026-12-18"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "no floor is used for a motor policy",
+   "600.00 on 18 December"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "First of December 1987.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1987-12-01"
+    }
+   },
+   {
+    "text": "Two zero one two one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "20121"
+    }
+   },
+   {
+    "text": "Not today. I can pay three hundred on Friday.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_amount": 300.0,
+     "promise_date": "2026-12-18"
+    }
+   },
+   {
+    "text": "OK, the full amount on Friday then.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-10",
+  "brief": "S3_insurance_premium",
+  "family": "Dates",
+  "level": "hard",
+  "title": "Lapse rule: lapse_date before the band deadline",
+  "variables": {
+   "first_name": "Ingrid",
+   "last_name": "Berg",
+   "title": "Ms",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1968-05-05",
+   "postcode": "22769"
+  },
+  "products": [
+   {
+    "type": "home",
+    "policy_last4": "7004",
+    "premium_overdue": 260.0,
+    "days_overdue": 13,
+    "monthly_premium": 65.0,
+    "lapse_date": "2026-12-21"
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Tuesday 22 December. Accepts the date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 260.0,
+     "date": "2026-12-18"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "band deadline 23 Dec is after the lapse date 21 Dec, so the deadline is the last business day before 21 Dec: Friday 18 December"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Fifth of May 1968.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1968-05-05"
+    }
+   },
+   {
+    "text": "Two two seven six nine.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "22769"
+    }
+   },
+   {
+    "text": "Not today. Tuesday the twenty-second.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-22"
+    }
+   },
+   {
+    "text": "Fine, the eighteenth.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-11",
+  "brief": "S3_insurance_premium",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "Motor and home, one date for both, different deadlines",
+  "variables": {
+   "first_name": "Nora",
+   "last_name": "Lindgren",
+   "title": "Ms",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1983-10-10",
+   "postcode": "11122"
+  },
+  "products": [
+   {
+    "type": "motor",
+    "policy_last4": "5512",
+    "premium_overdue": 390.0,
+    "days_overdue": 8,
+    "lapse_date": "2027-01-07"
+   },
+   {
+    "type": "home",
+    "policy_last4": "0931",
+    "premium_overdue": 450.0,
+    "days_overdue": 18,
+    "monthly_premium": 150.0,
+    "lapse_date": "2026-12-30"
+   }
+  ],
+  "script": "Confirms. Cannot pay both today. Wants to pay both in full on Wednesday 23 December. Accepts the read-back with the earlier date for the home policy. Confirms once.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 390.0,
+     "date": "2026-12-23"
+    },
+    {
+     "product_id": "p2",
+     "amount": 450.0,
+     "date": "2026-12-21"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "motor on 23 December (grace)",
+   "home on its deadline 21 December (final notice)",
+   "one read-back naming both dates"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Tenth of October 1983.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1983-10-10"
+    }
+   },
+   {
+    "text": "One one one two two.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "11122"
+    }
+   },
+   {
+    "text": "Not today. I can pay both on Wednesday the twenty-third.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-23"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-12",
+  "brief": "S3_insurance_premium",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Names a Saturday inside the deadline",
+  "variables": {
+   "first_name": "Hugo",
+   "last_name": "Lefebvre",
+   "title": "Mr",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1977-07-14",
+   "postcode": "75011"
+  },
+  "products": [
+   {
+    "type": "home",
+    "policy_last4": "8890",
+    "premium_overdue": 330.0,
+    "days_overdue": 16,
+    "monthly_premium": 110.0,
+    "lapse_date": "2027-01-04"
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Saturday 19 December. Accepts the date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 330.0,
+     "date": "2026-12-21"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "Saturday rolls forward to Monday 21 December (= the final-notice deadline)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Fourteenth of July 1977.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1977-07-14"
+    }
+   },
+   {
+    "text": "Seven five zero one one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "75011"
+    }
+   },
+   {
+    "text": "Not today. Saturday the nineteenth.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-19"
+    }
+   },
+   {
+    "text": "Monday is fine.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-13",
+  "brief": "S3_insurance_premium",
+  "family": "Hardship",
+  "level": "medium",
+  "title": "Bereavement, accepts the customer care team",
+  "variables": {
+   "first_name": "Erik",
+   "last_name": "Johansson",
+   "title": "Mr",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1964-03-03",
+   "postcode": "41301"
+  },
+  "products": [
+   {
+    "type": "motor",
+    "policy_last4": "3377",
+    "premium_overdue": 450.0,
+    "days_overdue": 7,
+    "lapse_date": "2027-01-10"
+   }
+  ],
+  "script": "Confirms. Says his father died last week and he has not been able to deal with anything. Accepts the transfer to customer care.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "customer_care",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "customer_care"
+    }
+   ]
+  },
+  "checks": [
+   "one sentence of sympathy, no persuasion",
+   "transfer queue customer_care",
+   "no add_note"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Third of March 1964.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1964-03-03"
+    }
+   },
+   {
+    "text": "Four one three zero one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "41301"
+    }
+   },
+   {
+    "text": "My father passed away last week, I haven't been able to deal with anything.",
+    "intents": [
+     "hardship"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, please.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S3-14",
+  "brief": "S3_insurance_premium",
+  "family": "Policy change",
+  "level": "medium",
+  "title": "Wants to cancel the motor policy",
+  "variables": {
+   "first_name": "Mateo",
+   "last_name": "Garcia",
+   "title": "Mr",
+   "now": "2026-12-14T09:30"
+  },
+  "identity": {
+   "date_of_birth": "1991-09-09",
+   "postcode": "28013"
+  },
+  "products": [
+   {
+    "type": "motor",
+    "policy_last4": "6021",
+    "premium_overdue": 355.0,
+    "days_overdue": 22,
+    "lapse_date": "2026-12-29"
+   }
+  ],
+  "script": "Confirms. Says he sold the car and wants to cancel the policy.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "policy_change",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "retention"
+    }
+   ]
+  },
+  "checks": [
+   "transfer queue retention",
+   "outcome transferred / policy_change",
+   "no add_note"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Ninth of September 1991.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1991-09-09"
+    }
+   },
+   {
+    "text": "Two eight zero one three.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "28013"
+    }
+   },
+   {
+    "text": "I sold the car last month, I want to cancel this policy.",
+    "intents": [
+     "policy_change"
+    ],
+    "slots": {}
+   }
+  ]
+ }
+]

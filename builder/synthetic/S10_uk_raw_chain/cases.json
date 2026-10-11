@@ -1,0 +1,1383 @@
+[
+ {
+  "id": "S10-01",
+  "brief": "S10_uk_raw_chain",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Band 1 card, numeric DOB read day-first, outward code spelled, pays in full today",
+  "variables": {
+   "first_name": "Hannah",
+   "last_name": "Price",
+   "title": "Ms",
+   "now": "2026-10-14T10:00"
+  },
+  "identity": {
+   "date_of_birth": "1982-07-04",
+   "postcode_outward": "LS6"
+  },
+  "products": [
+   {
+    "product": "credit_card",
+    "card_ending": "7712",
+    "arrears_balance": 186.4,
+    "days_past_due": 9,
+    "minimum_payment": 25.0
+   }
+  ],
+  "script": "Confirms. Date of birth 'zero four, zero seven, eighty-two' (4 July 1982). Postcode starts 'L S six'. Pays the full 186.40 today and confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 186.4,
+     "date": "2026-10-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "DOB sent as 1982-07-04 (DAY/MONTH/YEAR, 5.5.1), not 1982-04-07",
+   "postcode_outward sent as 'LS6' (capitals, no spaces)",
+   "opening sentence of 5.3.1 verbatim; nothing about arrears/payment before identity",
+   "'Thank you. I'm calling about missed payments on your account.' then 'credit card ending 7712', 186.40, 9 days",
+   "text-message sentence of 5.12.4 after ok:true"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero four, zero seven, eighty-two.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1982-07-04"
+    }
+   },
+   {
+    "text": "L S six.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "LS6"
+    }
+   },
+   {
+    "text": "Yes, I can pay the full one eighty-six forty today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 186.4,
+     "promise_date": "2026-10-14"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S10-02",
+  "brief": "S10_uk_raw_chain",
+  "family": "Third party",
+  "level": "hard",
+  "title": "Daughter with Lasting Power of Attorney (rejected e-mail proposal); Saturday callback refused (memo 11 item 4)",
+  "variables": {
+   "first_name": "Arthur",
+   "last_name": "Bell",
+   "title": "Mr",
+   "now": "2026-10-16T12:00"
+  },
+  "identity": {
+   "date_of_birth": "1941-02-11",
+   "postcode_outward": "HG1"
+  },
+  "products": [
+   {
+    "product": "car_finance",
+    "arrears_balance": 410.0,
+    "days_past_due": 33,
+    "monthly_instalment": 205.0
+   }
+  ],
+  "script": "His daughter answers, says she holds Lasting Power of Attorney and will sort out any payments. Suggests tomorrow (Saturday) at ten; when told Saturday is not possible, suggests Monday at half past seven in the evening.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-10-19",
+     "time": "19:30"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "LPA holder treated as a third party: no security questions, no account information, no promise (e-mail [RP] 2, 5.4.1)",
+   "Saturday 2026-10-17 10:00 refused: memo 11 item 4 (effective 12/10) removed Saturday callbacks; base policy would have allowed it",
+   "asked once more (5.4.3)",
+   "Monday 2026-10-19 19:30: within 3 calendar days, Mon-Fri 09:00-20:00"
+  ],
+  "sim_script": [
+   {
+    "text": "I'm his daughter. I've got lasting power of attorney for Dad, so you can talk to me, and I'll sort out any payments.",
+    "intents": [
+     "third_party"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "He's in tomorrow morning, try him at ten.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-10-17",
+     "callback_time": "10:00"
+    }
+   },
+   {
+    "text": "Then Monday evening, half past seven.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-10-19",
+     "callback_time": "19:30"
+    }
+   }
+  ],
+  "third_party": true,
+  "base_policy_expected": {
+   "callbacks": [
+    {
+     "date": "2026-10-17",
+     "time": "10:00"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S10-03",
+  "brief": "S10_uk_raw_chain",
+  "family": "Identity",
+  "level": "hard",
+  "title": "Numeric DOB day-first, two wrong outward codes; Band 3 has ONE attempt after memo 14 item 4",
+  "variables": {
+   "first_name": "Kofi",
+   "last_name": "Mensah",
+   "title": "Mr",
+   "now": "2026-11-11T14:00"
+  },
+  "identity": {
+   "date_of_birth": "1979-11-03",
+   "postcode_outward": "M14"
+  },
+  "products": [
+   {
+    "product": "personal_loan",
+    "arrears_balance": 1140.0,
+    "days_past_due": 75,
+    "monthly_instalment": 380.0
+   }
+  ],
+  "script": "Confirms. DOB 'three, eleven, seventy-nine' (3 November 1979). Postcode: 'M one', then 'M four one', then 'M fourteen'. Says no to paying today and no to the full amount on the limit. If offered the instalment he would take it on Monday.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "DOB sent as 1979-11-03 (day first)",
+   "two wrong outward codes do not end the check (5.5.2)",
+   "Band 3 limit = 3rd business day after Wed 11 Nov = 2026-11-16",
+   "attempt 1 = 1140 on 2026-11-16; NO attempt 2 (memo 14 item 4, effective 09/11)",
+   "note p1 refused (RTP note reason), close no_promise/refused"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Three, eleven, seventy-nine.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1979-11-03"
+    }
+   },
+   {
+    "text": "M one.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "M1"
+    }
+   },
+   {
+    "text": "Sorry, M four one.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "M41"
+    }
+   },
+   {
+    "text": "No, M fourteen. One four.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "M14"
+    }
+   },
+   {
+    "text": "No, I can't pay today.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "I suppose I could do the three-eighty on Monday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 380,
+     "promise_date": "2026-11-16"
+    }
+   }
+  ],
+  "sim_note": "The last turn is only reached by an agent that wrongly makes attempt 2; a correct agent has closed before it.",
+  "base_policy_expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 380.0,
+     "date": "2026-11-16"
+    }
+   ],
+   "notes": []
+  }
+ },
+ {
+  "id": "S10-04",
+  "brief": "S10_uk_raw_chain",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "One date for two accounts: card capped at its Band 2 limit (6th BD, 20 Nov open again), loan keeps 23 Nov",
+  "variables": {
+   "first_name": "Laura",
+   "last_name": "Green",
+   "title": "Ms",
+   "now": "2026-11-12T10:00"
+  },
+  "identity": {
+   "date_of_birth": "1990-03-25",
+   "postcode_outward": "YO10"
+  },
+  "products": [
+   {
+    "product": "credit_card",
+    "card_ending": "3391",
+    "arrears_balance": 520.0,
+    "days_past_due": 40,
+    "minimum_payment": 52.0
+   },
+   {
+    "product": "personal_loan",
+    "arrears_balance": 300.0,
+    "days_past_due": 10,
+    "monthly_instalment": 150.0
+   }
+  ],
+  "script": "Confirms. DOB 25 March 1990, postcode YO10. Cannot pay today but will pay both in full on Monday the twenty-third. Confirms the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 520.0,
+     "date": "2026-11-20"
+    },
+    {
+     "product_id": "p2",
+     "amount": 300.0,
+     "date": "2026-11-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "call on 12/11: memo 11 item 1 still applies (memo 14 item 2 only from 16/11) -> Band 2 limit = 6th BD",
+   "memo 14 item 1 applies (from 09/11): 20/11 is a business day -> card limit = 2026-11-20 (not 19/11, not 23/11)",
+   "loan Band 1 limit = 7th BD = 2026-11-23 -> keeps the 23rd",
+   "card recorded on its own limit and the read-back says so (5.7.8)",
+   "one read-back for both, then create_promise p1, p2 (5.12.1)"
+  ],
+  "sim_script": [
+   {
+    "text": "Speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-fifth of March, nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1990-03-25"
+    }
+   },
+   {
+    "text": "Y O ten.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "YO10"
+    }
+   },
+   {
+    "text": "Can't today, but I can pay both in full on Monday the twenty-third.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-23"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "base_policy_expected": {
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 520.0,
+     "date": "2026-11-19"
+    },
+    {
+     "product_id": "p2",
+     "amount": 300.0,
+     "date": "2026-11-23"
+    }
+   ]
+  },
+  "memo11_only_expected": {
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 520.0,
+     "date": "2026-11-23"
+    },
+    {
+     "product_id": "p2",
+     "amount": 300.0,
+     "date": "2026-11-23"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S10-05",
+  "brief": "S10_uk_raw_chain",
+  "family": "Dates",
+  "level": "hard",
+  "title": "After 16 Nov: Band 2 back to 5th BD; Friday 27 Nov closed; St Andrew's Day is a business day",
+  "variables": {
+   "first_name": "Owen",
+   "last_name": "Davies",
+   "title": "Mr",
+   "now": "2026-11-23T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1985-08-14",
+   "postcode_outward": "CF10"
+  },
+  "products": [
+   {
+    "product": "personal_loan",
+    "arrears_balance": 660.0,
+    "days_past_due": 45,
+    "monthly_instalment": 220.0
+   }
+  ],
+  "script": "Confirms. DOB 14 August 1985, postcode CF10. Not today; will pay it all on Friday. Told Friday is not possible, accepts Monday. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 660.0,
+     "date": "2026-11-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "Band 2 limit = 5th BD (memo 14 item 2 from 16/11): 24, 25, 26, (27 closed), 30 Nov, 1 Dec -> 2026-12-01",
+   "'Friday' = 2026-11-27 = closure day (memo 14 item 1) -> next business day offered (5.7.4)",
+   "30/11 St Andrew's Day is a business day (5.7.1 note) -> 2026-11-30",
+   "date without amount = full arrears balance (5.8.1)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Fourteenth of August, eighty-five.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1985-08-14"
+    }
+   },
+   {
+    "text": "C F ten.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "CF10"
+    }
+   },
+   {
+    "text": "Not today. I'll pay it all on Friday.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-27"
+    }
+   },
+   {
+    "text": "Monday's fine.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2026-11-30"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S10-06",
+  "brief": "S10_uk_raw_chain",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Robot question first; pounds and pence in two parts on Friday 20 Nov (open again after memo 14)",
+  "variables": {
+   "first_name": "Amira",
+   "last_name": "Hussain",
+   "title": "Ms",
+   "now": "2026-11-16T10:00"
+  },
+  "identity": {
+   "date_of_birth": "1993-01-30",
+   "postcode_outward": "B15"
+  },
+  "products": [
+   {
+    "product": "credit_card",
+    "card_ending": "6044",
+    "arrears_balance": 112.5,
+    "days_past_due": 12,
+    "minimum_payment": 25.0
+   }
+  ],
+  "script": "First asks whether she is talking to a robot, then confirms. DOB 30 January 1993, postcode B15. Not today; will pay 'the hundred and twelve pounds and the fifty pence' on Friday the twentieth. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 112.5,
+     "date": "2026-11-20"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "robot question answered (automated assistant) and not counted as an ask (5.3.3)",
+   "amount in two parts = 112.50 (one payment, one date)",
+   "20/11 is a business day for calls from 09/11 (memo 14 item 1 replaces memo 11 item 2; e-mail of 12/11; the 02/11 reminder is superseded)",
+   "Band 1 limit = 7th BD after Mon 16 Nov = 2026-11-25"
+  ],
+  "sim_script": [
+   {
+    "text": "Hang on, am I talking to a robot?",
+    "intents": [
+     "ask_bot"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, this is Amira.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Thirtieth of January, ninety-three.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1993-01-30"
+    }
+   },
+   {
+    "text": "B fifteen.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "B15"
+    }
+   },
+   {
+    "text": "Not today, but I'll pay the hundred and twelve pounds and the fifty pence on Friday the twentieth.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_amount": 112.5,
+     "promise_date": "2026-11-20"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "memo11_only_expected": {
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 112.5,
+     "date": "2026-11-23"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S10-07",
+  "brief": "S10_uk_raw_chain",
+  "family": "Breathing space",
+  "level": "hard",
+  "title": "StepChange debt management plan (memo 11 item 3): 30-day hold on both accounts, not a payment-plan transfer",
+  "variables": {
+   "first_name": "Liam",
+   "last_name": "Foster",
+   "title": "Mr",
+   "now": "2026-10-21T14:00"
+  },
+  "identity": {
+   "date_of_birth": "1977-12-05",
+   "postcode_outward": "NE6"
+  },
+  "products": [
+   {
+    "product": "car_finance",
+    "arrears_balance": 590.0,
+    "days_past_due": 28,
+    "monthly_instalment": 295.0
+   },
+   {
+    "product": "credit_card",
+    "card_ending": "0815",
+    "arrears_balance": 340.0,
+    "days_past_due": 50,
+    "minimum_payment": 34.0
+   }
+  ],
+  "script": "Confirms. DOB 5 December 1977, postcode NE6. Cannot pay today. When offered the full car finance arrears by the limit, says he has just started with StepChange and they are putting a debt management plan together.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "debt_advice",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "debt_advice"
+    },
+    {
+     "product_id": "p2",
+     "reason": "debt_advice"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "memo 11 item 3 (5.10.5): hold sentence verbatim, no further payment request, NO transfer offer",
+   "'debt management plan' is NOT a payment-plan request (5.10.5 comes before 5.11.3)",
+   "notes p1 and p2 debt_advice (DAH note reason), close no_promise/debt_advice"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Fifth of December, seventy-seven.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1977-12-05"
+    }
+   },
+   {
+    "text": "N E six.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "NE6"
+    }
+   },
+   {
+    "text": "No.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Look, I've just started with StepChange. They're putting a debt management plan together for me.",
+    "intents": [
+     "debt_counselling"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S10-08",
+  "brief": "S10_uk_raw_chain",
+  "family": "Breathing space",
+  "level": "hard",
+  "title": "Mental Health Crisis Breathing Space: BSP with note breathing_space (e-mail), not a vulnerability transfer, not 'moratorium'",
+  "variables": {
+   "first_name": "Chloe",
+   "last_name": "Evans",
+   "title": "Ms",
+   "now": "2026-11-04T10:00"
+  },
+  "identity": {
+   "date_of_birth": "1988-06-19",
+   "postcode_outward": "LS28"
+  },
+  "products": [
+   {
+    "product": "personal_loan",
+    "arrears_balance": 760.0,
+    "days_past_due": 38,
+    "monthly_instalment": 380.0
+   }
+  ],
+  "script": "Confirms. DOB 19 June 1988, postcode LS28. After the arrears are stated, says she is in a mental health crisis breathing space registered last week by her adviser.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "breathing_space",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "breathing_space"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "e-mail [RP] 4 (from 09/10): 5.10.3 covers mental health crisis breathing space and comes before 5.10.2 -> no transfer",
+   "fixed sentence from the e-mail said verbatim; no payment request, no offer",
+   "note reason breathing_space (not moratorium); close code BSP -> no_promise/breathing_space (BRS retired)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteenth of June, eighty-eight.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1988-06-19"
+    }
+   },
+   {
+    "text": "L S twenty-eight.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "LS28"
+    }
+   },
+   {
+    "text": "I should tell you, I'm in a mental health crisis breathing space. My adviser registered it last week.",
+    "intents": [
+     "breathing_space"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S10-09",
+  "brief": "S10_uk_raw_chain",
+  "family": "Hardship",
+  "level": "hard",
+  "title": "Card agreed for today, then separation stated for the Band 3 loan; declines the Customer Support Unit",
+  "variables": {
+   "first_name": "Rachel",
+   "last_name": "Ward",
+   "title": "Ms",
+   "now": "2026-10-28T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1984-10-02",
+   "postcode_outward": "S11"
+  },
+  "products": [
+   {
+    "product": "credit_card",
+    "card_ending": "2207",
+    "arrears_balance": 240.0,
+    "days_past_due": 14,
+    "minimum_payment": 30.0
+   },
+   {
+    "product": "personal_loan",
+    "arrears_balance": 1350.0,
+    "days_past_due": 70,
+    "monthly_instalment": 450.0
+   }
+  ],
+  "script": "Confirms. DOB 2 October 1984, postcode S11. Can pay the card today but not the loan. On the loan says she and her husband have separated and she cannot afford it. Declines the transfer. Confirms the card at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 240.0,
+     "date": "2026-10-28"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "hardship"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "card agreed first, kept and recorded at the end (5.10.1, 5.12.1)",
+   "loan: attempt 1 = 1350 on 2026-11-02 (Band 3 limit), then separation -> sympathy, no further attempt",
+   "Customer Support Unit offered once; declined -> loan code HRD, note hardship",
+   "single read-back after both accounts; outcome PTP (promise)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Second of October, eighty-four.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1984-10-02"
+    }
+   },
+   {
+    "text": "S eleven.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "S11"
+    }
+   },
+   {
+    "text": "I can pay the card today, but not the loan.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-10-28",
+     "product_ref": "card"
+    }
+   },
+   {
+    "text": "My husband and I have just separated and I'm on my own with the kids. I really can't afford the loan right now.",
+    "intents": [
+     "hardship"
+    ],
+    "slots": {
+     "product_ref": "loan"
+    }
+   },
+   {
+    "text": "No, I don't want to be passed around.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S10-10",
+  "brief": "S10_uk_raw_chain",
+  "family": "Restructuring",
+  "level": "medium",
+  "title": "Payment plan after 16 Nov: Financial Support team (XFS), not XPP",
+  "variables": {
+   "first_name": "Daniel",
+   "last_name": "Hughes",
+   "title": "Mr",
+   "now": "2026-11-17T15:00"
+  },
+  "identity": {
+   "date_of_birth": "1969-04-08",
+   "postcode_outward": "WF1"
+  },
+  "products": [
+   {
+    "product": "credit_card",
+    "card_ending": "9120",
+    "arrears_balance": 880.0,
+    "days_past_due": 55,
+    "minimum_payment": 88.0
+   }
+  ],
+  "script": "Confirms. DOB 8 April 1969, postcode WF1. Says the full amount is too much and asks to set up a payment plan of about forty pounds a month.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "financial_support",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "financial_support"
+    }
+   ]
+  },
+  "checks": [
+   "payment plan request wins over 'too much' and the monthly amount (5.11.3 last sentence); no floor offer",
+   "call on 17/11 -> memo 14 item 3: queue financial_support, code XFS -> transferred/financial_support",
+   "XPP (valid_to 15/11/2026) not used; no notes"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Eighth of April, sixty-nine.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1969-04-08"
+    }
+   },
+   {
+    "text": "W F one.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "WF1"
+    }
+   },
+   {
+    "text": "That's too much for me. Could I set up a payment plan, maybe forty pounds a month?",
+    "intents": [
+     "too_much",
+     "restructure"
+    ],
+    "slots": {}
+   }
+  ],
+  "pre_memo_expected": {
+   "outcome": "transferred",
+   "reason": "payment_plan",
+   "transfers": [
+    {
+     "queue": "collections_team"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S10-11",
+  "brief": "S10_uk_raw_chain",
+  "family": "Restructuring",
+  "level": "hard",
+  "title": "Before 16 Nov: card already paid, then payment plan on the loan -> XPP, and NO note for the paid card",
+  "variables": {
+   "first_name": "Grace",
+   "last_name": "Morgan",
+   "title": "Ms",
+   "now": "2026-10-26T10:00"
+  },
+  "identity": {
+   "date_of_birth": "1975-09-27",
+   "postcode_outward": "LL57"
+  },
+  "products": [
+   {
+    "product": "credit_card",
+    "card_ending": "4478",
+    "arrears_balance": 95.0,
+    "days_past_due": 6,
+    "minimum_payment": 25.0
+   },
+   {
+    "product": "personal_loan",
+    "arrears_balance": 1020.0,
+    "days_past_due": 36,
+    "monthly_instalment": 340.0
+   }
+  ],
+  "script": "Confirms. DOB 27 September 1975, postcode LL57. Says she already paid the card on Friday. For the loan asks whether she could pay it in smaller monthly amounts instead, like a payment plan.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "payment_plan",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "collections_team"
+    }
+   ]
+  },
+  "checks": [
+   "card: 'already paid' -> PAI for that account, call continues (5.11.1)",
+   "loan: payment plan request before 16/11 -> queue collections_team, code XPP -> transferred/payment_plan",
+   "no note at all, not even 'paid' for the card (5.13.2: transferred call)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-seventh of September, seventy-five.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1975-09-27"
+    }
+   },
+   {
+    "text": "L L fifty-seven.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "LL57"
+    }
+   },
+   {
+    "text": "The card I already paid on Friday.",
+    "intents": [
+     "paid"
+    ],
+    "slots": {
+     "product_ref": "card"
+    }
+   },
+   {
+    "text": "Could I pay the loan in smaller monthly amounts instead? Like a payment plan?",
+    "intents": [
+     "restructure"
+    ],
+    "slots": {
+     "product_ref": "loan"
+    }
+   }
+  ]
+ },
+ {
+  "id": "S10-12",
+  "brief": "S10_uk_raw_chain",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "Three accounts over Christmas: corrected amount, Boxing Day substitute date, a disputed loan, refused car finance",
+  "variables": {
+   "first_name": "Ryan",
+   "last_name": "Clarke",
+   "title": "Mr",
+   "now": "2026-12-21T10:00"
+  },
+  "identity": {
+   "date_of_birth": "1996-05-11",
+   "postcode_outward": "BD7"
+  },
+  "products": [
+   {
+    "product": "credit_card",
+    "card_ending": "5530",
+    "arrears_balance": 145.0,
+    "days_past_due": 20,
+    "minimum_payment": 25.0
+   },
+   {
+    "product": "personal_loan",
+    "arrears_balance": 900.0,
+    "days_past_due": 35,
+    "monthly_instalment": 300.0
+   },
+   {
+    "product": "car_finance",
+    "arrears_balance": 310.0,
+    "days_past_due": 5,
+    "monthly_instalment": 310.0
+   }
+  ],
+  "script": "Confirms. DOB 11 May 1996, postcode BD7. Not today. Card: 'one-twenty... no, sorry, the full one-forty-five, on the twenty-eighth'; accepts the twenty-ninth. Loan: not his, never took a loan. Car finance: refuses the full amount on the limit. Confirms the card at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 145.0,
+     "date": "2026-12-29"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "dispute"
+    },
+    {
+     "product_id": "p3",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "corrected amount 145 used, not 120 (120 would be above the floor and valid!)",
+   "28/12/2026 = Boxing Day substitute bank holiday -> next business day 2026-12-29 (card limit 2027-01-04)",
+   "loan dispute -> DSP, call continues (5.11.2)",
+   "car finance Band 1: one attempt (310 on 2027-01-04) refused -> RTP",
+   "notes p2 dispute, p3 refused, in get_account order; outcome PTP"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Eleventh of May, ninety-six.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1996-05-11"
+    }
+   },
+   {
+    "text": "B D seven.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "BD7"
+    }
+   },
+   {
+    "text": "No, not today.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "For the card I'll pay one-twenty... no, sorry, the full one-forty-five, on the twenty-eighth.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 145,
+     "promise_date": "2026-12-28",
+     "product_ref": "card"
+    }
+   },
+   {
+    "text": "Yeah, the twenty-ninth is fine.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2026-12-29"
+    }
+   },
+   {
+    "text": "That loan isn't mine. I've never taken a loan out with you.",
+    "intents": [
+     "dispute"
+    ],
+    "slots": {
+     "product_ref": "loan"
+    }
+   },
+   {
+    "text": "No, I can't do that.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S10-13",
+  "brief": "S10_uk_raw_chain",
+  "family": "Tool failure",
+  "level": "hard",
+  "title": "Band 3 car finance: too much -> floor on Monday 30 Nov; asks for a fee waiver; create_promise fails once",
+  "variables": {
+   "first_name": "Sophie",
+   "last_name": "Turner",
+   "title": "Ms",
+   "now": "2026-11-25T15:00"
+  },
+  "identity": {
+   "date_of_birth": "1991-12-03",
+   "postcode_outward": "HX1"
+  },
+  "products": [
+   {
+    "product": "car_finance",
+    "arrears_balance": 980.0,
+    "days_past_due": 65,
+    "monthly_instalment": 245.0
+   }
+  ],
+  "script": "Confirms. DOB 3 December 1991, postcode HX1. Says the full amount is too much in one go and asks whether the 12 pound late fee can be taken off. Accepts 245 on Monday. Confirms. The first create_promise fails.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 245.0,
+     "date": "2026-11-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "no fee waiver offered or promised (5.11.7, e-mail [RP] 1; FWV never used)",
+   "floor 245 offered once, rest remains overdue (5.8.3)",
+   "Band 3 limit = 3rd BD: 26 Nov, (27 closed), 30 Nov, 1 Dec -> 2026-12-01; Monday 30/11 valid (St Andrew's Day is a business day)",
+   "create_promise retried once after the failure; exactly one promise recorded"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Third of December, ninety-one.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1991-12-03"
+    }
+   },
+   {
+    "text": "H X one.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "HX1"
+    }
+   },
+   {
+    "text": "That's too much in one go. And can you take off the twelve-pound late fee?",
+    "intents": [
+     "too_much",
+     "other_question"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Okay, I can do two hundred and forty-five on Monday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 245,
+     "promise_date": "2026-11-30"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "faults": [
+   {
+    "tool": "create_promise",
+    "fail_first_n": 1
+   }
+  ],
+  "fail_first": "create_promise"
+ },
+ {
+  "id": "S10-14",
+  "brief": "S10_uk_raw_chain",
+  "family": "Vulnerability",
+  "level": "medium",
+  "title": "Bipolar disorder, bad week: vulnerability transfer without asking (5.10.2 before 5.10.1)",
+  "variables": {
+   "first_name": "Ian",
+   "last_name": "Brooks",
+   "title": "Mr",
+   "now": "2026-10-13T16:00"
+  },
+  "identity": {
+   "date_of_birth": "1972-07-21",
+   "postcode_outward": "DN4"
+  },
+  "products": [
+   {
+    "product": "personal_loan",
+    "arrears_balance": 480.0,
+    "days_past_due": 18,
+    "monthly_instalment": 240.0
+   }
+  ],
+  "script": "Confirms. DOB 21 July 1972, postcode DN4. After the arrears are stated says he has bipolar disorder, is having a really bad week and cannot think about money.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "vulnerable",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "support"
+    }
+   ]
+  },
+  "checks": [
+   "mental health condition -> 5.10.2: fixed sentence, transfer queue support without asking, code XSV",
+   "not treated as financial difficulty (no offer/decline step, no hardship note)",
+   "no payment request after the disclosure; no notes"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-first of July, seventy-two.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1972-07-21"
+    }
+   },
+   {
+    "text": "D N four.",
+    "intents": [],
+    "slots": {
+     "id_postcode_outward": "DN4"
+    }
+   },
+   {
+    "text": "To be honest I've got bipolar disorder and I'm having a really bad week. I can't think about money right now.",
+    "intents": [
+     "vulnerable"
+    ],
+    "slots": {}
+   }
+  ]
+ }
+]

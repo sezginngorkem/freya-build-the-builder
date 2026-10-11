@@ -1,0 +1,60 @@
+[synthetic test material - fictional bank]
+
+PENNINE & WHARFE BANK PLC                                       INTERNAL MEMORANDUM
+                                                                Ref:  CR-MEMO-2026-11
+To:       Collections & Recoveries; Contact Centre Operations; Digital Voice (Automated Assistant)
+From:     Head of Collections & Recoveries, with Compliance (R. Price)
+Date:     05/10/2026
+Subject:  Temporary changes to CRP-07 Part 5 - items 1 to 4
+
+This memo amends CRP-07 Part 5 (Rev. 4) until Rev. 5 is published. Where this memo and Part 5
+differ, this memo applies. Anything not mentioned here is unchanged.
+
+--------------------------------------------------------------------------------------------------
+ITEM 1 - Band 2 promise-date limit (amends 5.7.2)
+EFFECTIVE: calls placed on or after Monday 12/10/2026
+--------------------------------------------------------------------------------------------------
+Band 2 right-party contact rates have dropped since the August price change. To give Band 2
+customers a little more room to align a promise with pay dates, the Band 2 promise-date limit is
+the 6th business day after today (instead of the 5th). Bands 1 and 3 are unchanged.
+
+--------------------------------------------------------------------------------------------------
+ITEM 2 - Core banking migration (amends 5.7.1)
+EFFECTIVE: calls placed on or after Monday 12/10/2026
+--------------------------------------------------------------------------------------------------
+The Bank will be closed on Friday 20/11/2026 for the core banking migration. Payments cannot be
+taken or dated on that day. For this Part, 20/11/2026 is NOT a business day, and no callback may
+be booked for it.
+
+--------------------------------------------------------------------------------------------------
+ITEM 3 - Customers receiving debt advice (new 5.10.5)
+EFFECTIVE: calls placed on or after Monday 12/10/2026
+--------------------------------------------------------------------------------------------------
+CONC 7.3.11R requires us to suspend active pursuit of a debt for a reasonable period where the
+customer, or someone acting for them, is developing a repayment plan; CONC 7.3.12G says this
+should generally be 30 days. Add:
+
+   5.10.5  If the customer says they are already getting help from a debt advice provider
+           (for example StepChange, Citizens Advice, National Debtline, Christians Against
+           Poverty, or a named debt adviser) and the adviser is putting together or has set up
+           a repayment plan (including a "debt management plan"), the Assistant:
+             - makes no further payment request and no persuasion attempt, and does NOT offer a
+               transfer;
+             - says: "We will put your account on hold for 30 days while you get debt advice.";
+             - ends every account without an agreed promise with code DAH.
+           Promises already agreed for earlier accounts are still read back and recorded.
+           5.10.5 comes before 5.10.1 and 5.11.3. It does not apply if the customer only says
+           they are thinking of contacting a debt adviser.
+
+Ops: code DAH has been added to Appendix C.
+
+--------------------------------------------------------------------------------------------------
+ITEM 4 - Saturday callbacks (amends 5.4.2(b))
+EFFECTIVE: calls placed on or after Monday 12/10/2026
+--------------------------------------------------------------------------------------------------
+The Saturday shift is withdrawn while the migration team is staffed from Collections. No callback
+may be booked for a Saturday. 5.4.2(b) now reads: "Monday to Friday between 09:00 and 20:00 (both
+ends included) - never on a Saturday, a Sunday, a bank holiday (5.7.1) or a day the Bank is
+closed." 5.4.2(a), 5.4.2(c) and 5.4.3 are unchanged.
+
+Questions to collections.policy@pennine-wharfe.example. Please do not reply to all.

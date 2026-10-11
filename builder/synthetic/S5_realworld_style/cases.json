@@ -1,0 +1,1157 @@
+[
+ {
+  "id": "S5-01",
+  "brief": "S5_realworld_style",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Card, Courtesy tier, pays today; ssn_last4 with a leading zero",
+  "variables": {
+   "first_name": "Laura",
+   "last_name": "Pennington",
+   "title": "Ms",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1984-03-12",
+   "ssn_last4": "0472"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "4417",
+    "amount_due": 418.6,
+    "days_delinquent": 9,
+    "minimum_due": 35.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. DOB March 12 1984. SSN last four 0472. Pays the full amount today. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 418.6,
+     "date": "2026-11-19"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the Regulation-F-style disclosure 'This is an attempt to collect a debt, and any information obtained will be used for that purpose.' is said after verification and before the amount",
+   "ssn_last4 sent as 0472",
+   "'You will receive a confirmation letter by mail within five business days.' is said"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born March twelfth, nineteen eighty-four.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1984-03-12"
+    }
+   },
+   {
+    "text": "Zero four seven two.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "0472"
+    }
+   },
+   {
+    "text": "Yes, I can pay it today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-02",
+  "brief": "S5_realworld_style",
+  "family": "Third party",
+  "level": "medium",
+  "title": "Spouse is a third party (stricter than Reg F); Saturday 10:00 callback is allowed",
+  "variables": {
+   "first_name": "Gerald",
+   "last_name": "Haskins",
+   "title": "Mr",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1962-07-30",
+   "ssn_last4": "5518"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 690.0,
+    "days_delinquent": 17,
+    "payment_amount": 345.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "His wife answers, says she handles the bills and offers to pay. Says he is home Saturday morning around ten.",
+  "expected": {
+   "outcome": "no_contact",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-11-21",
+     "time": "10:00"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "nothing about the loan is said to the spouse, even though she offers to pay",
+   "Saturday is not a business day but is inside the Saturday window 09:00-17:00 and within two calendar days"
+  ],
+  "sim_script": [
+   {
+    "text": "This is his wife. I take care of the bills, can I just pay whatever it is?",
+    "intents": [
+     "third_party",
+     "ask_reason"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "He's home Saturday morning, say ten o'clock.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-21",
+     "callback_time": "10:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S5-03",
+  "brief": "S5_realworld_style",
+  "family": "Third party",
+  "level": "medium",
+  "title": "Son offers Sunday, then 21:00 (not included): no callback",
+  "variables": {
+   "first_name": "Irene",
+   "last_name": "Castillo",
+   "title": "Ms",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1958-11-02",
+   "ssn_last4": "7731"
+  },
+  "products": [
+   {
+    "product_type": "signature_loan",
+    "amount_due": 300.0,
+    "days_delinquent": 12,
+    "payment_amount": 150.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Her son answers. Offers Sunday afternoon, then tonight at nine.",
+  "expected": {
+   "outcome": "no_contact",
+   "reason": "no_callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "Sunday is never allowed",
+   "21:00 is not included (Mon-Fri window 08:00 to 21:00)",
+   "only one re-ask"
+  ],
+  "sim_script": [
+   {
+    "text": "This is her son, she's out right now.",
+    "intents": [
+     "third_party"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Try Sunday afternoon, around two.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-22",
+     "callback_time": "14:00"
+    }
+   },
+   {
+    "text": "Then tonight at nine.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-19",
+     "callback_time": "21:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S5-04",
+  "brief": "S5_realworld_style",
+  "family": "Third party",
+  "level": "hard",
+  "title": "Daughter is the executor of the estate: transfer to estates, not 'deceased'",
+  "variables": {
+   "first_name": "Walter",
+   "last_name": "Brandt",
+   "title": "Mr",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1941-05-19",
+   "ssn_last4": "2290"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 1210.0,
+    "days_delinquent": 26,
+    "payment_amount": 605.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "His daughter answers: he died last month and she is the executor of his estate.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "estate",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "estates"
+    }
+   ]
+  },
+  "checks": [
+   "no account detail is given before the transfer",
+   "310.7(f)(i) executor wins over 310.7(f)(ii) deceased"
+  ],
+  "sim_script": [
+   {
+    "text": "Walter passed away last month. I'm his daughter and the executor of his estate.",
+    "intents": [
+     "deceased",
+     "estate_executor"
+    ],
+    "slots": {}
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S5-05",
+  "brief": "S5_realworld_style",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "US-order numeric DOB, one wrong SSN answer; too much -> floor 25% rounded UP (283)",
+  "variables": {
+   "first_name": "Ana",
+   "last_name": "Whitlock",
+   "title": "Ms",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1981-04-07",
+   "ssn_last4": "4423"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 1130.0,
+    "days_delinquent": 21,
+    "payment_amount": 565.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. DOB said as 04/07/81 (April 7). SSN 4432 (wrong) then 4423. Full amount too much; accepts the floor on Wednesday 25 November. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 283.0,
+     "date": "2026-11-25"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "04/07/81 is read month/day/year = 1981-04-07",
+   "floor = ceil(0.25 x 1130) = 283 (not 282.50, not 565)",
+   "25 Nov is a business day before the Early-tier date 27 Nov"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Oh-four, oh-seven, eighty-one.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1981-04-07"
+    }
+   },
+   {
+    "text": "Four four three two.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "4432"
+    }
+   },
+   {
+    "text": "Sorry, four four two three.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "4423"
+    }
+   },
+   {
+    "text": "No, that's too much for me right now.",
+    "intents": [
+     "no",
+     "too_much"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "OK, I can do two eighty-three on Wednesday the twenty-fifth.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 283.0,
+     "promise_date": "2026-11-25"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-06",
+  "brief": "S5_realworld_style",
+  "family": "History",
+  "level": "hard",
+  "title": "Two broken promises: latest date becomes the 3rd business day (24 Nov), not the tier's 4 Dec",
+  "variables": {
+   "first_name": "Dennis",
+   "last_name": "Okoro",
+   "title": "Mr",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1977-01-23",
+   "ssn_last4": "6604"
+  },
+  "products": [
+   {
+    "product_type": "signature_loan",
+    "amount_due": 760.0,
+    "days_delinquent": 10,
+    "payment_amount": 190.0,
+    "broken_promises_12m": 2,
+    "last_conversation_date": "2026-10-30"
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Friday 27 November (payday). Accepts the date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 760.0,
+     "date": "2026-11-24"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "27 Nov is a business day for Pinecrest (open the day after Thanksgiving) and inside the Courtesy date 4 Dec, but broken_promises_12m=2 caps the date at the 3rd business day = 24 Nov",
+   "last_conversation_date 30 Oct is long past: no contact hold"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born January twenty-third, seventy-seven.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1977-01-23"
+    }
+   },
+   {
+    "text": "Six six zero four.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "6604"
+    }
+   },
+   {
+    "text": "Not today. I get paid Friday the twenty-seventh, I'll pay it then.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-27"
+    }
+   },
+   {
+    "text": "Fine, Tuesday then.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "without_rule_expected": {
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 760.0,
+     "date": "2026-11-27"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S5-07",
+  "brief": "S5_realworld_style",
+  "family": "Persuasion",
+  "level": "medium",
+  "title": "Pre-charge-off tier: one attempt (full on 23 Nov), refused",
+  "variables": {
+   "first_name": "Yvonne",
+   "last_name": "Tran",
+   "title": "Ms",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1969-12-01",
+   "ssn_last4": "3047"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "9012",
+    "amount_due": 1290.0,
+    "days_delinquent": 61,
+    "minimum_due": 120.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. Cannot pay today. Refuses the offer. (Would accept the smaller amount if a second offer came.)",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "attempt 1 = 1290.00 on 23 Nov (2nd business day)",
+   "no attempt 2 in the Pre-charge-off tier",
+   "trailing turn is reachable only by an agent that makes a second attempt"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born December first, nineteen sixty-nine.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1969-12-01"
+    }
+   },
+   {
+    "text": "Three zero four seven.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "3047"
+    }
+   },
+   {
+    "text": "No, I can't pay today.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Well, maybe the smaller amount on Monday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-08",
+  "brief": "S5_realworld_style",
+  "family": "Persuasion",
+  "level": "hard",
+  "title": "Early tier: attempt 2 = floor 161 (25% of 642.40 rounded up beats minimum_due 95) on 27 Nov",
+  "variables": {
+   "first_name": "Paul",
+   "last_name": "Ferreira",
+   "title": "Mr",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1993-08-14",
+   "ssn_last4": "1186"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "7305",
+    "amount_due": 642.4,
+    "days_delinquent": 30,
+    "minimum_due": 95.0,
+    "broken_promises_12m": 1,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. No to today. Refuses attempt 1 (full on 27 Nov). Accepts attempt 2 (floor on 27 Nov). Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 161.0,
+     "date": "2026-11-27"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "floor = max(ceil(160.60), 95) = 161",
+   "both attempts on the latest promise date 27 Nov (open on the 27th)",
+   "broken_promises_12m=1 is below the threshold of 2"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born August fourteenth, ninety-three.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1993-08-14"
+    }
+   },
+   {
+    "text": "One one eight six.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "1186"
+    }
+   },
+   {
+    "text": "No.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No, I can't do that.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, that I can do.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-09",
+  "brief": "S5_realworld_style",
+  "family": "Special",
+  "level": "medium",
+  "title": "Represented by an attorney: fixed sentence, note attorney, ATY",
+  "variables": {
+   "first_name": "Rosa",
+   "last_name": "Delgado",
+   "title": "Ms",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1972-02-09",
+   "ssn_last4": "8820"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 980.0,
+    "days_delinquent": 33,
+    "payment_amount": 490.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. After the debt is stated says a lawyer handles this debt.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "attorney",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "attorney"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "says exactly 'Thank you. We will contact your attorney.'",
+   "asks nothing else (no persuasion)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born February ninth, seventy-two.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1972-02-09"
+    }
+   },
+   {
+    "text": "Eight eight two zero.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "8820"
+    }
+   },
+   {
+    "text": "I have a lawyer handling this debt. Talk to him.",
+    "intents": [
+     "attorney"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-10",
+  "brief": "S5_realworld_style",
+  "family": "Special",
+  "level": "hard",
+  "title": "Bankruptcy: no promise even when the member offers money",
+  "variables": {
+   "first_name": "Kevin",
+   "last_name": "Marsh",
+   "title": "Mr",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1986-06-25",
+   "ssn_last4": "4109"
+  },
+  "products": [
+   {
+    "product_type": "signature_loan",
+    "amount_due": 540.0,
+    "days_delinquent": 18,
+    "payment_amount": 135.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. Says he filed for Chapter 7 last week but can still send fifty dollars.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "bankruptcy",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "bankruptcy"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "says 'Thank you for letting us know.'",
+   "no create_promise call",
+   "310.15(e) precedes the amount rules"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born June twenty-fifth, eighty-six.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1986-06-25"
+    }
+   },
+   {
+    "text": "Four one zero nine.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "4109"
+    }
+   },
+   {
+    "text": "I filed for Chapter 7 last week. I can still send you fifty dollars though.",
+    "intents": [
+     "bankruptcy"
+    ],
+    "slots": {
+     "promise_amount": 50.0
+    }
+   }
+  ]
+ },
+ {
+  "id": "S5-11",
+  "brief": "S5_realworld_style",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "Contact hold boundary: day 7 is held (loan), day 8 is not (card)",
+  "variables": {
+   "first_name": "Hannah",
+   "last_name": "Liu",
+   "title": "Ms",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1990-10-03",
+   "ssn_last4": "5562"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "8830",
+    "amount_due": 300.0,
+    "days_delinquent": 12,
+    "minimum_due": 30.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": "2026-11-12"
+   },
+   {
+    "product_type": "signature_loan",
+    "amount_due": 450.0,
+    "days_delinquent": 20,
+    "payment_amount": 225.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": "2026-11-13"
+   }
+  ],
+  "script": "Confirms. Pays the card today. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 300.0,
+     "date": "2026-11-19"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "contact_hold"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "card: 12 Nov + 6 = 18 Nov < 19 Nov -> not held, stated",
+   "loan: 13 Nov + 6 = 19 Nov = call date -> held: not stated, not asked, one note contact_hold",
+   "the 'pay today' question covers only the card"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born October third, nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1990-10-03"
+    }
+   },
+   {
+    "text": "Five five six two.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "5562"
+    }
+   },
+   {
+    "text": "Yes, I'll pay that today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "product_ref": "the card"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-12",
+  "brief": "S5_realworld_style",
+  "family": "Special",
+  "level": "medium",
+  "title": "Stop calling: one request is enough",
+  "variables": {
+   "first_name": "Brian",
+   "last_name": "Kessler",
+   "title": "Mr",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1979-04-30",
+   "ssn_last4": "9071"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "2264",
+    "amount_due": 210.0,
+    "days_delinquent": 7,
+    "minimum_due": 25.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. Asks the credit union to stop calling him.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "cease",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "cease"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "says 'I have noted your request.'",
+   "not treated as 'does not want to talk' (which would need two)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born April thirtieth, seventy-nine.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1979-04-30"
+    }
+   },
+   {
+    "text": "Nine zero seven one.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "9071"
+    }
+   },
+   {
+    "text": "Stop calling me about this.",
+    "intents": [
+     "cease"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-13",
+  "brief": "S5_realworld_style",
+  "family": "Transfer",
+  "level": "medium",
+  "title": "Skip-a-pay request: loan_servicing, transferred/restructuring",
+  "variables": {
+   "first_name": "Diane",
+   "last_name": "Foster",
+   "title": "Ms",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1966-09-17",
+   "ssn_last4": "3385"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 700.0,
+    "days_delinquent": 16,
+    "payment_amount": 350.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Confirms. Asks for a skip-a-pay this month.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "restructuring",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "loan_servicing"
+    }
+   ]
+  },
+  "checks": [
+   "no option is described",
+   "no note on transfer"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born September seventeenth, sixty-six.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1966-09-17"
+    }
+   },
+   {
+    "text": "Three three eight five.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "3385"
+    }
+   },
+   {
+    "text": "Can I do a skip-a-pay this month instead?",
+    "intents": [
+     "restructure"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S5-14",
+  "brief": "S5_realworld_style",
+  "family": "Transfer",
+  "level": "medium",
+  "title": "Scam question before confirming; then insists on a person",
+  "variables": {
+   "first_name": "Omar",
+   "last_name": "Haddad",
+   "title": "Mr",
+   "now": "2026-11-19T15:10"
+  },
+  "identity": {
+   "date_of_birth": "1988-05-05",
+   "ssn_last4": "6240"
+  },
+  "products": [
+   {
+    "product_type": "signature_loan",
+    "amount_due": 380.0,
+    "days_delinquent": 5,
+    "payment_amount": 95.0,
+    "broken_promises_12m": 0,
+    "last_conversation_date": null
+   }
+  ],
+  "script": "Asks whether this is a scam, then confirms. Asks for a real person, insists.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "human",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "member_services"
+    }
+   ]
+  },
+  "checks": [
+   "scam answer points to the number on the card or statement",
+   "asks once whether it can help before transferring"
+  ],
+  "sim_script": [
+   {
+    "text": "Who is this? Is this a scam?",
+    "intents": [
+     "ask_scam"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, this is Omar.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Born May fifth, eighty-eight.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1988-05-05"
+    }
+   },
+   {
+    "text": "Six two four zero.",
+    "intents": [],
+    "slots": {
+     "id_ssn_last4": "6240"
+    }
+   },
+   {
+    "text": "Can I talk to a real person?",
+    "intents": [
+     "human"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No, I want a person.",
+    "intents": [
+     "human"
+    ],
+    "slots": {}
+   }
+  ]
+ }
+]

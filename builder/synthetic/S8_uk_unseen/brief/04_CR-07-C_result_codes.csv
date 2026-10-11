@@ -1,0 +1,22 @@
+# Kittiwake Bank plc - CR-07 Appendix C - Call result codes, digital assistant - exported 12/10/2026 14:03 by MI
+result_code,close_outcome,close_reason,description,policy_ref,status,valid_from,valid_to
+R01,promise,,"At least one promise to pay recorded (see 5.26 for which code wins)",5.26 (d),active,01/09/2026,
+R02,paid,,"Every late product reported as already paid, no promise recorded",5.15,active,01/09/2026,
+R10,transferred,income_review,"Customer accepted a Financial Support review of income and outgoings (queue restructuring)",5.11,active,01/09/2026,
+R11,transferred,specialist_support,"Customer accepted the Specialist Support team (queue support)",5.12,active,01/09/2026,
+R12,transferred,human,"Customer insisted on speaking to a person (queue general)",5.17,active,01/09/2026,
+R13,transferred,breathing_space_referral,"Breathing space referred to Specialist Support",5.13 (old),retired,01/09/2026,13/10/2026
+R20,no_promise,breathing_space,"Customer is in a breathing space (standard or mental health crisis); promises already recorded stay",5.13 (CPN-2026-019),active,14/10/2026,
+R21,no_promise,debt_advice,"Customer is getting debt advice; collection on hold for 30 days",5.14,active,01/09/2026,
+R22,no_promise,refused,"Customer refused; the persuasion attempt was used",5.9.5 / 5.19,active,01/09/2026,
+R23,no_promise,hardship,"Financial difficulty or vulnerability; customer declined the review or Specialist Support",5.11 / 5.12,active,01/09/2026,
+R24,no_promise,dispute,"Customer disputes the debt",5.16,active,01/09/2026,
+R25,no_promise,service_error,"create_promise failed twice",5.22,active,01/09/2026,
+R30,not_verified,id_failed,"Two wrong security answers",5.5.4,active,01/09/2026,
+R31,not_verified,id_declined,"Customer would not answer the security questions",5.5.5 / 5.19,active,01/09/2026,
+R40,not_reached,callback_booked,"Someone else answered; callback booked",5.4.3,active,01/09/2026,
+R41,not_reached,no_callback,"Someone else answered; no valid callback time",5.4.4,active,01/09/2026,
+R42,not_reached,wrong_number,"Number does not belong to the customer",5.4.5,active,01/09/2026,
+R43,not_reached,bereavement,"Told that the customer has died",5.4.6,active,01/09/2026,
+R44,not_reached,no_rpc,"Could not confirm we were speaking to the customer",5.3.4,active,01/09/2026,
+R45,not_reached,unclear,"Replaced by R44 no_rpc",5.3.4,retired,01/03/2026,31/08/2026

@@ -1,0 +1,554 @@
+{
+ "openapi": "3.0.3",
+ "info": {
+  "title": "Kestrel Mutual Bank - arrears call tools",
+  "version": "2.1.0",
+  "description": "Mock of Kestrel Mutual Bank's systems (synthetic test material). Every call is written to the ledger. The service does not enforce the call specification: it records a promise on a public holiday or past the limit without complaint."
+ },
+ "servers": [
+  {
+   "url": "https://freya-bank-mock.freyavoice.workers.dev/v1"
+  }
+ ],
+ "components": {
+  "schemas": {
+   "CustomerRef": {
+    "type": "object",
+    "properties": {
+     "customer_id": {
+      "type": "string",
+      "description": "From the call variables. The secret of one call."
+     }
+    },
+    "required": [
+     "customer_id"
+    ]
+   },
+   "Result": {
+    "type": "object",
+    "properties": {
+     "ok": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "ok"
+    ]
+   },
+   "IsoDate": {
+    "type": "string",
+    "format": "date",
+    "description": "YYYY-MM-DD"
+   },
+   "VerifyRequest": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/CustomerRef"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "field": {
+        "type": "string",
+        "enum": [
+         "postcode",
+         "birth_year"
+        ],
+        "description": "Ask postcode first, then birth_year."
+       },
+       "answer": {
+        "type": "string",
+        "description": "postcode: four digits, leading zero kept (e.g. 0870). birth_year: four digits (e.g. 1984). An unreadable value is rejected with ok=false and is not counted as a wrong answer."
+       }
+      },
+      "required": [
+       "field",
+       "answer"
+      ]
+     }
+    ]
+   },
+   "VerifyResult": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/Result"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "verified": {
+        "type": "boolean",
+        "description": "This answer was correct."
+       },
+       "wrong_answers_left": {
+        "type": "integer"
+       },
+       "all_verified": {
+        "type": "boolean",
+        "description": "Both questions passed; get_account is now allowed."
+       }
+      }
+     }
+    ]
+   },
+   "Product": {
+    "type": "object",
+    "properties": {
+     "product_id": {
+      "type": "string"
+     },
+     "kind": {
+      "type": "string",
+      "enum": [
+       "card",
+       "personal_loan",
+       "vehicle_loan"
+      ],
+      "description": "Say 'credit card ending <card_last4>', 'personal loan' or 'car loan'."
+     },
+     "card_last4": {
+      "type": "string",
+      "description": "kind=card only"
+     },
+     "arrears_amount": {
+      "type": "number",
+      "description": "AUD in arrears now"
+     },
+     "days_in_arrears": {
+      "type": "integer"
+     },
+     "min_repayment": {
+      "type": "number",
+      "description": "kind=card only"
+     },
+     "scheduled_repayment": {
+      "type": "number",
+      "description": "personal_loan and vehicle_loan only"
+     }
+    },
+    "required": [
+     "product_id",
+     "kind",
+     "arrears_amount",
+     "days_in_arrears"
+    ]
+   },
+   "AccountResult": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/Result"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "products": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 3,
+        "items": {
+         "$ref": "#/components/schemas/Product"
+        }
+       }
+      }
+     }
+    ]
+   },
+   "PromiseRequest": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/CustomerRef"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "product_id": {
+        "type": "string"
+       },
+       "amount": {
+        "type": "number"
+       },
+       "date": {
+        "$ref": "#/components/schemas/IsoDate"
+       }
+      },
+      "required": [
+       "product_id",
+       "amount",
+       "date"
+      ]
+     }
+    ]
+   },
+   "PromiseResult": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/Result"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "promise_id": {
+        "type": "string"
+       }
+      }
+     }
+    ]
+   },
+   "NoteRequest": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/CustomerRef"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "product_id": {
+        "type": "string"
+       },
+       "reason": {
+        "type": "string",
+        "enum": [
+         "refused",
+         "hardship",
+         "dispute",
+         "paid",
+         "service_error",
+         "collection_hold"
+        ]
+       },
+       "text": {
+        "type": "string",
+        "description": "Optional free text."
+       }
+      },
+      "required": [
+       "product_id",
+       "reason"
+      ]
+     }
+    ]
+   },
+   "CallbackRequest": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/CustomerRef"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "date": {
+        "$ref": "#/components/schemas/IsoDate"
+       },
+       "time": {
+        "type": "string",
+        "pattern": "^[0-2][0-9]:[0-5][0-9]$",
+        "description": "HH:MM, customer's local time"
+       }
+      },
+      "required": [
+       "date",
+       "time"
+      ]
+     }
+    ]
+   },
+   "TransferRequest": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/CustomerRef"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "queue": {
+        "type": "string",
+        "enum": [
+         "hardship_team",
+         "customer_care",
+         "arrangements"
+        ]
+       }
+      },
+      "required": [
+       "queue"
+      ]
+     }
+    ]
+   },
+   "CloseRequest": {
+    "allOf": [
+     {
+      "$ref": "#/components/schemas/CustomerRef"
+     },
+     {
+      "type": "object",
+      "properties": {
+       "outcome": {
+        "type": "string",
+        "enum": [
+         "promise",
+         "paid",
+         "transferred",
+         "no_promise",
+         "not_verified",
+         "not_reached"
+        ]
+       },
+       "reason": {
+        "type": "string",
+        "enum": [
+         "vulnerable",
+         "hardship",
+         "payment_plan",
+         "human",
+         "refused",
+         "dispute",
+         "collection_hold",
+         "service_error",
+         "failed",
+         "declined",
+         "callback",
+         "no_callback",
+         "wrong_number",
+         "deceased",
+         "unclear"
+        ],
+        "description": "Required for every outcome except promise and paid."
+       }
+      },
+      "required": [
+       "outcome"
+      ]
+     }
+    ]
+   }
+  },
+  "responses": {
+   "ServiceFailure": {
+    "description": "The service failed. Nothing was recorded. The call may be repeated."
+   }
+  }
+ },
+ "paths": {
+  "/verify_identity": {
+   "post": {
+    "summary": "Check one security answer. Three wrong answers in total end the check.",
+    "operationId": "verify_identity",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/VerifyRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out; `error` says why.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/VerifyResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "$ref": "#/components/responses/ServiceFailure"
+     }
+    }
+   }
+  },
+  "/get_account": {
+   "post": {
+    "summary": "The products in arrears, in the order to work them. Refused until both questions pass.",
+    "operationId": "get_account",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CustomerRef"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out; `error` says why.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AccountResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "$ref": "#/components/responses/ServiceFailure"
+     }
+    }
+   }
+  },
+  "/create_promise": {
+   "post": {
+    "summary": "Record one repayment promise. One per product.",
+    "operationId": "create_promise",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PromiseRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out; `error` says why.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/PromiseResult"
+        }
+       }
+      }
+     },
+     "500": {
+      "$ref": "#/components/responses/ServiceFailure"
+     }
+    }
+   }
+  },
+  "/add_note": {
+   "post": {
+    "summary": "Record why a product ended the call without a promise.",
+    "operationId": "add_note",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/NoteRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out; `error` says why.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/Result"
+        }
+       }
+      }
+     },
+     "500": {
+      "$ref": "#/components/responses/ServiceFailure"
+     }
+    }
+   }
+  },
+  "/schedule_callback": {
+   "post": {
+    "summary": "Book a callback for the customer.",
+    "operationId": "schedule_callback",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CallbackRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out; `error` says why.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/Result"
+        }
+       }
+      }
+     },
+     "500": {
+      "$ref": "#/components/responses/ServiceFailure"
+     }
+    }
+   }
+  },
+  "/transfer_to_agent": {
+   "post": {
+    "summary": "Hand the call to a team.",
+    "operationId": "transfer_to_agent",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/TransferRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out; `error` says why.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/Result"
+        }
+       }
+      }
+     },
+     "500": {
+      "$ref": "#/components/responses/ServiceFailure"
+     }
+    }
+   }
+  },
+  "/close_call": {
+   "post": {
+    "summary": "End the call. Always the last tool call. Nothing is accepted after it.",
+    "operationId": "close_call",
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CloseRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "`ok` is false when the action was not carried out; `error` says why.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/Result"
+        }
+       }
+      }
+     },
+     "500": {
+      "$ref": "#/components/responses/ServiceFailure"
+     }
+    }
+   }
+  }
+ }
+}

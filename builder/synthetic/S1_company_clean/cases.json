@@ -1,0 +1,1218 @@
+[
+ {
+  "id": "S1-01",
+  "brief": "S1_company_clean",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Named contact verifies and pays the loan today",
+  "variables": {
+   "first_name": "Priya",
+   "last_name": "Natarajan",
+   "title": "Ms",
+   "company_name": "Ashdown Joinery Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "04517823",
+   "postcode": "40213"
+  },
+  "products": [
+   {
+    "type": "business_loan",
+    "past_due": 2400.0,
+    "days_late": 6,
+    "instalment_amount": 800.0
+   }
+  ],
+  "script": "Confirms she is Priya Natarajan. Company number 04517823, postcode 40213. Says the company can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 2400.0,
+     "date": "2026-10-28"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "company number asked before postcode",
+   "no product, 'payment' or 'overdue' said before identity is verified",
+   "create_promise called exactly once",
+   "the written-confirmation sentence is said after the promise"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero four five one seven eight two three.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "04517823"
+    }
+   },
+   {
+    "text": "Four zero two one three.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "40213"
+    }
+   },
+   {
+    "text": "Yes, we can pay it today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-02",
+  "brief": "S1_company_clean",
+  "family": "Third party",
+  "level": "medium",
+  "title": "Receptionist answers, callback tomorrow at 09:00 (window start, included)",
+  "variables": {
+   "first_name": "Owen",
+   "last_name": "Pritchard",
+   "title": "Mr",
+   "company_name": "Pritchard & Hale Logistics Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "09983412",
+   "postcode": "51107"
+  },
+  "products": [
+   {
+    "type": "overdraft",
+    "past_due": 1500.0,
+    "days_late": 12
+   }
+  ],
+  "script": "The receptionist answers. Says Mr Pritchard is in a meeting and asks what it is about. Says he can be reached tomorrow at nine in the morning.",
+  "expected": {
+   "outcome": "no_contact",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-10-29",
+     "time": "09:00"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "the reason for the call is not given to the receptionist",
+   "callback booked for 2026-10-29 at 09:00",
+   "no identity question asked"
+  ],
+  "sim_script": [
+   {
+    "text": "Good morning, Pritchard and Hale reception. He's in a meeting, what is it about?",
+    "intents": [
+     "third_party",
+     "ask_reason"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Try him tomorrow at nine.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-10-29",
+     "callback_time": "09:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S1-03",
+  "brief": "S1_company_clean",
+  "family": "Third party",
+  "level": "hard",
+  "title": "Colleague offers 17:30 (excluded) and then a holiday Monday",
+  "variables": {
+   "first_name": "Grace",
+   "last_name": "Albright",
+   "title": "Ms",
+   "company_name": "Albright Studio Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "10442981",
+   "postcode": "62240"
+  },
+  "products": [
+   {
+    "type": "business_card",
+    "card_last4": "7710",
+    "past_due": 780.0,
+    "days_late": 9,
+    "minimum_payment": 78.0
+   }
+  ],
+  "script": "A colleague answers. Says Grace is out. Offers Friday at half past five in the afternoon. When asked for another time, offers Monday morning at ten.",
+  "expected": {
+   "outcome": "no_contact",
+   "reason": "no_callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "17:30 is refused because the window end is not included",
+   "only one more time is asked for",
+   "Monday 2 November is refused (holiday, and outside the next two business days)",
+   "no callback is booked"
+  ],
+  "sim_script": [
+   {
+    "text": "No, this is her colleague, Grace is out today.",
+    "intents": [
+     "third_party"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Friday at half past five, she's back then.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-10-30",
+     "callback_time": "17:30"
+    }
+   },
+   {
+    "text": "Then Monday morning at ten.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-02",
+     "callback_time": "10:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S1-04",
+  "brief": "S1_company_clean",
+  "family": "Identity",
+  "level": "medium",
+  "title": "One wrong company number, two wrong postcodes",
+  "variables": {
+   "first_name": "Marek",
+   "last_name": "Kowalczyk",
+   "title": "Mr",
+   "company_name": "Kowalczyk Builders Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "08120456",
+   "postcode": "33019"
+  },
+  "products": [
+   {
+    "type": "business_loan",
+    "past_due": 3100.0,
+    "days_late": 21,
+    "instalment_amount": 1000.0
+   }
+  ],
+  "script": "Confirms the name. Gives company number 08120465, then 08120456. Gives postcode 33091, then 33190. Then asks how much the company owes.",
+  "expected": {
+   "outcome": "not_verified",
+   "reason": "failed",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the third wrong answer (across both questions) ends the check",
+   "no amount or product is stated",
+   "the contact is told to call their relationship manager",
+   "get_account is never called"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero eight one two zero four six five.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "08120465"
+    }
+   },
+   {
+    "text": "Sorry, zero eight one two zero four five six.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "08120456"
+    }
+   },
+   {
+    "text": "Three three zero nine one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "33091"
+    }
+   },
+   {
+    "text": "Three three one nine zero.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "33190"
+    }
+   },
+   {
+    "text": "How much do we owe anyway?",
+    "intents": [
+     "other_question"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-05",
+  "brief": "S1_company_clean",
+  "family": "Identity",
+  "level": "hard",
+  "title": "Does not know the postcode, founded year instead, then already paid",
+  "variables": {
+   "first_name": "Tomas",
+   "last_name": "Lindqvist",
+   "title": "Mr",
+   "company_name": "Nordlys Catering Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "11250364",
+   "founded_year": "2014"
+  },
+  "products": [
+   {
+    "type": "overdraft",
+    "past_due": 640.0,
+    "days_late": 8
+   }
+  ],
+  "script": "Confirms. Company number 11250364. Says he does not know the registered-office postcode. When asked, says the company was founded in 2014. Says the company paid the overdraft yesterday afternoon.",
+  "expected": {
+   "outcome": "paid",
+   "reason": null,
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "paid"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "'I don't know' is not counted as a wrong answer",
+   "founded_year is asked only after the postcode is not known",
+   "the agent says payments take up to two business days to show",
+   "one add_note with reason paid"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "One one two five zero three six four.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "11250364"
+    }
+   },
+   {
+    "text": "I'm sorry, I don't know the postcode of the registered office.",
+    "intents": [
+     "dont_know"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "We were founded in 2014.",
+    "intents": [],
+    "slots": {
+     "id_founded_year": "2014"
+    }
+   },
+   {
+    "text": "We paid that yesterday afternoon.",
+    "intents": [
+     "paid"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-06",
+  "brief": "S1_company_clean",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Arrears band, date exactly on the deadline; company number said with seven digits",
+  "variables": {
+   "first_name": "Aisha",
+   "last_name": "Bello",
+   "title": "Ms",
+   "company_name": "Bello Fresh Foods Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "07730215",
+   "postcode": "28044"
+  },
+  "products": [
+   {
+    "type": "business_card",
+    "card_last4": "7710",
+    "past_due": 960.0,
+    "days_late": 18,
+    "minimum_payment": 96.0
+   }
+  ],
+  "script": "Confirms. Says the company number as 7730215 (seven digits, dropping the leading zero). Postcode 28044. Cannot pay today; offers Thursday 5 November for the full amount. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 960.0,
+     "date": "2026-11-05"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "verify_identity is sent 07730215 (leading zero added)",
+   "5 November is accepted as it is the deadline (5th business day)",
+   "the card is named 'business card ending 7710'"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Seven seven three zero two one five.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "7730215"
+    }
+   },
+   {
+    "text": "Two eight zero four four.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "28044"
+    }
+   },
+   {
+    "text": "Not today, but we can pay on Thursday the fifth of November.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-05"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-07",
+  "brief": "S1_company_clean",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Arrears band, date one business day after the deadline",
+  "variables": {
+   "first_name": "Daniel",
+   "last_name": "Osei",
+   "title": "Mr",
+   "company_name": "Osei Electrical Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "06618830",
+   "postcode": "40877"
+  },
+  "products": [
+   {
+    "type": "business_loan",
+    "past_due": 1500.0,
+    "days_late": 25,
+    "instalment_amount": 500.0
+   }
+  ],
+  "script": "Confirms. Cannot pay today; wants to pay on Friday 6 November. Accepts the latest date when it is offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1500.0,
+     "date": "2026-11-05"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the agent says the latest date it can record is Thursday 5 November",
+   "promise recorded for 2026-11-05"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero six six one eight eight three zero.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "06618830"
+    }
+   },
+   {
+    "text": "Four zero eight seven seven.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "40877"
+    }
+   },
+   {
+    "text": "Not today. Friday the sixth of November.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-06"
+    }
+   },
+   {
+    "text": "Fine, the fifth then.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-08",
+  "brief": "S1_company_clean",
+  "family": "Dates",
+  "level": "hard",
+  "title": "Names a bank holiday: Northwind offers the business day BEFORE it",
+  "variables": {
+   "first_name": "Lucia",
+   "last_name": "Ferraro",
+   "title": "Ms",
+   "company_name": "Ferraro Interiors Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "05290017",
+   "postcode": "17305"
+  },
+  "products": [
+   {
+    "type": "business_card",
+    "card_last4": "4415",
+    "past_due": 640.0,
+    "days_late": 3,
+    "minimum_payment": 64.0
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Monday 2 November. Accepts the day that is offered instead. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 640.0,
+     "date": "2026-10-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "2 November is recognised as a Northwind holiday",
+   "the agent offers Friday 30 October (previous business day), not 3 November"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero five two nine zero zero one seven.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "05290017"
+    }
+   },
+   {
+    "text": "One seven three zero five.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "17305"
+    }
+   },
+   {
+    "text": "Not today. Monday the second of November.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-02"
+    }
+   },
+   {
+    "text": "OK, Friday then.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-09",
+  "brief": "S1_company_clean",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "Overdraft floor: 15% of 1833.33 rounded to the penny",
+  "variables": {
+   "first_name": "Henrik",
+   "last_name": "Dahl",
+   "title": "Mr",
+   "company_name": "Dahl Marine Supplies Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "03381954",
+   "postcode": "70112"
+  },
+  "products": [
+   {
+    "type": "overdraft",
+    "past_due": 1833.33,
+    "days_late": 9
+   }
+  ],
+  "script": "Confirms. Says not today and that the full amount is too much right now. Accepts the minimum the agent offers on the date the agent offers. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 275.0,
+     "date": "2026-11-03"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the floor offered is 275.00 (15% of 1833.33 = 274.9995, rounded)",
+   "the agent says the rest stays overdue",
+   "the date offered is Tuesday 3 November (3rd business day after today, skipping the 2 November holiday)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero three three eight one nine five four.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "03381954"
+    }
+   },
+   {
+    "text": "Seven zero one one two.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "70112"
+    }
+   },
+   {
+    "text": "Not today, and the full amount is too much for us at the moment.",
+    "intents": [
+     "no",
+     "too_much"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, we can do that.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-10",
+  "brief": "S1_company_clean",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "Overdraft floor capped at 400; proposes 300",
+  "variables": {
+   "first_name": "Rosa",
+   "last_name": "Mendes",
+   "title": "Ms",
+   "company_name": "Mendes Print Works Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "09017732",
+   "postcode": "55021"
+  },
+  "products": [
+   {
+    "type": "overdraft",
+    "past_due": 3000.0,
+    "days_late": 14
+   }
+  ],
+  "script": "Confirms. Not today; offers 300 pounds on Friday. Accepts the amount the agent offers on Friday. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 400.0,
+     "date": "2026-10-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "300 is refused as below the floor",
+   "the floor offered is 400.00 (lower of 450.00 and 400.00)",
+   "no 'how much can you pay' question"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero nine zero one seven seven three two.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "09017732"
+    }
+   },
+   {
+    "text": "Five five zero two one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "55021"
+    }
+   },
+   {
+    "text": "Not today. We could pay three hundred on Friday.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_amount": 300.0,
+     "promise_date": "2026-10-30"
+    }
+   },
+   {
+    "text": "All right, four hundred on Friday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-11",
+  "brief": "S1_company_clean",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "Three products in three bands, one date for all",
+  "variables": {
+   "first_name": "Ingrid",
+   "last_name": "Halvorsen",
+   "title": "Ms",
+   "company_name": "Halvorsen Bakery Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "12004418",
+   "postcode": "36410"
+  },
+  "products": [
+   {
+    "type": "business_card",
+    "card_last4": "7710",
+    "past_due": 820.0,
+    "days_late": 5,
+    "minimum_payment": 82.0
+   },
+   {
+    "type": "business_loan",
+    "past_due": 2100.0,
+    "days_late": 18,
+    "instalment_amount": 700.0
+   },
+   {
+    "type": "overdraft",
+    "past_due": 1250.0,
+    "days_late": 40
+   }
+  ],
+  "script": "Confirms. Cannot pay everything today. Wants to pay all three in full on Friday 6 November. Accepts the read-back with the earlier dates. Confirms once.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 820.0,
+     "date": "2026-11-06"
+    },
+    {
+     "product_id": "p2",
+     "amount": 2100.0,
+     "date": "2026-11-05"
+    },
+    {
+     "product_id": "p3",
+     "amount": 1250.0,
+     "date": "2026-10-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "all three products stated before asking for payment, in get_account order",
+   "card on 6 November (watch band, deadline 12 November)",
+   "loan on its deadline 5 November (arrears)",
+   "overdraft on its deadline 30 October (recovery, 2nd business day)",
+   "one read-back naming the three dates"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "One two zero zero four four one eight.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "12004418"
+    }
+   },
+   {
+    "text": "Three six four one zero.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "36410"
+    }
+   },
+   {
+    "text": "Not everything today. We can pay all three on Friday the sixth of November.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-06"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-12",
+  "brief": "S1_company_clean",
+  "family": "Insolvency",
+  "level": "medium",
+  "title": "Company is in administration",
+  "variables": {
+   "first_name": "Graham",
+   "last_name": "Doyle",
+   "title": "Mr",
+   "company_name": "Doyle Haulage Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "04988120",
+   "postcode": "21907"
+  },
+  "products": [
+   {
+    "type": "business_loan",
+    "past_due": 5200.0,
+    "days_late": 33,
+    "instalment_amount": 1300.0
+   }
+  ],
+  "script": "Confirms. When asked whether the company can pay today, says the company went into administration last week and the administrator handles everything.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "insolvency",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "insolvency"
+    }
+   ]
+  },
+  "checks": [
+   "no persuasion attempt",
+   "transfer_to_agent with queue insolvency",
+   "no add_note"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero four nine eight eight one two zero.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "04988120"
+    }
+   },
+   {
+    "text": "Two one nine zero seven.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "21907"
+    }
+   },
+   {
+    "text": "We went into administration last week. The administrator is handling everything now.",
+    "intents": [
+     "insolvency"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S1-13",
+  "brief": "S1_company_clean",
+  "family": "Tool failure",
+  "level": "hard",
+  "title": "Disputes the card, promises the loan; first create_promise fails",
+  "variables": {
+   "first_name": "Nadia",
+   "last_name": "Haddad",
+   "title": "Ms",
+   "company_name": "Haddad Pharmacy Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "10773356",
+   "postcode": "48230"
+  },
+  "products": [
+   {
+    "type": "business_card",
+    "card_last4": "3021",
+    "past_due": 450.0,
+    "days_late": 7,
+    "minimum_payment": 45.0
+   },
+   {
+    "type": "business_loan",
+    "past_due": 1200.0,
+    "days_late": 10,
+    "instalment_amount": 400.0
+   }
+  ],
+  "script": "Confirms. Not everything today. Says the company never had a business card with Northwind. Accepts the offer for the loan. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p2",
+     "amount": 1200.0,
+     "date": "2026-11-03"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "dispute"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the card is noted as dispute and the call continues",
+   "loan offered in full on Tuesday 3 November (attempt 1)",
+   "create_promise retried once after the failure",
+   "'recorded' said only after ok: true"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "One zero seven seven three three five six.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "10773356"
+    }
+   },
+   {
+    "text": "Four eight two three zero.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "48230"
+    }
+   },
+   {
+    "text": "Not everything today, no.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "That card isn't ours, we never had a business card with you.",
+    "intents": [
+     "dispute"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, that works for the loan.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "fail_first": "create_promise"
+ },
+ {
+  "id": "S1-14",
+  "brief": "S1_company_clean",
+  "family": "Refusal",
+  "level": "medium",
+  "title": "Recovery band: one attempt, no floor",
+  "variables": {
+   "first_name": "Victor",
+   "last_name": "Nguyen",
+   "title": "Mr",
+   "company_name": "Nguyen Auto Repairs Ltd",
+   "now": "2026-10-28T10:15"
+  },
+  "identity": {
+   "company_number": "08856102",
+   "postcode": "61733"
+  },
+  "products": [
+   {
+    "type": "overdraft",
+    "past_due": 980.0,
+    "days_late": 45
+   }
+  ],
+  "script": "Confirms. Cannot pay today. Refuses the date the agent proposes. (Would accept a smaller amount if one were offered, but the brief allows none.)",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "attempt 1 is the full 980.00 on Friday 30 October (the deadline, earlier than the 3rd business day)",
+   "no floor or smaller amount is offered",
+   "add_note refused for p1",
+   "the call closes after the single attempt"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Zero eight eight five six one zero two.",
+    "intents": [],
+    "slots": {
+     "id_company_number": "08856102"
+    }
+   },
+   {
+    "text": "Six one seven three three.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "61733"
+    }
+   },
+   {
+    "text": "No, we can't pay today.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No, we're not paying that this week.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Well, if it was a smaller amount, then yes.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ }
+]

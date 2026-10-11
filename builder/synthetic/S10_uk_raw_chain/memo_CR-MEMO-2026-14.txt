@@ -1,0 +1,41 @@
+[synthetic test material - fictional bank]
+
+PENNINE & WHARFE BANK PLC                                       INTERNAL MEMORANDUM
+                                                                Ref:  CR-MEMO-2026-14
+To:       Collections & Recoveries; Contact Centre Operations; Digital Voice (Automated Assistant)
+From:     Head of Collections & Recoveries, with Compliance (R. Price)
+Date:     09/11/2026
+Subject:  CRP-07 Part 5 - further changes; partial withdrawal of CR-MEMO-2026-11
+
+This memo amends CRP-07 Part 5 (Rev. 4) and CR-MEMO-2026-11. Where they differ, this memo
+applies from the effective date of each item. Before that date the earlier text still applies.
+
+ITEM 1 - Migration date moved (replaces CR-MEMO-2026-11 item 2)
+EFFECTIVE: immediately (calls placed on or after 09/11/2026)
+   The core banking migration has been moved by one week, to Friday 27/11/2026.
+   - 20/11/2026 is a normal business day again.
+   - 27/11/2026 is NOT a business day: no promise may be dated on it and no callback booked for it.
+
+ITEM 2 - Band 2 limit (withdraws CR-MEMO-2026-11 item 1)
+EFFECTIVE: calls placed on or after Monday 16/11/2026
+   The pilot of a 6th-business-day limit for Band 2 has not improved kept-promise rates.
+   CR-MEMO-2026-11 item 1 is withdrawn: Band 2 returns to the 5th business day after today, as
+   in 5.7.2. (Calls placed before 16/11/2026 keep the 6th business day.)
+
+ITEM 3 - Payment plan requests (amends 5.11.3)
+EFFECTIVE: calls placed on or after Monday 16/11/2026
+   Payment plan requests are now handled by the new Financial Support team. 5.11.3 now ends:
+   "... transfer_to_agent queue "financial_support" and close (code XFS)." Code XPP must not be
+   used for calls placed on or after 16/11/2026. Everything else in 5.11.3 is unchanged.
+
+ITEM 4 - Band 3 persuasion attempts (amends 5.7.2 and 5.9.2)
+EFFECTIVE: immediately (calls placed on or after 09/11/2026)
+   Following the Q3 2026 Consumer Duty outcomes review of Band 3 calls (pressure to pay, CONC
+   7.3.10R), Band 3 accounts get ONE persuasion attempt (attempt 1 only). There is no attempt 2
+   for Band 3.
+
+NOT CHANGED (for the avoidance of doubt): CR-MEMO-2026-11 items 3 (debt advice hold) and 4 (no
+Saturday callbacks); Band 1 and Band 3 promise-date limits; identity questions (5.5); fixed
+sentences.
+
+R. Price, Compliance

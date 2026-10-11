@@ -1,0 +1,130 @@
+From: Owen Pratt <o.pratt@brightwater-cb.example>
+Sent: Tuesday, 17 November 2026 08:52
+To: Voice Agent Build <voice-build@brightwater-cb.example>
+Subject: Fwd: RE: RE: Voice agent - open points before cut-over
+Attachments: COL-POL-12_v5.1_extract.pdf; M-2026-031.pdf; M-2026-034.pdf; disposition_codes_2026-11-12.csv
+
+Team,
+
+Forwarding the whole chain so you have the history. My TL;DR (from memory, so check
+against the memos - the memo text is what counts):
+- callbacks now end at 19:00, Rachel's call, Compliance OK'd it
+- NO change to the "speak to a person" rule, Hal shot that down
+- Tier 2 is four business days per 031
+- we stop-call people who ask now (034)
+- ignore the Christmas Eve thing below, nothing was decided
+
+Cut-over is Wednesday 18th.
+
+Owen
+
+Owen Pratt | Product Manager, Digital Channels | Brightwater Community Bank
+
+
+---------- Forwarded message ----------
+From: Rachel Kim <r.kim@brightwater-cb.example>
+Date: Fri, 6 Nov 2026 at 17:31
+Subject: RE: RE: Voice agent - open points before cut-over
+To: Hal Okoye <h.okoye@brightwater-cb.example>, Owen Pratt <o.pratt@brightwater-cb.example>
+Cc: Dev Malhotra <dev.malhotra@vendor-voice.example>, Collections Team Leads <coll-tl@brightwater-cb.example>
+
+
+Thanks Hal. Confirming for the record, as policy owner:
+
+Callback window: from Monday 9 November the latest callback we book is 19:00 (19:00 itsel=
+f is fine). The start stays at 09:00, same day / next business day rule unchanged. The ev=
+ening team is being disbanded so nobody would be there at 19:30. This replaces the 20:00 i=
+n 3.2, for the agent and for staff.
+
+On the person-transfer point I accept Hal's answer: 6.4 stays as it is.
+
+Rachel
+
+Rachel Kim
+Head of Collections
+Brightwater Community Bank
+-------------------------------------------------
+This message and any attachment are confidential. If you are not the intended recipient=
+ please delete it and notify the sender.
+
+-----Original Message-----
+From: Rachel Kim
+Sent: 06 November 2026 09:14
+To: Hal Okoye; Owen Pratt
+Cc: Dev Malhotra; Collections Team Leads
+Subject: RE: RE: Voice agent - open points before cut-over
+
++1 to Hal. Also I'd love the agent to waive the late fee on the spot for anyone who pays =
+in full today - parking that for 2027, don't build.
+
+Sent from my iPhone
+
+> On 5 Nov 2026, at 18:02, Hal Okoye <h.okoye@brightwater-cb.example> wrote:
+>
+> Rachel, Owen,
+>
+> Callbacks: no objection from Compliance to ending at 19:00.
+>
+> Transferring to a person straight away: no. 6.4 stays as written - the agent makes one
+> attempt to help first and transfers if the customer insists. That is the wording the
+> Committee approved and I don't want the bot and the floor doing different things. If
+> you want it changed it goes through Policy Governance like everything else.
+>
+> Also, someone on the floor told me we're closing on Christmas Eve this year? I haven't
+> seen anything. Rachel do you know?
+>
+> Hal Okoye | Compliance Advisory
+>
+>> -----Original Message-----
+>> From: Rachel Kim
+>> Sent: 04 November 2026 16:40
+>> To: Hal Okoye; Owen Pratt
+>> Cc: Dev Malhotra
+>> Subject: RE: Voice agent - open points before cut-over
+>>
+>> Two asks before cut-over, Hal can you OK them:
+>> (1) when someone asks for a human, put them straight through to customer_care, no
+>> "can I help first". We had complaints in the pilot.
+>> (2) end callbacks at 19:00 instead of 20:00 - evening shift is going.
+>>
+>> Dev's questions answered inline below in [RK].
+>>
+>>> -----Original Message-----
+>>> From: Dev Malhotra
+>>> Sent: 02 November 2026 11:05
+>>> To: Owen Pratt; Rachel Kim
+>>> Subject: Voice agent - open points before cut-over
+>>>
+>>> Hi both, a few things we need pinned before go-live:
+>>>
+>>> a) Hardship reason: the pilot sent "financial_hardship", the new API spec says
+>>> "hardship". Which one?
+>>> [RK] hardship. financial_hardship was the pilot code, it is retired. The code list
+>>> has both, use the active one.
+>>>
+>>> b) The policy says "Not reached" for third-party calls but the API outcome list says
+>>> no_contact. Same thing?
+>>> [RK] Yes. Send what the API and the code list say.
+>>>
+>>> c) Complaints - is there a complaints queue we transfer to?
+>>> [RK] Not on the voice platform. There is no complaints rule for the agent; if they
+>>> insist on a person it's 6.4.
+>>>
+>>> d) Do we leave voicemails?
+>>> [RK] No. Never.
+>>>
+>>> e) The 2nd security question changes to phone digits on 23 Nov per 031 - do you
+>>> want us to build both?
+>>> [RK] Build ZIP. I'll come back on the phone digits.
+>>>
+>>> Thanks, Dev
+>>>
+>>> Dev Malhotra | Solutions Engineer | VendorVoice
+
+________________________________
+From: Owen Pratt
+Sent: 03 November 2026 07:00
+Subject: Automatic reply: Voice agent - open points before cut-over
+
+I am out of the office until Wednesday 4 November with limited access to e-mail. For
+urgent Digital Channels matters please contact digital-oncall@brightwater-cb.example.

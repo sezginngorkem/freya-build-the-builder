@@ -1,0 +1,2233 @@
+[
+ {
+  "id": "RP-01",
+  "brief": "A",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "Full amount is too much, accepts the floor",
+  "variables": {
+   "first_name": "Priya",
+   "last_name": "Nair",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1986-05-17",
+   "phone_last4": "1502"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "1903",
+    "past_due": 2125.1,
+    "days_late": 12,
+    "minimum_payment": 637.5
+   }
+  ],
+  "script": "Verified. Says the full amount is too much right now. If asked how much she can pay, says 'you tell me'. Accepts the minimum payment for this Friday.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 637.5,
+     "date": "2026-10-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "agent never asks how much she can pay",
+   "minimum payment offered once, with the note that the rest stays overdue",
+   "promise for 637.50 on Friday 16 October"
+  ],
+  "replay_of": "Freya sim 2026-10-11 reader_a: 'Can I pay that this Friday instead?' extracted as restructure+date -> transferred",
+  "sim_script": [
+   {
+    "text": "Yes, this is me.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "The seventeenth of May nineteen eighty-six.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "The seventeenth of May nineteen eighty-six."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "One five zero two.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "One five zero two."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "That full amount is too much for me right now.",
+    "intents": [
+     "too_much"
+    ],
+    "slots": {},
+    "act": "inform"
+   },
+   {
+    "text": "Can I make that payment this Friday instead?",
+    "intents": [
+     "restructure"
+    ],
+    "slots": {
+     "promise_date": "this Friday"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-02",
+  "brief": "A",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Wants a date after the deadline",
+  "variables": {
+   "first_name": "Lena",
+   "last_name": "Hoffmann",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1984-01-30",
+   "phone_last4": "2219"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 1250.0,
+    "days_late": 14,
+    "instalment_amount": 400.0
+   }
+  ],
+  "script": "Verified. Says her salary arrives on 6 November and she can pay then. Asks whether she is talking to a robot. Accepts the latest possible date when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1250.0,
+     "date": "2026-10-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "her own date is not counted as a refusal",
+   "promise date is the late-band deadline, 23 October",
+   "agent says it is a digital assistant when asked"
+  ],
+  "replay_of": "Freya sim reader_a: extractor wrote '2024-11-06' for 'the sixth of November' -> treated as past date",
+  "sim_script": [
+   {
+    "text": "Yes, this is me.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Thirtieth of January nineteen eighty four.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "Thirtieth of January nineteen eighty four."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Two two one nine.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "Two two one nine."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I can't pay today because my salary arrives on the sixth of November. I can pay it then.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2024-11-06"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "OK, I can do that.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-03",
+  "brief": "A",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Wants a date after the deadline",
+  "variables": {
+   "first_name": "Lena",
+   "last_name": "Hoffmann",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1984-01-30",
+   "phone_last4": "2219"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 1250.0,
+    "days_late": 14,
+    "instalment_amount": 400.0
+   }
+  ],
+  "script": "Verified. Says her salary arrives on 6 November and she can pay then. Asks whether she is talking to a robot. Accepts the latest possible date when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1250.0,
+     "date": "2026-10-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "her own date is not counted as a refusal",
+   "promise date is the late-band deadline, 23 October",
+   "agent says it is a digital assistant when asked"
+  ],
+  "replay_of": "Freya sim reader_a: 'I need a later date. Can you offer anything' extracted as restructure | not fixable deterministically (no value in the message): fix is the extraction description; verify on Freya",
+  "sim_script": [
+   {
+    "text": "Yes, this is me.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Thirtieth of January nineteen eighty four.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "Thirtieth of January nineteen eighty four."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Two two one nine.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "Two two one nine."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I can't pay today.",
+    "intents": [
+     "no"
+    ],
+    "slots": {},
+    "act": "refuse"
+   },
+   {
+    "text": "I need a later date. Can you offer anything?",
+    "intents": [
+     "restructure"
+    ],
+    "slots": {},
+    "act": "request"
+   },
+   {
+    "text": "The sixth of November.",
+    "intents": [],
+    "slots": {
+     "promise_date": "the sixth of November"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "OK, I can do that.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ],
+  "needs_freya": true
+ },
+ {
+  "id": "RP-04",
+  "brief": "A",
+  "family": "Identity",
+  "level": "medium",
+  "title": "Three wrong answers",
+  "variables": {
+   "first_name": "Owen",
+   "last_name": "Park",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1992-07-21",
+   "phone_last4": "6630"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "0377",
+    "past_due": 95.0,
+    "days_late": 4,
+    "minimum_payment": 28.5
+   }
+  ],
+  "script": "Confirms the name. Gives date of birth 12 July 1991, then 21 August 1992, then 21 July 1990. Gets annoyed and asks how much he owes.",
+  "expected": {
+   "outcome": "not_verified",
+   "reason": "failed",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the check ends after the third wrong answer",
+   "no amount or product disclosed",
+   "customer told to use the app or a branch"
+  ],
+  "replay_of": "Freya sim reader_a: 3rd wrong DOB said together with 'how much do I owe?' -> side question swallowed the answer",
+  "sim_script": [
+   {
+    "text": "Yes, this is Owen Park.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "It is 12 July 1991.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "12 July 1991"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "It is 21 August 1992.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "21 August 1992"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "It is 21 July 1990. This is getting annoying, how much do I owe?",
+    "intents": [
+     "other_question"
+    ],
+    "slots": {
+     "id_date_of_birth": "21 July 1990"
+    },
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-05",
+  "brief": "A",
+  "family": "Dates",
+  "level": "hard",
+  "title": "A vague period, then a holiday",
+  "variables": {
+   "first_name": "Samuel",
+   "last_name": "Ortiz",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1975-12-05",
+   "phone_last4": "7093"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 540.0,
+    "days_late": 5,
+    "instalment_amount": 180.0
+   }
+  ],
+  "script": "Verified. Cannot pay today. Says 'the week after next'. When asked for the exact day, says Monday the 26th. Accepts the next business day when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 540.0,
+     "date": "2026-10-27"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "agent asks once for the exact day",
+   "the agent does not accept 26 October and offers the next business day",
+   "promise recorded for Tuesday 27 October, inside the early-band deadline"
+  ],
+  "replay_of": "Freya sim reader_a: 'I'll have to do it the week after next' -> extractor gave only i_no (period lost)",
+  "sim_script": [
+   {
+    "text": "Yes, this is me.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "December fifth nineteen seventy five.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "December fifth nineteen seventy five."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "seven zero nine three.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "seven zero nine three."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I can't pay that today, I'll have to do it the week after next.",
+    "intents": [
+     "no"
+    ],
+    "slots": {},
+    "act": "refuse"
+   },
+   {
+    "text": "No, I can pay it on Monday the twenty-sixth.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "Monday the twenty-sixth"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I can do that.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-06",
+  "brief": "A",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Confirms identity and pays the full amount today",
+  "variables": {
+   "first_name": "Daniel",
+   "last_name": "Reyes",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1988-03-14",
+   "phone_last4": "4471"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "4821",
+    "past_due": 420.0,
+    "days_late": 6,
+    "minimum_payment": 126.0
+   }
+  ],
+  "script": "Confirms he is Daniel Reyes. Date of birth 14 March 1988, last four digits 4471. Says he can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 420.0,
+     "date": "2026-10-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "both security questions passed before get_account",
+   "the word 'collections' is not said before identity is verified",
+   "create_promise called exactly once",
+   "text-message sentence said after the promise"
+  ],
+  "replay_of": "Freya chat v4: i_other_question=True from turn 1 never reset (boolean ignores '') -> 'I don't have that information' forever",
+  "sim_script": [
+   {
+    "text": "Hello, who is this?",
+    "intents": [
+     "other_question"
+    ],
+    "slots": {},
+    "act": "question"
+   },
+   {
+    "text": "Yes, that's me, Daniel Reyes.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Fourteenth of March, nineteen eighty-eight.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "Fourteenth of March, nineteen eighty-eight"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Four four... seven one.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "4471"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I can pay it today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "today"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-07",
+  "brief": "A",
+  "family": "Already paid",
+  "level": "medium",
+  "title": "Says she already paid",
+  "variables": {
+   "first_name": "Hannah",
+   "last_name": "Schmidt",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1993-04-28",
+   "phone_last4": "3317"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "5512",
+    "past_due": 180.0,
+    "days_late": 5,
+    "minimum_payment": 54.0
+   }
+  ],
+  "script": "Verified. Says she paid it in the app this morning.",
+  "expected": {
+   "outcome": "paid",
+   "reason": null,
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "agent says payments can take one business day to appear",
+   "no promise recorded"
+  ],
+  "replay_of": "Freya sim v5: 'Twenty-eight April nineteen ninety-three' unreadable -> DOB asked 50 times",
+  "sim_script": [
+   {
+    "text": "Yes, this is me.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Twenty-eight April nineteen ninety-three.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "Twenty-eight April nineteen ninety-three."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Three three one seven.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "Three three one seven."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I paid it in the app this morning.",
+    "intents": [
+     "paid"
+    ],
+    "slots": {},
+    "act": "inform"
+   }
+  ]
+ },
+ {
+  "id": "RP-08",
+  "brief": "A",
+  "family": "Hardship",
+  "level": "medium",
+  "title": "Lost his job, declines the support team",
+  "variables": {
+   "first_name": "Tomas",
+   "last_name": "Novak",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1990-09-09",
+   "phone_last4": "8846"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 780.0,
+    "days_late": 21,
+    "instalment_amount": 260.0
+   }
+  ],
+  "script": "Verified. Says he lost his job last month and cannot pay anything. Asks for a discount. Does not want to be transferred.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "one sentence of sympathy",
+   "no persuasion attempt although the band is late",
+   "support team offered once",
+   "no discount, waiver or plan offered"
+  ],
+  "replay_of": "Freya sim v5: 'Can I get a discount?' extracted as restructure -> transferred",
+  "sim_script": [
+   {
+    "text": "Yes, this is me.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Nine September nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "Nine September nineteen ninety."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Eight eight four six.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "Eight eight four six."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I lost my job last month and I cannot pay anything right now. Can I get a discount on what I owe?",
+    "intents": [
+     "hardship"
+    ],
+    "slots": {},
+    "act": "inform"
+   },
+   {
+    "text": "No, I do not want to be transferred. Can you just give me a discount?",
+    "intents": [
+     "no"
+    ],
+    "slots": {},
+    "act": "refuse"
+   }
+  ]
+ },
+ {
+  "id": "RP-09",
+  "brief": "A",
+  "family": "Hardship",
+  "level": "medium",
+  "title": "Lost his job, declines the support team",
+  "variables": {
+   "first_name": "Tomas",
+   "last_name": "Novak",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1990-09-09",
+   "phone_last4": "8846"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 780.0,
+    "days_late": 21,
+    "instalment_amount": 260.0
+   }
+  ],
+  "script": "Verified. Says he lost his job last month and cannot pay anything. Asks for a discount. Does not want to be transferred.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "one sentence of sympathy",
+   "no persuasion attempt although the band is late",
+   "support team offered once",
+   "no discount, waiver or plan offered"
+  ],
+  "replay_of": "Freya sim 2026-10-11 reader_a2: hardship+restructure flagged together; carry-over fired restructure after the hardship offer -> transferred",
+  "sim_script": [
+   {
+    "text": "Yes, this is Tomas Novak.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Ninth of September nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "Ninth of September nineteen ninety."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Eight eight four six.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "Eight eight four six."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I lost my job last month and I cannot pay anything. Is there any way I can get a discount on the amount?",
+    "intents": [
+     "hardship",
+     "restructure"
+    ],
+    "slots": {},
+    "act": "request"
+   },
+   {
+    "text": "No, I do not want to be transferred.",
+    "intents": [
+     "no"
+    ],
+    "slots": {},
+    "act": "refuse"
+   }
+  ]
+ },
+ {
+  "id": "RP-10",
+  "brief": "A",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Wants a date after the deadline",
+  "variables": {
+   "first_name": "Lena",
+   "last_name": "Hoffmann",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1984-01-30",
+   "phone_last4": "2219"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 1250.0,
+    "days_late": 14,
+    "instalment_amount": 400.0
+   }
+  ],
+  "script": "Verified. Says her salary arrives on 6 November and she can pay then. Asks whether she is talking to a robot. Accepts the latest possible date when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1250.0,
+     "date": "2026-10-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "her own date is not counted as a refusal",
+   "promise date is the late-band deadline, 23 October",
+   "agent says it is a digital assistant when asked"
+  ],
+  "replay_of": "Freya sim 2026-10-11 reader_a2: 'No, my salary arrives on 6 November and I can pay then. Am I talking to a robot?' -> extractor dropped ask_bot",
+  "sim_script": [
+   {
+    "text": "Yes, this is Lena Hoffmann.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "30 January 1984.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "30 January 1984."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "2219.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "2219."
+    },
+    "act": "answer"
+   },
+   {
+    "text": "No, my salary arrives on 6 November and I can pay then. Am I talking to a robot?",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "6 November"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I can pay on 23 October.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2023-10-23"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ],
+  "must_say": "digital assistant"
+ },
+ {
+  "id": "RP-11",
+  "brief": "A",
+  "family": "Tool failure",
+  "level": "hard",
+  "title": "The promise service fails on the first call",
+  "variables": {
+   "first_name": "Grace",
+   "last_name": "Lin",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1989-02-23",
+   "phone_last4": "9904"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "7740",
+    "past_due": 365.0,
+    "days_late": 8,
+    "minimum_payment": 109.5
+   }
+  ],
+  "script": "Verified. Cannot pay today. Agrees to pay the full amount this Friday and confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 365.0,
+     "date": "2026-10-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "exactly one promise in the ledger after the retry",
+   "agent does not say 'recorded' before a successful call"
+  ],
+  "faults": [
+   {
+    "tool": "create_promise",
+    "fail_first_n": 1
+   }
+  ],
+  "replay_of": "Freya sim 2026-10-11 00:34 reader_a3 talkative: chatter fragments ('My cousin's wedding is on the th') consumed both persuasion attempts -> no_promise",
+  "sim_script": [
+   {
+    "text": "Yes, this is Grace Lin. I've been so busy with work today.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "My date of birth is the twenty-third of February nineteen eighty-nine.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1989-02-23"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "The last four digits are nine nine zero four.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "9904"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I'm sorry, I can't pay today",
+    "intents": [
+     "no"
+    ],
+    "slots": {},
+    "act": "refuse"
+   },
+   {
+    "text": "My cousin's wedding is on the th",
+    "intents": [],
+    "slots": {},
+    "act": "other"
+   },
+   {
+    "text": "Yes, Friday works, I can pay the full amount on Friday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "this Friday"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-12",
+  "brief": "A",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Confirms identity and pays the full amount today",
+  "variables": {
+   "first_name": "Daniel",
+   "last_name": "Reyes",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1988-03-14",
+   "phone_last4": "4471"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "4821",
+    "past_due": 420.0,
+    "days_late": 6,
+    "minimum_payment": 126.0
+   }
+  ],
+  "script": "Confirms he is Daniel Reyes. Date of birth 14 March 1988, last four digits 4471. Says he can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 420.0,
+     "date": "2026-10-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "both security questions passed before get_account",
+   "the word 'collections' is not said before identity is verified",
+   "create_promise called exactly once",
+   "text-message sentence said after the promise"
+  ],
+  "replay_of": "Freya sim 2026-10-11 00:34 reader_a3 talkative: chatter at the read-back ('I've got so much on my plate') taken as a no -> persuasion -> closed",
+  "sim_script": [
+   {
+    "text": "Yes, this is Daniel Reyes.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "My date of birth is 14 March 1988.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1988-03-14"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I'm just trying to catch up on emails",
+    "intents": [],
+    "slots": {},
+    "act": "other"
+   },
+   {
+    "text": "The last four digits are 4471.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "4471"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I can pay the full amount today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "today",
+     "promise_amount": "full amount"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I've got so much on my plate",
+    "intents": [],
+    "slots": {},
+    "act": "other"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-13",
+  "brief": "A",
+  "family": "Hardship",
+  "level": "medium",
+  "title": "Lost his job, declines the support team",
+  "variables": {
+   "first_name": "Tomas",
+   "last_name": "Novak",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1990-09-09",
+   "phone_last4": "8846"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 780.0,
+    "days_late": 21,
+    "instalment_amount": 260.0
+   }
+  ],
+  "script": "Verified. Says he lost his job last month and cannot pay anything. Asks for a discount. Does not want to be transferred.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "one sentence of sympathy",
+   "no persuasion attempt although the band is late",
+   "support team offered once",
+   "no discount, waiver or plan offered"
+  ],
+  "replay_of": "Freya sim 2026-10-11 00:34 reader_a3 talkative: hardship statement cut off ('I've been so stressed out lately trying to figure everything') taken as a non-answer -> payment offer",
+  "sim_script": [
+   {
+    "text": "Yes, this is Tomas Novak.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "My date of birth is the ninth of September nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1990-09-09"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "The last four digits are eight eight four six.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "8846"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I've been so stressed out lately trying to figure everything",
+    "intents": [],
+    "slots": {},
+    "act": "other"
+   },
+   {
+    "text": "I lost my job last month and I can't pay anything right now.",
+    "intents": [
+     "hardship"
+    ],
+    "slots": {},
+    "act": "inform"
+   },
+   {
+    "text": "No, I don't want to be transferred.",
+    "intents": [
+     "no"
+    ],
+    "slots": {},
+    "act": "refuse"
+   }
+  ]
+ },
+ {
+  "id": "RP-14",
+  "brief": "A",
+  "family": "Dates",
+  "level": "hard",
+  "title": "A vague period, then a holiday",
+  "variables": {
+   "first_name": "Samuel",
+   "last_name": "Ortiz",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1975-12-05",
+   "phone_last4": "7093"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 540.0,
+    "days_late": 5,
+    "instalment_amount": 180.0
+   }
+  ],
+  "script": "Verified. Cannot pay today. Says 'the week after next'. When asked for the exact day, says Monday the 26th. Accepts the next business day when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 540.0,
+     "date": "2026-10-27"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "agent asks once for the exact day",
+   "the agent does not accept 26 October and offers the next business day",
+   "promise recorded for Tuesday 27 October, inside the early-band deadline"
+  ],
+  "replay_of": "Freya sim 2026-10-11 01:11 reader_a4 plain PUB-07 #1: extractor wrote 'Monday the twenty sixth' as '2024-05-26' (month and year invented) -> latest date offered, promise on 2 November",
+  "sim_script": [
+   {
+    "text": "Yes, this is Samuel Ortiz.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "The fifth of December nineteen seventy five.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1975-12-05"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Seven zero nine three.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "7093"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I cannot pay today. I can pay the week after next.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "the week after next"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Monday the twenty sixth.",
+    "intents": [],
+    "slots": {
+     "promise_date": "2024-05-26"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I can do that.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-15",
+  "brief": "A",
+  "family": "Restructuring",
+  "level": "medium",
+  "title": "Asks for a new payment plan",
+  "variables": {
+   "first_name": "Victor",
+   "last_name": "Ionescu",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1981-08-11",
+   "phone_last4": "5560"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 2100.0,
+    "days_late": 28,
+    "instalment_amount": 700.0
+   }
+  ],
+  "script": "Verified. Says he cannot pay this amount and wants lower instalments.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "restructuring",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "restructuring"
+    }
+   ]
+  },
+  "checks": [
+   "transfer_to_agent called with queue restructuring",
+   "agent does not describe a plan of its own",
+   "no promise recorded"
+  ],
+  "replay_of": "Freya sim 2026-10-11 01:11 reader_a3 asks_back PUB-09 (and PUB-01/07/08: 4 of 10 calls): 'Why do you need that?' matched to ask_reason (= a refusal by rule 15), then 'Which account is this about?' = second refusal -> closed not_verified/declined. Replayed with the built-in clarify intent the language layer now has.",
+  "sim_script": [
+   {
+    "text": "Yes, this is Victor Ionescu.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Why do you need that?",
+    "intents": [
+     "clarify"
+    ],
+    "slots": {},
+    "act": "question",
+    "reply": "question"
+   },
+   {
+    "text": "Eleven August nineteen eighty one.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1981-08-11"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Which account is this about?",
+    "intents": [
+     "ask_reason"
+    ],
+    "slots": {},
+    "act": "question",
+    "reply": "question"
+   },
+   {
+    "text": "Five five six zero.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "5560"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I can't pay this amount. I need lower instalments.",
+    "intents": [
+     "restructure"
+    ],
+    "slots": {},
+    "act": "request"
+   }
+  ]
+ },
+ {
+  "id": "RP-16",
+  "brief": "A",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Wants a date after the deadline",
+  "variables": {
+   "first_name": "Lena",
+   "last_name": "Hoffmann",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1984-01-30",
+   "phone_last4": "2219"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 1250.0,
+    "days_late": 14,
+    "instalment_amount": 400.0
+   }
+  ],
+  "script": "Verified. Says her salary arrives on 6 November and she can pay then. Asks whether she is talking to a robot. Accepts the latest possible date when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1250.0,
+     "date": "2026-10-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "her own date is not counted as a refusal",
+   "promise date is the late-band deadline, 23 October",
+   "agent says it is a digital assistant when asked"
+  ],
+  "replay_of": "Freya a7 2026-10-11 02:20 PUB-04 in_words: year said digit by digit ('one nine eight four'), model ISO 1984-01-30; the evidence check could not read the year -> refused -> DOB loop",
+  "sim_script": [
+   {
+    "text": "Yes, that is me.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "The thirtieth of January one nine eight four.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1984-01-30"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Two two one nine.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "2219"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I cannot pay today, but I can pay on the twenty-third of October.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-10-23"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-17",
+  "brief": "A",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Wants a date after the deadline",
+  "variables": {
+   "first_name": "Lena",
+   "last_name": "Hoffmann",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1984-01-30",
+   "phone_last4": "2219"
+  },
+  "products": [
+   {
+    "type": "car_loan",
+    "past_due": 1250.0,
+    "days_late": 14,
+    "instalment_amount": 400.0
+   }
+  ],
+  "script": "Verified. Says her salary arrives on 6 November and she can pay then. Asks whether she is talking to a robot. Accepts the latest possible date when it is offered.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1250.0,
+     "date": "2026-10-23"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "her own date is not counted as a refusal",
+   "promise date is the late-band deadline, 23 October",
+   "agent says it is a digital assistant when asked"
+  ],
+  "replay_of": "Freya a7 2026-10-11 02:20 PUB-04 pieces: 'Thirtieth of January...' (model 1900-01-30) then 'Nineteen eighty-four.' (model 1984-01-30): the parts were not joined -> loop",
+  "sim_script": [
+   {
+    "text": "Yes, this is Lena Hoffmann.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Thirtieth of January...",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1900-01-30"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Nineteen eighty-four.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1984-01-30"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Twenty-two...",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "22"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Nineteen.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "2219"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I cannot pay today, but I can pay on the twenty-third of October.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-10-23"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-18",
+  "brief": "A",
+  "family": "Hardship",
+  "level": "medium",
+  "title": "Lost his job, declines the support team",
+  "variables": {
+   "first_name": "Tomas",
+   "last_name": "Novak",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1990-09-09",
+   "phone_last4": "8846"
+  },
+  "products": [
+   {
+    "type": "personal_loan",
+    "past_due": 780.0,
+    "days_late": 21,
+    "instalment_amount": 260.0
+   }
+  ],
+  "script": "Verified. Says he lost his job last month and cannot pay anything. Asks for a discount. Does not want to be transferred.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "one sentence of sympathy",
+   "no persuasion attempt although the band is late",
+   "support team offered once",
+   "no discount, waiver or plan offered"
+  ],
+  "replay_of": "Freya a8 2026-10-11 03:00 PUB-05 plain: 'I cannot pay anything right now' extracted as promise_amount '0' -> the hardship rule took it as a named amount -> floor offer (persuasion) and sympathy twice",
+  "sim_script": [
+   {
+    "text": "Yes, this is Tomas Novak.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Ninth of September nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1990-09-09"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "It is eight eight four six.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "8846"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I lost my job last month and I cannot pay anything right now. Is there any way I can get a discount?",
+    "intents": [
+     "hardship",
+     "no"
+    ],
+    "slots": {
+     "promise_amount": "0"
+    },
+    "act": "request",
+    "reply": "non_answer"
+   },
+   {
+    "text": "No, I do not want to be transferred. Can you give me a discount?",
+    "intents": [
+     "no"
+    ],
+    "slots": {},
+    "act": "request",
+    "reply": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-19",
+  "brief": "A",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Confirms identity and pays the full amount today",
+  "variables": {
+   "first_name": "Daniel",
+   "last_name": "Reyes",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1988-03-14",
+   "phone_last4": "4471"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "4821",
+    "past_due": 420.0,
+    "days_late": 6,
+    "minimum_payment": 126.0
+   }
+  ],
+  "script": "Confirms he is Daniel Reyes. Date of birth 14 March 1988, last four digits 4471. Says he can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 420.0,
+     "date": "2026-10-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "both security questions passed before get_account",
+   "the word 'collections' is not said before identity is verified",
+   "create_promise called exactly once",
+   "text-message sentence said after the promise"
+  ],
+  "replay_of": "Freya a8 2026-10-11 03:00 PUB-01 talkative: after the read-back the customer's messages were cut off mid-sentence 4 times; the fragments fell to the confirm catch-all (= no) and the promise was lost",
+  "sim_script": [
+   {
+    "text": "Yes, this is Daniel Reyes.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "Fourteen March nineteen eighty-eight.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1988-03-14"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "The digits are 4471.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "4471"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "My cousin's wedding is on the 30th. Yes, I can pay the full amount today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "today",
+     "promise_amount": "420.00"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "I'm finally getting a chance",
+    "intents": [],
+    "slots": {},
+    "act": "other",
+    "reply": "none",
+    "finished": "no"
+   },
+   {
+    "text": "I'm finally getting a chance to catch my breath after",
+    "intents": [],
+    "slots": {},
+    "act": "other",
+    "reply": "none",
+    "finished": "no"
+   },
+   {
+    "text": "I'm finally getting a chance to catch my breath after",
+    "intents": [],
+    "slots": {},
+    "act": "other",
+    "reply": "none",
+    "finished": "no"
+   },
+   {
+    "text": "It's just been one of those days where the",
+    "intents": [],
+    "slots": {},
+    "act": "other",
+    "reply": "none",
+    "finished": "no"
+   },
+   {
+    "text": "It's been a long day. Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer",
+    "reply": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-20",
+  "brief": "A",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Confirms identity and pays the full amount today",
+  "variables": {
+   "first_name": "Daniel",
+   "last_name": "Reyes",
+   "title": "Mr",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1988-03-14",
+   "phone_last4": "4471"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "4821",
+    "past_due": 420.0,
+    "days_late": 6,
+    "minimum_payment": 126.0
+   }
+  ],
+  "script": "Confirms he is Daniel Reyes. Date of birth 14 March 1988, last four digits 4471. Says he can pay the full amount today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 420.0,
+     "date": "2026-10-14"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "both security questions passed before get_account",
+   "the word 'collections' is not said before identity is verified",
+   "create_promise called exactly once",
+   "text-message sentence said after the promise"
+  ],
+  "replay_of": "Freya fr_a8 2026-10-11 03:20 FR03: date of birth in three messages ('The fourteenth.' with nothing extracted, 'of March.' -> model 1900-03-14, 'nineteen eighty-eight.' -> 1988-03-14); the first part was lost -> loop, identity failed",
+  "sim_script": [
+   {
+    "text": "Yes, this is Daniel Reyes.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "The fourteenth.",
+    "intents": [],
+    "slots": {},
+    "act": "answer",
+    "reply": "answer"
+   },
+   {
+    "text": "of March.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1900-03-14"
+    },
+    "act": "answer",
+    "reply": "answer"
+   },
+   {
+    "text": "nineteen eighty-eight.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1988-03-14"
+    },
+    "act": "answer",
+    "reply": "answer"
+   },
+   {
+    "text": "four four seven one.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "4471"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I can pay the full amount today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "today",
+     "promise_amount": "420"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-21",
+  "brief": "A",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "Full amount is too much, accepts the floor",
+  "variables": {
+   "first_name": "Priya",
+   "last_name": "Nair",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1986-05-17",
+   "phone_last4": "1502"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "1903",
+    "past_due": 2125.1,
+    "days_late": 12,
+    "minimum_payment": 637.5
+   }
+  ],
+  "script": "Verified. Says the full amount is too much right now. If asked how much she can pay, says 'you tell me'. Accepts the minimum payment for this Friday.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 637.5,
+     "date": "2026-10-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "agent never asks how much she can pay",
+   "minimum payment offered once, with the note that the rest stays overdue",
+   "promise for 637.50 on Friday 16 October"
+  ],
+  "replay_of": "Freya fr_a8 2026-10-11 03:20 FR02: in the read-back the customer says 'Six hundred and...' (model: amount 'Six hundred and...') -> read as 600, below the floor -> second offer on the deadline, promise on the wrong day",
+  "sim_script": [
+   {
+    "text": "Yes, this is Priya Nair.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "May seventeenth nineteen eighty six.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1986-05-17"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "One five zero two.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "1502"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "That amount is too much for me to pay right now.",
+    "intents": [
+     "too_much"
+    ],
+    "slots": {},
+    "act": "inform",
+    "reply": "non_answer"
+   },
+   {
+    "text": "Can I pay this Friday instead?",
+    "intents": [],
+    "slots": {
+     "promise_date": "this Friday"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Six hundred and...",
+    "intents": [],
+    "slots": {
+     "promise_amount": "Six hundred and..."
+    },
+    "act": "answer",
+    "reply": "answer"
+   },
+   {
+    "text": "...thirty-seven fifty, yes.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": "637.50"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ },
+ {
+  "id": "RP-22",
+  "brief": "A",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "Full amount is too much, accepts the floor",
+  "variables": {
+   "first_name": "Priya",
+   "last_name": "Nair",
+   "title": "Ms",
+   "now": "2026-10-14T11:00"
+  },
+  "identity": {
+   "date_of_birth": "1986-05-17",
+   "phone_last4": "1502"
+  },
+  "products": [
+   {
+    "type": "credit_card",
+    "card_last4": "1903",
+    "past_due": 2125.1,
+    "days_late": 12,
+    "minimum_payment": 637.5
+   }
+  ],
+  "script": "Verified. Says the full amount is too much right now. If asked how much she can pay, says 'you tell me'. Accepts the minimum payment for this Friday.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 637.5,
+     "date": "2026-10-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "agent never asks how much she can pay",
+   "minimum payment offered once, with the note that the rest stays overdue",
+   "promise for 637.50 on Friday 16 October"
+  ],
+  "replay_of": "Freya ad_ra10 AD02 #1 / ra10 PUB-06: 'How much is the minimum payment?' answered 'I do not have that information' right after the agent offered it (dishonest), then the offer was repeated",
+  "sim_script": [
+   {
+    "text": "Yes, this is she.",
+    "intents": [
+     "confirm_identity",
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   },
+   {
+    "text": "seventeen May nineteen eighty six.",
+    "intents": [],
+    "slots": {
+     "id_date_of_birth": "1986-05-17"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "one five zero two.",
+    "intents": [],
+    "slots": {
+     "id_phone_last4": "1502"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "The full amount is too much right now.",
+    "intents": [
+     "too_much"
+    ],
+    "slots": {},
+    "act": "inform",
+    "reply": "non_answer"
+   },
+   {
+    "text": "How much is the minimum payment?",
+    "intents": [
+     "other_question"
+    ],
+    "slots": {},
+    "act": "question",
+    "reply": "question"
+   },
+   {
+    "text": "I can do the minimum payment this Friday.",
+    "intents": [],
+    "slots": {
+     "promise_date": "this Friday"
+    },
+    "act": "answer"
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {},
+    "act": "answer"
+   }
+  ]
+ }
+]

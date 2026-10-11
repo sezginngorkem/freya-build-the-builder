@@ -1,0 +1,36 @@
+"Brightwater Community Bank - Collections MI";;;;;;;;;
+"DISPOSITION CODE LIST (COL-POL-12 Appendix C)";;;;;;;;;
+"Export: 12/11/2026 08:14  user: RKIM  filter: ALL";;;;;;;;;
+;;;;;;;;;
+Disp Cd;Description;Lvl (C=close / N=note);API outcome;API reason ;Queue;Active?;Eff. from;Eff. to;Comments
+PTP;Promise to pay recorded (at least one product);C;promise;;;Y;01/06/2026;;
+PIF;No promise - all products said already paid;C;paid;;;Y;01/06/2026;;
+NP-RTP;Refused - attempts exhausted;C;no_promise;refused;;Y;01/06/2026;;
+NP-DSP;"Disputed (not mine, never had it, paid off/settled in the past)";C;no_promise;dispute;;Y;01/06/2026;;
+NP-HS;Hardship - transfer declined;C;no_promise;hardship;;Y;01/06/2026;;
+NP-FH;Hardship - transfer declined (PILOT);C;no_promise;financial_hardship;;N;01/03/2026;31/05/2026;retired after pilot
+NP-SVC;Promise could not be recorded after retry;C;no_promise;service_error;;Y;01/06/2026;;
+NP-CC;Customer asked us to stop calling;C;no_promise;cease_contact;;Y;16/11/2026;;M-2026-034 s.7.6
+TR-HUM;Customer insisted on a person;C;transferred;human;customer_care;Y;01/06/2026;;
+TR-HS;Hardship - transfer accepted;C;transferred;hardship;hardship_desk;Y;01/06/2026;;
+TR-FH;Hardship - transfer accepted (PILOT);C;transferred;financial_hardship;hardship_desk;N;01/03/2026;31/05/2026;
+TR-RST;Plan / deferral / modification request;C;transferred;restructuring;collections_supervisor;Y;01/06/2026;;
+TR-CPL;Formal complaint;C;transferred;complaint;complaints;N;;;"planned Q1 2027 - not on voice platform"
+NV-F;3 wrong security answers;C;not_verified;failed;;Y;01/06/2026;;
+NV-D;Refused security questions twice;C;not_verified;declined;;Y;01/06/2026;;
+UR-CB ;Third party - callback booked;C;no_contact;callback;;Y;01/06/2026;;"""Not reached"" in policy text"
+UR-NCB;Third party - no valid callback time;C;no_contact;no_callback;;Y;01/06/2026;;
+UR-WN;Wrong number;C;no_contact;wrong_number;;Y;01/06/2026;;
+UR-DEC;Customer reported deceased;C;no_contact;deceased;;Y;01/06/2026;;
+UR-UNC;Could not confirm who answered;C;no_contact;unclear;;Y;01/06/2026;;
+UR-LM;Voicemail left;C;no_contact;left_message;;N;;31/12/2024;agent never leaves voicemail
+N-RTP;Product refused;N;;refused;;Y;01/06/2026;;
+N-DSP;Product disputed;N;;dispute;;Y;01/06/2026;;
+N-PD;Product said already paid;N;;paid;;Y;01/06/2026;;
+N-HS;Hardship on product;N;;hardship;;Y;01/06/2026;;
+N-FH;Hardship on product (PILOT);N;;financial_hardship;;N;01/03/2026;31/05/2026;
+N-CC;Stop-calling request;N;;cease_contact;;Y;16/11/2026;;
+N-SVC;Promise failed twice;N;;service_error;;Y;01/06/2026;;
+;;;;;;;;;
+"Rows: 28 (5 inactive)";;;;;;;;;
+"Dates are DD/MM/YYYY";;;;;;;;;

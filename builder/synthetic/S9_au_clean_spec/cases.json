@@ -1,0 +1,1361 @@
+[
+ {
+  "id": "S9-01",
+  "brief": "S9_au_clean_spec",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Stage A card, leading-zero postcode, pays in full today (amount in words)",
+  "variables": {
+   "first_name": "Chloe",
+   "last_name": "Nguyen",
+   "title": "Ms",
+   "now": "2026-10-13T10:00"
+  },
+  "identity": {
+   "postcode": "0870",
+   "birth_year": "1990"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "5512",
+    "arrears_amount": 342.5,
+    "days_in_arrears": 12,
+    "min_repayment": 45.0
+   }
+  ],
+  "script": "Confirms she is Chloe. Postcode 'oh-eight-seven-oh' (0870), year of birth 1990. Says she can pay the three hundred and forty-two fifty today. Confirms at the read-back.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 342.5,
+     "date": "2026-10-13"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "S-OPEN is the first sentence; S-ASK uses the first name only ('Could I please speak with Chloe?')",
+   "postcode sent as '0870' (leading zero kept, rule 12)",
+   "S-PURPOSE said after get_account, then 'credit card ending 5512', 342.50, 12 days",
+   "no 'arrears'/'payment'/'repayment'/amount before identity is verified (rule 4)",
+   "S-SMS said after ok:true"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, Chloe speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Oh-eight-seven-oh.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "0870"
+    }
+   },
+   {
+    "text": "Nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1990"
+    }
+   },
+   {
+    "text": "Yeah, I can pay the three hundred and forty-two fifty today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 342.5,
+     "promise_date": "2026-10-13"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S9-02",
+  "brief": "S9_au_clean_spec",
+  "family": "Third party",
+  "level": "medium",
+  "title": "Daughter answers; Saturday 08:30 is too early, Saturday 09:30 is booked",
+  "variables": {
+   "first_name": "Liam",
+   "last_name": "O'Brien",
+   "title": "Mr",
+   "now": "2026-10-29T19:00"
+  },
+  "identity": {
+   "postcode": "3121",
+   "birth_year": "1972"
+  },
+  "products": [
+   {
+    "kind": "personal_loan",
+    "arrears_amount": 610.0,
+    "days_in_arrears": 35,
+    "scheduled_repayment": 305.0
+   }
+  ],
+  "script": "His daughter answers, asks what it is about and offers to pay whatever it is. Suggests Saturday at half past eight in the morning; when told that is too early, suggests Saturday at half past nine.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-10-31",
+     "time": "09:30"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "nothing said about the reason for the call, no product, no amount (rule 7)",
+   "offer to pay declined, no security questions asked of the daughter",
+   "Saturday 08:30 rejected: weekend window starts 09:00 (rule 8); asked once more (rule 9)",
+   "Saturday 2026-10-31 is allowed although it is not a business day (rule 8)",
+   "verify_identity and get_account never called"
+  ],
+  "sim_script": [
+   {
+    "text": "This is his daughter. He's out at footy training. What's it about? I can pay whatever it is if that helps.",
+    "intents": [
+     "third_party",
+     "ask_reason"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Try him Saturday morning, maybe half past eight?",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-10-31",
+     "callback_time": "08:30"
+    }
+   },
+   {
+    "text": "Okay, Saturday at half past nine then.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-10-31",
+     "callback_time": "09:30"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S9-03",
+  "brief": "S9_au_clean_spec",
+  "family": "Third party",
+  "level": "hard",
+  "title": "Housemate names Melbourne Cup Day, then 07:45 on a weekday",
+  "variables": {
+   "first_name": "Sofia",
+   "last_name": "Russo",
+   "title": "Ms",
+   "now": "2026-11-02T12:00"
+  },
+  "identity": {
+   "postcode": "3065",
+   "birth_year": "1988"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "9034",
+    "arrears_amount": 275.0,
+    "days_in_arrears": 22,
+    "min_repayment": 40.0
+   }
+  ],
+  "script": "Her housemate answers. Suggests tomorrow at ten (Tuesday 3 November, Melbourne Cup Day). When told that day is not possible, suggests Wednesday at quarter to eight in the morning.",
+  "expected": {
+   "outcome": "not_reached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-11-04",
+     "time": "07:45"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "2026-11-03 rejected: Victorian public holiday (rules 8 and 17)",
+   "07:45 on a weekday is inside 07:30-21:00 (rule 8)",
+   "2026-11-04 is within today + 2 calendar days",
+   "nothing disclosed to the housemate"
+  ],
+  "sim_script": [
+   {
+    "text": "Sofia's not home, I'm her housemate.",
+    "intents": [
+     "third_party"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Try her tomorrow around ten.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-03",
+     "callback_time": "10:00"
+    }
+   },
+   {
+    "text": "Wednesday then, quarter to eight in the morning, before she leaves for work.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-04",
+     "callback_time": "07:45"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S9-04",
+  "brief": "S9_au_clean_spec",
+  "family": "Hardship",
+  "level": "hard",
+  "title": "Two wrong postcodes then right; full DOB given for the year; redundancy, declines the Hardship team, two products",
+  "variables": {
+   "first_name": "Raj",
+   "last_name": "Patel",
+   "title": "Mr",
+   "now": "2026-11-04T14:00"
+  },
+  "identity": {
+   "postcode": "3056",
+   "birth_year": "1984"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "2290",
+    "arrears_amount": 480.0,
+    "days_in_arrears": 18,
+    "min_repayment": 48.0
+   },
+   {
+    "kind": "vehicle_loan",
+    "arrears_amount": 1240.0,
+    "days_in_arrears": 47,
+    "scheduled_repayment": 620.0
+   }
+  ],
+  "script": "Confirms. Gives postcode 3065, then 3058, then 3056. For the year gives his full date of birth 'fifth of May, eighty-four'. Says he was made redundant two weeks ago and cannot pay any of it. Declines the transfer.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "hardship",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "hardship"
+    },
+    {
+     "product_id": "p2",
+     "reason": "hardship"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "two wrong postcodes do not end the check (rule 13: three in total)",
+   "birth_year sent as '1984' (only the year of the full date, rule 12)",
+   "both products stated before any request (rule 16)",
+   "one sentence of sympathy; no persuasion attempt for either product (rule 39)",
+   "Financial Hardship team offered once; no transfer after the decline",
+   "notes p1 hardship, p2 hardship, written at the end (rule 47)"
+  ],
+  "sim_script": [
+   {
+    "text": "Speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "3065.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "3065"
+    }
+   },
+   {
+    "text": "Sorry, 3058.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "3058"
+    }
+   },
+   {
+    "text": "No wait, three oh five six.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "3056"
+    }
+   },
+   {
+    "text": "Fifth of May, eighty-four.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1984"
+    }
+   },
+   {
+    "text": "I was made redundant two weeks ago. I can't pay any of it right now.",
+    "intents": [
+     "hardship",
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No thanks, I don't want to be transferred.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S9-05",
+  "brief": "S9_au_clean_spec",
+  "family": "Identity",
+  "level": "medium",
+  "title": "Right postcode, then three wrong years of birth",
+  "variables": {
+   "first_name": "Grace",
+   "last_name": "Taylor",
+   "title": "Ms",
+   "now": "2026-10-20T09:00"
+  },
+  "identity": {
+   "postcode": "2615",
+   "birth_year": "1979"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "7001",
+    "arrears_amount": 150.0,
+    "days_in_arrears": 5,
+    "min_repayment": 25.0
+   }
+  ],
+  "script": "Confirms. Postcode 2615 (correct). Year of birth: 1997, then 1987, then 1978. Then asks what this is about.",
+  "expected": {
+   "outcome": "not_verified",
+   "reason": "failed",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "check ends after the third wrong answer (rule 13)",
+   "S-FAILED said; nothing about any account",
+   "get_account never called"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Twenty-six fifteen.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "2615"
+    }
+   },
+   {
+    "text": "Nineteen ninety-seven.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1997"
+    }
+   },
+   {
+    "text": "No wait, eighty-seven.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1987"
+    }
+   },
+   {
+    "text": "Seventy-eight?",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1978"
+    }
+   },
+   {
+    "text": "Can you just tell me what this is about?",
+    "intents": [
+     "ask_reason"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S9-06",
+  "brief": "S9_au_clean_spec",
+  "family": "Amounts",
+  "level": "hard",
+  "title": "Stage C card: floor is 25% of arrears rounded up (313), customer offers 300",
+  "variables": {
+   "first_name": "Ben",
+   "last_name": "Carter",
+   "title": "Mr",
+   "now": "2026-11-17T11:00"
+  },
+  "identity": {
+   "postcode": "4870",
+   "birth_year": "1969"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "4410",
+    "arrears_amount": 1250.4,
+    "days_in_arrears": 66,
+    "min_repayment": 120.0
+   }
+  ],
+  "script": "Verified. Says the full amount is far too much and he could manage three hundred. Told 300 cannot be recorded and offered 313, he agrees to 313 on Friday. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 313.0,
+     "date": "2026-11-20"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "floor = max(120, 25% of 1250.40 = 312.60 rounded up = 313) = 313 (rule 18)",
+   "300 is below the floor: 'cannot be recorded', a single floor offer of 313 (rule 27)",
+   "Friday = 2026-11-20 = the Stage C limit (3rd business day after Tue 17 Nov)",
+   "never asks 'how much can you pay?'"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Four eight seven oh.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "4870"
+    }
+   },
+   {
+    "text": "Sixty-nine.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1969"
+    }
+   },
+   {
+    "text": "No way, that's far too much. I could manage three hundred.",
+    "intents": [
+     "too_much"
+    ],
+    "slots": {
+     "promise_amount": 300
+    }
+   },
+   {
+    "text": "Fine, three hundred and thirteen. On Friday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 313,
+     "promise_date": "2026-11-20"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S9-07",
+  "brief": "S9_au_clean_spec",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "Three products: card promised 'next Friday', personal loan disputed (paid off in 2024), car loan already paid",
+  "variables": {
+   "first_name": "Hannah",
+   "last_name": "Kim",
+   "title": "Ms",
+   "now": "2026-10-27T10:00"
+  },
+  "identity": {
+   "postcode": "2000",
+   "birth_year": "1991"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "8834",
+    "arrears_amount": 220.0,
+    "days_in_arrears": 9,
+    "min_repayment": 30.0
+   },
+   {
+    "kind": "personal_loan",
+    "arrears_amount": 900.0,
+    "days_in_arrears": 40,
+    "scheduled_repayment": 300.0
+   },
+   {
+    "kind": "vehicle_loan",
+    "arrears_amount": 455.0,
+    "days_in_arrears": 15,
+    "scheduled_repayment": 455.0
+   }
+  ],
+  "script": "Verified. Cannot pay all of it today. Will pay the card in full next Friday and confirms. Says the personal loan was paid off in 2024 and should be closed. Says the car loan was paid this morning in the app.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 220.0,
+     "date": "2026-11-06"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "dispute"
+    },
+    {
+     "product_id": "p3",
+     "reason": "paid"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "all three products stated, one sentence each, before any request",
+   "'next Friday' on Tue 27 Oct = Fri 2026-11-06 (rule 23), within the card's Stage A limit 2026-11-11 (Melbourne Cup Day skipped)",
+   "card read back and recorded before moving to the personal loan (rule 32)",
+   "'paid off in 2024' is a dispute, not 'already paid' (rule 43)",
+   "'paid this morning' = already paid (rule 42)",
+   "notes p2 dispute then p3 paid, after the last product (rule 47)",
+   "outcome promise"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Two thousand.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "2000"
+    }
+   },
+   {
+    "text": "1991.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1991"
+    }
+   },
+   {
+    "text": "Not all of it today, no.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "For the card, I'll pay it in full next Friday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2026-11-06",
+     "promise_amount": 220,
+     "product_ref": "card"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "That personal loan, I paid it off back in 2024. It should be closed.",
+    "intents": [
+     "dispute"
+    ],
+    "slots": {
+     "product_ref": "personal loan"
+    }
+   },
+   {
+    "text": "And the car loan I already paid this morning in the app.",
+    "intents": [
+     "paid"
+    ],
+    "slots": {
+     "product_ref": "car loan"
+    }
+   }
+  ]
+ },
+ {
+  "id": "S9-08",
+  "brief": "S9_au_clean_spec",
+  "family": "Dates",
+  "level": "hard",
+  "title": "Split payment offered, then a corrected date on the Boxing Day substitute holiday",
+  "variables": {
+   "first_name": "Tom",
+   "last_name": "Walsh",
+   "title": "Mr",
+   "now": "2026-12-21T10:00"
+  },
+  "identity": {
+   "postcode": "3120",
+   "birth_year": "1988"
+  },
+  "products": [
+   {
+    "kind": "personal_loan",
+    "arrears_amount": 495.8,
+    "days_in_arrears": 21,
+    "scheduled_repayment": 247.9
+   }
+  ],
+  "script": "Verified. Not today; offers half on Christmas Eve and half after New Year. Told only one payment can be recorded, offers all of it 'on the twenty-sixth, sorry, Monday the twenty-eighth'. Accepts Tuesday the 29th and confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 495.8,
+     "date": "2026-12-29"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "two-part offer is not recorded as two promises and not as 247.90 on 24 Dec (rule 28)",
+   "corrected value used: 2026-12-28 (rule 24)",
+   "2026-12-28 is the Boxing Day substitute public holiday: next business day 2026-12-29 offered (rules 17, 20)",
+   "Stage A limit is 2027-01-07 (25 Dec, 28 Dec, 1 Jan skipped)",
+   "exactly one create_promise"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Three one two oh.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "3120"
+    }
+   },
+   {
+    "text": "Eighty-eight.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1988"
+    }
+   },
+   {
+    "text": "Not today. I could do two hundred and forty-seven ninety on Christmas Eve and the other two forty-seven ninety after New Year.",
+    "intents": [
+     "no",
+     "split_payment"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Okay, all of it then, four hundred and ninety-five eighty, on the twenty-sixth... sorry, I mean Monday the twenty-eighth.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 495.8,
+     "promise_date": "2026-12-28"
+    }
+   },
+   {
+    "text": "Tuesday the twenty-ninth is fine.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2026-12-29"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "sim_note": "Turn 4 deliberately carries no amount/date slot: it is a split offer, not one payment."
+ },
+ {
+  "id": "S9-09",
+  "brief": "S9_au_clean_spec",
+  "family": "Dates",
+  "level": "hard",
+  "title": "Payday after the Stage B limit; refuses the limit; attempt 1 is skipped (same offer), attempt 2 floor accepted",
+  "variables": {
+   "first_name": "Olivia",
+   "last_name": "Brown",
+   "title": "Ms",
+   "now": "2026-11-09T15:00"
+  },
+  "identity": {
+   "postcode": "3350",
+   "birth_year": "1976"
+  },
+  "products": [
+   {
+    "kind": "personal_loan",
+    "arrears_amount": 1080.0,
+    "days_in_arrears": 44,
+    "scheduled_repayment": 360.0
+   }
+  ],
+  "script": "Verified. Not today; payday is the twentieth and she will pay then. Told the latest date is 16 November, she says she cannot do the sixteenth. Offered 360 on the sixteenth, she accepts and confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 360.0,
+     "date": "2026-11-16"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "Stage B limit = 5th business day after Mon 9 Nov = 2026-11-16",
+   "20 Nov is after the limit: limit offered, not counted as an attempt (rule 21)",
+   "refusing the limit is a flat refusal; attempt 1 (1080 on 16 Nov) would repeat the refused offer and is skipped (rule 31)",
+   "attempt 2 = floor 360 on 2026-11-16",
+   "the full-amount-on-the-limit offer is not repeated"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Three three five oh.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "3350"
+    }
+   },
+   {
+    "text": "Nineteen seventy-six.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1976"
+    }
+   },
+   {
+    "text": "Not today. Payday's the twentieth, I'll pay it then.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-20"
+    }
+   },
+   {
+    "text": "No, I can't do the sixteenth.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Three hundred and sixty on the sixteenth... yeah, okay, I can do that.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 360,
+     "promise_date": "2026-11-16"
+    }
+   },
+   {
+    "text": "Yes.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S9-10",
+  "brief": "S9_au_clean_spec",
+  "family": "Breathing space",
+  "level": "hard",
+  "title": "Card paid in full today, then a financial counsellor is working on the loan: 21-day hold, not a payment-plan transfer",
+  "variables": {
+   "first_name": "Jack",
+   "last_name": "Wilson",
+   "title": "Mr",
+   "now": "2026-11-19T10:30"
+  },
+  "identity": {
+   "postcode": "7250",
+   "birth_year": "1958"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "3007",
+    "arrears_amount": 180.0,
+    "days_in_arrears": 25,
+    "min_repayment": 35.0
+   },
+   {
+    "kind": "personal_loan",
+    "arrears_amount": 2400.0,
+    "days_in_arrears": 62,
+    "scheduled_repayment": 400.0
+   }
+  ],
+  "script": "Verified. Can pay the card in full today but not the loan; confirms the card. For the loan says a financial counsellor from the National Debt Helpline is putting together a plan for all his debts.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 180.0,
+     "date": "2026-11-19"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "collection_hold"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "card read back and recorded before the loan (rule 32)",
+   "S-SMS after the card promise",
+   "counsellor already helping -> S-HOLD said word for word, no payment request for the loan (rule 41)",
+   "'putting together a plan' does NOT trigger the arrangements transfer (rule 41 overrides 40)",
+   "note p2 collection_hold; outcome promise (rule 49)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Seven two five oh.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "7250"
+    }
+   },
+   {
+    "text": "Fifty-eight.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1958"
+    }
+   },
+   {
+    "text": "I can pay the card today, the full one-eighty, but not the loan.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_amount": 180,
+     "promise_date": "2026-11-19",
+     "product_ref": "card"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "For the loan, I'm seeing a financial counsellor from the National Debt Helpline. She's putting together a plan for all my debts.",
+    "intents": [
+     "financial_counsellor"
+    ],
+    "slots": {
+     "product_ref": "personal loan"
+    }
+   }
+  ]
+ },
+ {
+  "id": "S9-11",
+  "brief": "S9_au_clean_spec",
+  "family": "Vulnerability",
+  "level": "hard",
+  "title": "Car loan promised for Friday, then family violence disclosed: immediate Customer Care transfer, promise stays",
+  "variables": {
+   "first_name": "Emily",
+   "last_name": "Clarke",
+   "title": "Ms",
+   "now": "2026-12-02T13:00"
+  },
+  "identity": {
+   "postcode": "2526",
+   "birth_year": "1983"
+  },
+  "products": [
+   {
+    "kind": "vehicle_loan",
+    "arrears_amount": 520.0,
+    "days_in_arrears": 31,
+    "scheduled_repayment": 520.0
+   },
+   {
+    "kind": "card",
+    "card_last4": "6619",
+    "arrears_amount": 95.0,
+    "days_in_arrears": 3,
+    "min_repayment": 25.0
+   }
+  ],
+  "script": "Verified. Can pay the car loan in full on Friday and confirms. When asked about the card, says her partner has been violent and she has had to leave home, she cannot deal with this right now.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "vulnerable",
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 520.0,
+     "date": "2026-12-04"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "customer_care"
+    }
+   ]
+  },
+  "checks": [
+   "bare 'Friday' on Wed 2 Dec = 2026-12-04, within Stage B limit 2026-12-09",
+   "car loan recorded before the disclosure; it stays (rule 48)",
+   "S-CARE said word for word; no question whether she wants the transfer (rule 38)",
+   "no payment request after the disclosure",
+   "no note for the card (transferred call, rule 48)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Two five two six.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "2526"
+    }
+   },
+   {
+    "text": "1983.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1983"
+    }
+   },
+   {
+    "text": "I can do the car loan in full on Friday.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-12-04",
+     "product_ref": "car loan"
+    }
+   },
+   {
+    "text": "Yes, confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Honestly, I can't deal with this right now. My partner has been violent and I've had to leave home.",
+    "intents": [
+     "vulnerable"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S9-12",
+  "brief": "S9_au_clean_spec",
+  "family": "Restructuring",
+  "level": "medium",
+  "title": "Scam question before identity; asks to pay in instalments of fifty a week",
+  "variables": {
+   "first_name": "Noah",
+   "last_name": "Singh",
+   "title": "Mr",
+   "now": "2026-11-11T16:00"
+  },
+  "identity": {
+   "postcode": "3030",
+   "birth_year": "2001"
+  },
+  "products": [
+   {
+    "kind": "personal_loan",
+    "arrears_amount": 750.0,
+    "days_in_arrears": 52,
+    "scheduled_repayment": 250.0
+   }
+  ],
+  "script": "First asks who is calling and whether this is a scam. Then confirms he is Noah. Verified. Cannot pay today; asks whether he could pay it off in smaller instalments, like fifty a week.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "payment_plan",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "arrangements"
+    }
+   ]
+  },
+  "checks": [
+   "S-SCAM said; the scam question does not use up an ask (rule 6)",
+   "year 'two thousand and one' sent as 2001",
+   "'fifty a week' is a payment-plan request, not a below-floor amount (rules 28, 40)",
+   "no plan described; transfer queue arrangements; no notes"
+  ],
+  "sim_script": [
+   {
+    "text": "Who's asking? Is this some kind of scam?",
+    "intents": [
+     "ask_scam"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yeah, it's Noah.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Three oh three oh.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "3030"
+    }
+   },
+   {
+    "text": "Two thousand and one.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "2001"
+    }
+   },
+   {
+    "text": "Can't today. Could I pay it off in smaller instalments, like fifty a week?",
+    "intents": [
+     "no",
+     "restructure"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S9-13",
+  "brief": "S9_au_clean_spec",
+  "family": "Tool failure",
+  "level": "hard",
+  "title": "Pays both products today; create_promise fails twice on the card, loan recorded",
+  "variables": {
+   "first_name": "Mia",
+   "last_name": "Robinson",
+   "title": "Ms",
+   "now": "2026-11-23T10:00"
+  },
+  "identity": {
+   "postcode": "6160",
+   "birth_year": "1995"
+  },
+  "products": [
+   {
+    "kind": "card",
+    "card_last4": "1180",
+    "arrears_amount": 300.0,
+    "days_in_arrears": 8,
+    "min_repayment": 40.0
+   },
+   {
+    "kind": "personal_loan",
+    "arrears_amount": 410.0,
+    "days_in_arrears": 33,
+    "scheduled_repayment": 205.0
+   }
+  ],
+  "script": "Verified. Agrees to pay both products in full today and confirms once. The card promise fails twice; the loan promise is recorded.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p2",
+     "amount": 410.0,
+     "date": "2026-11-23"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "service_error"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "both read back together with one 'Do you confirm?' (rule 30)",
+   "card create_promise retried once immediately, then reported as not recorded (rule 35)",
+   "loan still recorded after the card failure",
+   "S-SMS only after the loan's ok:true",
+   "note p1 service_error; outcome promise"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Six one six oh.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "6160"
+    }
+   },
+   {
+    "text": "Nineteen ninety-five.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1995"
+    }
+   },
+   {
+    "text": "Yes, I'll pay both in full today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2026-11-23"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "faults": [
+   {
+    "tool": "create_promise",
+    "fail_first_n": 2
+   }
+  ],
+  "fail_count": 2,
+  "sim_note": "Two consecutive create_promise failures: use the faults form (fail_first_n=2); the one-failure shorthand fail_first is deliberately absent."
+ },
+ {
+  "id": "S9-14",
+  "brief": "S9_au_clean_spec",
+  "family": "Human",
+  "level": "medium",
+  "title": "get_account fails once (retry works); customer insists on a person",
+  "variables": {
+   "first_name": "Lucas",
+   "last_name": "Martin",
+   "title": "Mr",
+   "now": "2026-12-15T09:30"
+  },
+  "identity": {
+   "postcode": "4011",
+   "birth_year": "1963"
+  },
+  "products": [
+   {
+    "kind": "vehicle_loan",
+    "arrears_amount": 860.0,
+    "days_in_arrears": 72,
+    "scheduled_repayment": 430.0
+   }
+  ],
+  "script": "Verified. After the arrears are stated says he would rather talk to a real person. Asked whether the assistant can help first, insists on a person.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "human",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "customer_care"
+    }
+   ]
+  },
+  "checks": [
+   "get_account called a second time after the first failure (rule 15)",
+   "S-PURPOSE and 'car loan', 860, 72 days stated after the retry",
+   "asks once whether it can help first (rule 44)",
+   "transfer queue customer_care; no notes"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, speaking.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Four oh one one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "4011"
+    }
+   },
+   {
+    "text": "Sixty-three.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1963"
+    }
+   },
+   {
+    "text": "I'd rather talk to a real person about this.",
+    "intents": [
+     "human"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No, I want a person, please.",
+    "intents": [
+     "human",
+     "no"
+    ],
+    "slots": {}
+   }
+  ],
+  "faults": [
+   {
+    "tool": "get_account",
+    "fail_first_n": 1
+   }
+  ],
+  "fail_first": "get_account"
+ }
+]

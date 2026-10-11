@@ -1,0 +1,71 @@
+[synthetic test material - fictional institution and people]
+
+---------- Forwarded message ---------
+From: Priya Raman <p.raman@cobaltridge-fcu.example>
+Date: Wed, Oct 21, 2026 at 4:12 PM
+Subject: Fwd: RE: Voice assistant - two asks before go-live of memo 26-14
+To: Voice Assistant Build Team <va-build@cobaltridge-fcu.example>
+
+FYI - final answer from Compliance below, please build to this. Ignore my first email where
+it conflicts.
+
+Priya
+
+---------- Forwarded message ---------
+From: Marcus Okafor <m.okafor@cobaltridge-fcu.example>
+Date: Wed, Oct 21, 2026 at 3:47 PM
+Subject: RE: Voice assistant - two asks before go-live of memo 26-14
+To: Priya Raman <p.raman@cobaltridge-fcu.example>
+Cc: Dale Whitcomb <d.whitcomb@cobaltridge-fcu.example>
+
+Priya,
+
+Answers inline below in [MO].
+
+On the callback timing: no, it is not "from Monday". Item 1 applies to calls placed on or after
+2 November, as the memo says. Until then the 8-to-9 window and 3 business days stay.
+
+Marcus
+
+> From: Priya Raman
+> Sent: Tuesday, October 20, 2026 6:05 PM
+> To: Marcus Okafor
+> Cc: Dale Whitcomb
+> Subject: Voice assistant - two asks before go-live of memo 26-14
+>
+> Hi Marcus,
+>
+> Two things from the floor before we hand the memo to the build team.
+>
+> 1) Joint accounts. About 1 in 5 of our auto loans have a co-borrower. When the spouse picks
+> up and says "I'm on that loan too, I'll pay it", the bot just books a callback and we lose
+> the payment. Proposal: if the person says they are a joint borrower, let the bot run the two
+> security questions on THEM and take the promise.
+>
+> [MO] No. Not approved. The call list is per member and the bot can only verify the member it
+> asked for by name (7.3.2). A person who answers and is not that member is a third party
+> under 7.4 for this call, joint borrower or not: no account information, no security
+> questions, no promise. Book the callback as usual. If we want to call co-borrowers it needs
+> to be its own call list - park it for Rev. 8.
+>
+> 2) "Already paid". Right now 7.11.1 closes PAI with nothing on the account, so the next
+> morning the dialer calls them again and they complain. Proposal: add a note on the account
+> so the collectors see it.
+>
+> [MO] Agreed. Effective today (Oct 21): when 7.11.1 applies, add_note with reason "paid" on
+> that account before close_call (text: "MBR STATES PAID - VERIFY POSTING"). This is in
+> addition to 7.12, not instead of it. I have asked Ops to update the code list (PAI row).
+>
+> Also - just confirming the new 9-to-8 callback hours start this coming Monday the 26th?
+>
+> Thanks,
+> Priya
+>
+> Priya Raman | Collections Operations Supervisor | Cobalt Ridge FCU
+> This e-mail and any attachments may contain confidential information. If you are not the
+> intended recipient, please notify the sender and delete it.
+
+--
+Marcus Okafor | BSA/Compliance Officer | Cobalt Ridge Federal Credit Union
+CONFIDENTIAL: This message may contain nonpublic personal information protected under
+GLBA. Do not forward outside the Credit Union.

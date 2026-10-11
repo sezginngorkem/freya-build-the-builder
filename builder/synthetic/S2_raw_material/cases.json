@@ -1,0 +1,1284 @@
+[
+ {
+  "id": "S2-01",
+  "brief": "S2_raw_material",
+  "family": "Happy path",
+  "level": "easy",
+  "title": "Verifies and pays the card today",
+  "variables": {
+   "first_name": "Megan",
+   "last_name": "Calloway",
+   "title": "Ms",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1979",
+   "postcode": "02134"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "3307",
+    "amount_due": 610.0,
+    "days_past_due": 9,
+    "minimum_payment": 61.0
+   }
+  ],
+  "script": "Confirms. Year of birth 1979. ZIP code 02134. Pays the full amount today. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 610.0,
+     "date": "2026-11-04"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "year of birth asked before ZIP code",
+   "verify_identity sent 02134 with the leading zero",
+   "the sentence 'You will receive a confirmation text message today.' is said (email does not change 6.9)"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen seventy-nine.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1979"
+    }
+   },
+   {
+    "text": "Zero two one three four.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "02134"
+    }
+   },
+   {
+    "text": "Yes, I can pay it today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S2-02",
+  "brief": "S2_raw_material",
+  "family": "Third party",
+  "level": "medium",
+  "title": "Spouse answers, callback today at 18:00 (included)",
+  "variables": {
+   "first_name": "Robert",
+   "last_name": "Haines",
+   "title": "Mr",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1966",
+   "postcode": "48104"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 820.0,
+    "days_past_due": 14,
+    "monthly_payment": 410.0
+   }
+  ],
+  "script": "His wife answers. Says he is at work. Says he will be back at six this evening.",
+  "expected": {
+   "outcome": "unreached",
+   "reason": "callback",
+   "promises": [],
+   "notes": [],
+   "callbacks": [
+    {
+     "date": "2026-11-04",
+     "time": "18:00"
+    }
+   ],
+   "transfers": []
+  },
+  "checks": [
+   "outcome is unreached (not not_reached)",
+   "callback booked 2026-11-04 18:00",
+   "nothing about the loan is said"
+  ],
+  "sim_script": [
+   {
+    "text": "This is his wife, he's at work.",
+    "intents": [
+     "third_party"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "He's back at six this evening.",
+    "intents": [],
+    "slots": {
+     "callback_date": "2026-11-04",
+     "callback_time": "18:00"
+    }
+   }
+  ],
+  "third_party": true
+ },
+ {
+  "id": "S2-03",
+  "brief": "S2_raw_material",
+  "family": "Identity",
+  "level": "medium",
+  "title": "Three wrong answers across both questions",
+  "variables": {
+   "first_name": "Carla",
+   "last_name": "Jimenez",
+   "title": "Ms",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1978",
+   "postcode": "60616"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "8812",
+    "amount_due": 390.0,
+    "days_past_due": 20,
+    "minimum_payment": 39.0
+   }
+  ],
+  "script": "Confirms. Year of birth 1987, then 1978. ZIP code 60614, then 60661.",
+  "expected": {
+   "outcome": "not_verified",
+   "reason": "failed",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "three wrong answers in total end the check",
+   "the member is told to visit a branch or use online banking"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen eighty-seven.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1987"
+    }
+   },
+   {
+    "text": "Sorry, nineteen seventy-eight.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1978"
+    }
+   },
+   {
+    "text": "Six zero six one four.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "60614"
+    }
+   },
+   {
+    "text": "Six zero six six one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "60661"
+    }
+   }
+  ]
+ },
+ {
+  "id": "S2-04",
+  "brief": "S2_raw_material",
+  "family": "Amendment",
+  "level": "hard",
+  "title": "Memo A1: Stage 2 deadline is now the 4th business day; first create_promise fails",
+  "variables": {
+   "first_name": "Tyrone",
+   "last_name": "Mitchell",
+   "title": "Mr",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1990",
+   "postcode": "30318"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 1150.0,
+    "days_past_due": 22,
+    "monthly_payment": 575.0
+   }
+  ],
+  "script": "Confirms. Cannot pay today; wants to pay on payday, Thursday 12 November. Accepts the latest date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1150.0,
+     "date": "2026-11-10"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "deadline is Tuesday 10 November (memo: 4th business day; pre-memo would be 13 November and 12 November would be accepted)",
+   "create_promise retried once after the failure"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen ninety.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1990"
+    }
+   },
+   {
+    "text": "Three zero three one eight.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "30318"
+    }
+   },
+   {
+    "text": "Not today. I get paid on Thursday the twelfth, I can pay then.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-12"
+    }
+   },
+   {
+    "text": "OK, the tenth then.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "fail_first": "create_promise",
+  "pre_memo_expected": {
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 1150.0,
+     "date": "2026-11-12"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S2-05",
+  "brief": "S2_raw_material",
+  "family": "Amendment",
+  "level": "hard",
+  "title": "Memo A1: names the 11 Nov holiday, which is now also after the deadline",
+  "variables": {
+   "first_name": "Hailey",
+   "last_name": "Brooks",
+   "title": "Ms",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1995",
+   "postcode": "97205"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "5521",
+    "amount_due": 880.0,
+    "days_past_due": 28,
+    "minimum_payment": 88.0
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Wednesday 11 November. Accepts the date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 880.0,
+     "date": "2026-11-10"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "11 November is after the Stage 2 deadline (10 November), so the deadline is offered (rule 'after the deadline'), not the next business day",
+   "pre-memo the holiday rule would have given 12 November"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen ninety-five.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1995"
+    }
+   },
+   {
+    "text": "Nine seven two zero five.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "97205"
+    }
+   },
+   {
+    "text": "Not today. How about Wednesday the eleventh?",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-11"
+    }
+   },
+   {
+    "text": "Fine.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "pre_memo_expected": {
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 880.0,
+     "date": "2026-11-12"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S2-06",
+  "brief": "S2_raw_material",
+  "family": "Amendment",
+  "level": "hard",
+  "title": "Memo A2: Stage 3 has one persuasion attempt only",
+  "variables": {
+   "first_name": "Leon",
+   "last_name": "Fischer",
+   "title": "Mr",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1983",
+   "postcode": "19103"
+  },
+  "products": [
+   {
+    "product_type": "line_of_credit",
+    "amount_due": 720.0,
+    "days_past_due": 40,
+    "interest_due": 96.0
+   }
+  ],
+  "script": "Confirms. Cannot pay today. Refuses the first offer. (Would accept the interest amount on Monday if it were offered.)",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "refused",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "refused"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "attempt 1: 720.00 on Friday 6 November",
+   "no attempt 2 (memo reduced Stage 3 to one attempt)",
+   "add_note refused for p1"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen eighty-three.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1983"
+    }
+   },
+   {
+    "text": "One nine one zero three.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "19103"
+    }
+   },
+   {
+    "text": "No, I can't pay today.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "OK, the smaller amount on Monday I could do.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "pre_memo_expected": {
+   "outcome": "promise",
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 96.0,
+     "date": "2026-11-09"
+    }
+   ],
+   "notes": []
+  }
+ },
+ {
+  "id": "S2-07",
+  "brief": "S2_raw_material",
+  "family": "Amendment",
+  "level": "hard",
+  "title": "Memo A3: 27 November is a new holiday",
+  "variables": {
+   "first_name": "Grace",
+   "last_name": "Okoye",
+   "title": "Ms",
+   "now": "2026-11-23T14:00"
+  },
+  "identity": {
+   "birth_year": "1988",
+   "postcode": "75201"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "6640",
+    "amount_due": 430.0,
+    "days_past_due": 5,
+    "minimum_payment": 43.0
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Friday 27 November. Accepts the date offered. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 430.0,
+     "date": "2026-11-30"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "27 November is a holiday (memo), so Monday 30 November is offered",
+   "Stage 1 deadline is 9 December"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen eighty-eight.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1988"
+    }
+   },
+   {
+    "text": "Seven five two zero one.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "75201"
+    }
+   },
+   {
+    "text": "Not today. Friday the twenty-seventh.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-27"
+    }
+   },
+   {
+    "text": "OK, Monday the thirtieth.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "pre_memo_expected": {
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 430.0,
+     "date": "2026-11-27"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S2-08",
+  "brief": "S2_raw_material",
+  "family": "Amendment",
+  "level": "hard",
+  "title": "Memo A4: hardship, declines transfer, reason is financial_hardship",
+  "variables": {
+   "first_name": "Samuel",
+   "last_name": "Ortiz",
+   "title": "Mr",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1972",
+   "postcode": "85004"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 900.0,
+    "days_past_due": 19,
+    "monthly_payment": 450.0
+   }
+  ],
+  "script": "Confirms. Says his hours were cut at work and he cannot pay anything. Declines the transfer to the hardship team.",
+  "expected": {
+   "outcome": "no_promise",
+   "reason": "financial_hardship",
+   "promises": [],
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "financial_hardship"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "one sentence of sympathy, no persuasion attempt",
+   "hardship team offered",
+   "the retired code 'hardship' is never sent"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen seventy-two.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1972"
+    }
+   },
+   {
+    "text": "Eight five zero zero four.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "85004"
+    }
+   },
+   {
+    "text": "My hours got cut at work, I really can't pay anything right now.",
+    "intents": [
+     "hardship",
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "No thanks, I don't want to be transferred.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   }
+  ],
+  "pre_memo_expected": {
+   "reason": "hardship",
+   "notes": [
+    {
+     "product_id": "p1",
+     "reason": "hardship"
+    }
+   ]
+  }
+ },
+ {
+  "id": "S2-09",
+  "brief": "S2_raw_material",
+  "family": "Email",
+  "level": "medium",
+  "title": "Email: a request for a person is transferred at once",
+  "variables": {
+   "first_name": "Paula",
+   "last_name": "Reyes",
+   "title": "Ms",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1961",
+   "postcode": "33130"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "2209",
+    "amount_due": 515.0,
+    "days_past_due": 11,
+    "minimum_payment": 52.0
+   }
+  ],
+  "script": "Confirms. When asked to pay, asks to speak to a real person. (If kept on the line, would give in and pay today.)",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "human",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "member_services"
+    }
+   ]
+  },
+  "checks": [
+   "no 'can I help you first' question (email replaces 7.5 for the assistant)",
+   "transfer_to_agent queue member_services"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen sixty-one.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1961"
+    }
+   },
+   {
+    "text": "Three three one three zero.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "33130"
+    }
+   },
+   {
+    "text": "I'd like to speak to a real person, please.",
+    "intents": [
+     "human"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Actually never mind, I'll just pay it today.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ],
+  "without_email_expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 515.0,
+     "date": "2026-11-04"
+    }
+   ],
+   "transfers": []
+  }
+ },
+ {
+  "id": "S2-10",
+  "brief": "S2_raw_material",
+  "family": "Email",
+  "level": "hard",
+  "title": "Formal complaint: code TR-CMP is not in the API, email routes it as a human transfer",
+  "variables": {
+   "first_name": "Ian",
+   "last_name": "McAllister",
+   "title": "Mr",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1958",
+   "postcode": "15213"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 640.0,
+    "days_past_due": 12,
+    "monthly_payment": 320.0
+   }
+  ],
+  "script": "Confirms. When asked to pay, says he wants to make a formal complaint about how his account was handled.",
+  "expected": {
+   "outcome": "transferred",
+   "reason": "human",
+   "promises": [],
+   "notes": [],
+   "callbacks": [],
+   "transfers": [
+    {
+     "queue": "member_services"
+    }
+   ]
+  },
+  "checks": [
+   "queue 'complaints' and reason 'complaint' are never sent",
+   "transfer to member_services, close transferred / human"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen fifty-eight.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1958"
+    }
+   },
+   {
+    "text": "One five two one three.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "15213"
+    }
+   },
+   {
+    "text": "Before anything, I want to make a formal complaint about how my account was handled.",
+    "intents": [
+     "complaint"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S2-11",
+  "brief": "S2_raw_material",
+  "family": "Multi-product",
+  "level": "hard",
+  "title": "Three products: promise, dispute, already paid",
+  "variables": {
+   "first_name": "Diane",
+   "last_name": "Kowalski",
+   "title": "Ms",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1975",
+   "postcode": "53202"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "3307",
+    "amount_due": 540.0,
+    "days_past_due": 6,
+    "minimum_payment": 54.0
+   },
+   {
+    "product_type": "auto_loan",
+    "amount_due": 1300.0,
+    "days_past_due": 24,
+    "monthly_payment": 650.0
+   },
+   {
+    "product_type": "line_of_credit",
+    "amount_due": 480.0,
+    "days_past_due": 35,
+    "interest_due": 60.0
+   }
+  ],
+  "script": "Confirms. Cannot pay everything today. Accepts the offer for the card. Says the auto loan was paid off when she sold the car. Says she paid the line of credit this morning. Confirms the card promise.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 540.0,
+     "date": "2026-11-06"
+    }
+   ],
+   "notes": [
+    {
+     "product_id": "p2",
+     "reason": "dispute"
+    },
+    {
+     "product_id": "p3",
+     "reason": "paid"
+    }
+   ],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "card offered in full on Friday 6 November (attempt 1)",
+   "'paid off when I sold the car' is a dispute (7.3)",
+   "line of credit noted paid",
+   "close promise"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen seventy-five.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1975"
+    }
+   },
+   {
+    "text": "Five three two zero two.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "53202"
+    }
+   },
+   {
+    "text": "Not all of it, no.",
+    "intents": [
+     "no"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, Friday is fine for the card.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2026-11-06",
+     "product_ref": "the card"
+    }
+   },
+   {
+    "text": "That loan was paid off when I sold the car in the summer.",
+    "intents": [
+     "dispute"
+    ],
+    "slots": {
+     "product_ref": "that loan, the car"
+    }
+   },
+   {
+    "text": "And I paid the line of credit this morning.",
+    "intents": [
+     "paid"
+    ],
+    "slots": {
+     "product_ref": "the line of credit"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S2-12",
+  "brief": "S2_raw_material",
+  "family": "Dates",
+  "level": "medium",
+  "title": "Unchanged Stage 1: 15 days past due, date exactly on the 10th business day",
+  "variables": {
+   "first_name": "Owen",
+   "last_name": "Gallagher",
+   "title": "Mr",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1984",
+   "postcode": "80202"
+  },
+  "products": [
+   {
+    "product_type": "auto_loan",
+    "amount_due": 700.0,
+    "days_past_due": 15,
+    "monthly_payment": 350.0
+   }
+  ],
+  "script": "Confirms. Cannot pay today; offers Thursday 19 November. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 700.0,
+     "date": "2026-11-19"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "15 days past due is Stage 1 (bound included)",
+   "Stage 1 deadline unchanged by the memo (19 November, skipping 11 November)",
+   "the 'for information only' 8-day proposal is not applied"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen eighty-four.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1984"
+    }
+   },
+   {
+    "text": "Eight zero two zero two.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "80202"
+    }
+   },
+   {
+    "text": "Not today. Thursday the nineteenth of November.",
+    "intents": [
+     "no"
+    ],
+    "slots": {
+     "promise_date": "2026-11-19"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S2-13",
+  "brief": "S2_raw_material",
+  "family": "Amounts",
+  "level": "medium",
+  "title": "Line of credit: full amount too much, interest_due is the floor",
+  "variables": {
+   "first_name": "Rachel",
+   "last_name": "Stein",
+   "title": "Ms",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1992",
+   "postcode": "10027"
+  },
+  "products": [
+   {
+    "product_type": "line_of_credit",
+    "amount_due": 1200.0,
+    "days_past_due": 3,
+    "interest_due": 140.0
+   }
+  ],
+  "script": "Confirms. Not today; the full amount is too much. Accepts 140 dollars on Friday. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 140.0,
+     "date": "2026-11-06"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "the floor is interest_due (140.00)",
+   "the agent says the rest remains past due"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen ninety-two.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1992"
+    }
+   },
+   {
+    "text": "One zero zero two seven.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "10027"
+    }
+   },
+   {
+    "text": "Not today, the full amount is too much.",
+    "intents": [
+     "no",
+     "too_much"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Yes, I can pay 140 on Friday.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_amount": 140.0,
+     "promise_date": "2026-11-06"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ },
+ {
+  "id": "S2-14",
+  "brief": "S2_raw_material",
+  "family": "Email",
+  "level": "medium",
+  "title": "Asks for a pay-in-full discount (email: not approved)",
+  "variables": {
+   "first_name": "Kevin",
+   "last_name": "Duarte",
+   "title": "Mr",
+   "now": "2026-11-04T10:30"
+  },
+  "identity": {
+   "birth_year": "1969",
+   "postcode": "94110"
+  },
+  "products": [
+   {
+    "product_type": "credit_card",
+    "card_last4": "9045",
+    "amount_due": 350.0,
+    "days_past_due": 10,
+    "minimum_payment": 35.0
+   }
+  ],
+  "script": "Confirms. Asks whether he gets a discount if he pays everything today. Then agrees to pay the full amount today. Confirms.",
+  "expected": {
+   "outcome": "promise",
+   "reason": null,
+   "promises": [
+    {
+     "product_id": "p1",
+     "amount": 350.0,
+     "date": "2026-11-04"
+    }
+   ],
+   "notes": [],
+   "callbacks": [],
+   "transfers": []
+  },
+  "checks": [
+   "no discount or reduction is offered (email: 'might do this in Q1', not approved)",
+   "promise 350.00 today"
+  ],
+  "sim_script": [
+   {
+    "text": "Yes, that's me.",
+    "intents": [
+     "confirm_identity"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "Nineteen sixty-nine.",
+    "intents": [],
+    "slots": {
+     "id_birth_year": "1969"
+    }
+   },
+   {
+    "text": "Nine four one one zero.",
+    "intents": [],
+    "slots": {
+     "id_postcode": "94110"
+    }
+   },
+   {
+    "text": "Do I get a discount if I pay it all today?",
+    "intents": [
+     "other_question"
+    ],
+    "slots": {}
+   },
+   {
+    "text": "OK, I'll pay it all today then.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {
+     "promise_date": "2026-11-04"
+    }
+   },
+   {
+    "text": "Yes, I confirm.",
+    "intents": [
+     "yes"
+    ],
+    "slots": {}
+   }
+  ]
+ }
+]

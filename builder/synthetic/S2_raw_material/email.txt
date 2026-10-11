@@ -1,0 +1,33 @@
+From: Dana Whitfield <d.whitfield@harborcu.example>
+Sent: Friday, 30 October 2026 16:42
+To: Voice Assistant Build Team <voice-build@harborcu.example>
+Cc: Marcus Lee (Compliance) <m.lee@harborcu.example>; Contact Centre Leads
+Subject: RE: Collections assistant go-live on Monday - final rules
+
+Hi all,
+
+Thanks for the demo yesterday, it went really well. A few things before we go live on Monday 2 November. For context, I'm VP Member Collections and I own sections 6 and 7 of POL-COL-07; Marcus from Compliance is copied and has signed off the two changes I list under "please do".
+
+Attached: the policy extract (v3.2), memo CO-26-14 and the current code list. The memo is already approved and applies from Monday, so please build it in from day one. In short, the memo cuts the deadline to four business days, adds the day after Thanksgiving as a holiday, drops a persuasion attempt and renames hardship. (Read the memo itself for the details, my summary is from memory.)
+
+Please do:
+
+1. Requests for a person. Effective immediately for the assistant, replacing the "asks once whether it can help first" part of 7.5: when a member asks to speak to a person, transfer them straight away to member_services, outcome transferred / human. We had too many complaints in the human pilot about being "kept on the line by a robot".
+
+2. Complaints. The Complaints Unit queue is not connected to the voice platform yet, and won't be before January. Until it is, put a member who wants to make a formal complaint through to member_services and close it as transferred / human, same as a request for a person. Do not try to use TR-CMP from the voice channel.
+
+Not for now:
+
+- I'd love the assistant to offer a 5% goodwill reduction to members who pay the full amount today. Legal hasn't approved it, so we might do this in Q1. Please don't build it yet.
+- We might move the confirmation from a text message to an email at some point. For now 6.9 stays exactly as written.
+- Personally I think ten business days for Stage 1 is far too generous, and three security questions would be better than two. Neither is changing, I'm just flagging it for the December review.
+
+Reminder from Contact Centre: the assistant doesn't leave voicemails, so the old "left message" code shouldn't come up at all.
+
+Have a good weekend,
+Dana
+
+--
+Dana Whitfield
+VP Member Collections, Harbor Credit Union
+This e-mail and any attachments are confidential and intended for the addressee only.

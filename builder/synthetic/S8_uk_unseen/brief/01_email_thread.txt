@@ -1,0 +1,95 @@
+From: Gareth Pryce <gareth.pryce@kittiwakebank.example>
+Sent: Thursday, 08 October 2026 16:42
+To: Voice Assistant Build Team <va-build@kittiwakebank.example>
+Subject: FW: RE: RE: Digital assistant go-live 14/10 - two open points
+
+Build team,
+
+Thread below for the build. Both points are now closed:
+- point 1 (fee refund) is NOT going ahead, please don't build anything for it;
+- point 2 ("next Friday") goes live with the assistant on 14/10.
+
+Nadia's change notice (CPN-2026-019, out tomorrow) and the code list (CR-07-C, MI will
+re-export it after the notice) will go on the build ticket separately.
+
+Thanks,
+Gareth
+
+Gareth Pryce | Contact Centre Operations Manager | Kittiwake Bank plc
+Leeds Contact Centre | Internal ext. 4417
+
+-----Original Message-----
+From: Nadia Okafor <nadia.okafor@kittiwakebank.example>
+Sent: Wednesday, 07 October 2026 17:05
+To: Tom Ashworth <tom.ashworth@kittiwakebank.example>; Gareth Pryce <gareth.pryce@kittiwakebank.example>
+Cc: Collections Policy <collections.policy@kittiwakebank.example>
+Subject: RE: RE: Digital assistant go-live 14/10 - two open points
+
+Agree with Tom on both.
+
+(1) Closed - not going ahead. The assistant must not offer, mention or agree any refund,
+waiver or reduction of fees or interest, whatever the customer pays and whenever they pay
+it.
+
+(2) Approved. From go-live this replaces the last sentence of CR-07 5.7.7 ("'Next
+<weekday>' means that weekday in the following week"). Tom's wording below is the rule.
+It will be written into v4.3; until then this email is the instruction. The first
+sentence of 5.7.7 does not change.
+
+Saturday callbacks: that's a separate item and it is in the change notice going out on
+Friday (CPN-2026-019). Please don't build it from this thread.
+
+Nadia
+
+Nadia Okafor | Head of Collections Policy | Kittiwake Bank plc
+
+-----Original Message-----
+From: Tom Ashworth <tom.ashworth@kittiwakebank.example>
+Sent: Wednesday, 07 October 2026 11:20
+To: Gareth Pryce <gareth.pryce@kittiwakebank.example>; Nadia Okafor <nadia.okafor@kittiwakebank.example>
+Subject: RE: Digital assistant go-live 14/10 - two open points
+
+Hi Gareth,
+
+(1) Not supported from a conduct point of view. A refund offered on condition that the
+customer pays today is an incentive to pay, and fee or interest concessions are
+forbearance decisions (CONC 7.3) that a colleague makes after an income and expenditure
+conversation, not something a bot hands out. Please don't build it.
+
+(2) Agreed, "next Friday" means different things to different people, so the assistant
+shouldn't guess. Proposed rule: if the customer says "next" with a weekday, the assistant
+asks which date they mean and names both dates: the next such day after today, and the
+same weekday one week later. Example on Wednesday 14/10: "Do you mean Friday 16 October or
+Friday 23 October?". The customer's answer is the date; then the normal date checks
+apply. "This Friday" or just "Friday" stays as 5.7.7 says (the coming Friday).
+
+Tom
+
+Tom Ashworth | Conduct Risk Partner, Collections | Kittiwake Bank plc
+This email and any attachments are confidential and intended for the named recipients
+only. If you have received it in error, please tell the sender and delete it.
+
+-----Original Message-----
+From: Gareth Pryce <gareth.pryce@kittiwakebank.example>
+Sent: Tuesday, 06 October 2026 09:12
+To: Nadia Okafor <nadia.okafor@kittiwakebank.example>; Tom Ashworth <tom.ashworth@kittiwakebank.example>
+Subject: Digital assistant go-live 14/10 - two open points
+
+Morning both,
+
+Two things from the pilot calls before we go live on Wednesday 14/10:
+
+(1) Proposal: to lift same-day payments, can the assistant offer to refund the £12 late
+payment fee when a customer agrees to pay the full arrears today? The human team do this
+case by case and it works well.
+
+(2) Question: customers keep saying "next Friday". CR-07 5.7.7 says that means the Friday
+of the following week, but in the pilot about half of them meant this coming Friday. Can
+we change the rule?
+
+Also, any news on Saturday callbacks? The team keep getting asked.
+
+Thanks
+Gareth
+
+Sent from Outlook for iOS
