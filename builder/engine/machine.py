@@ -46,7 +46,7 @@ def _number(x):
 FLAGS = {"content_first": True, "pending_polarity": True, "specific_polarity": True, "side_with_answer": True,
          "act_gating": True, "carry_over": True, "rewind": True, "confirm_conflict": True, "side_unhandled": True,
          "no_silence": True, "containment": True, "reask_contentless": True, "reply_gate": True, "clarify": True, "continuer": True, "ask_ladder": True, "answer_questions": True, "wait_unreplied": True, "refused_value": True, "ask_not_wait": False,
-         "echo_continuer": True, "assent_value": True, "check_over": True, "resend_lost": True}
+         "echo_continuer": True, "assent_value": True, "check_over": True, "resend_lost": True, "request_over_side": True}
 ASK_CAP = 2        # the engine repeats a question at most once (asks in a row, whoever asked: the brief's own repeats
 #                    count too), then the brief's rules decide; never more asks than the narrowest brief rule ("ask once more")
 CONTINUER = "Please go on."
@@ -498,6 +498,16 @@ class Machine(object):
                     if not ordered and not given and any(i.get("id") == "other_question" for i in self.ir.get("intents", [])):
                         ordered = ["other_question"]
                         event["intents"] = list(event.get("intents") or []) + ["other_question"]   # answered as a question
+            if FLAGS["request_over_side"] and "?" not in str(event.get("text") or ""):
+                # a message with no question in it that names something this step has a rule for is that request, not
+                # a side question about it (seen on Freya: "I want to change my statement date" was read as both the
+                # request and an 'other question'; the question ranked first, was answered from the agent's own
+                # offer -- "I can change it" -- and the change was never started)
+                acts = [i for i in ordered if i not in SIDE and i not in POLARITY
+                        and any(self._rule_applies(r, "intent:" + i) for r in self.ir.get("rules", []))]
+                if acts and any(i in SIDE for i in ordered):
+                    self.trace("request_over_side", kept=acts, dropped=[i for i in ordered if i in SIDE])
+                    ordered = [i for i in ordered if i not in SIDE]
             side_words = []
             n_turn = len(out)
             # the message answers the pending question: with a value this step can use, or with a yes / no / identity

@@ -14,7 +14,7 @@ for msg in ["Alo?"] + sys.argv[4:]:
         r = freya.api("POST", "/api/v2/chat/message", body)
     except Exception as e:
         print("ERROR", str(e)[:200]); continue
-    cid = r["callId"]
+    cid = r["callId"]; print("callId", cid) if msg == "Alo?" else None
     print("[%4.1fs] M: %s\n       A: %s%s" % (time.time() - t0, msg, r.get("response"), " (ENDED)" if r.get("endedByAgent") else ""))
     if r.get("endedByAgent"):
         break

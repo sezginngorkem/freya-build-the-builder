@@ -82,16 +82,28 @@ def _item_index(items, text):
     hits = [i for i, it in enumerate(items) if any(d in " ".join(str(v) for v in (it or {}).values()) for d in digits)] if digits else []
     if len(hits) == 1:
         return hits[0]
-    words = set(w for w in _re.findall(r"[a-z]+", t) if len(w) > 2) - {"the", "one", "that", "this", "for", "and", "account", "payment"}
+    # words in any alphabet (an ASCII-only reading split "yıldız" into pieces and no card name matched)
+    words = set(w for w in _re.findall(r"[^\W\d_]+", t) if len(w) > 2) - {"the", "one", "that", "this", "for", "and", "account", "payment"}
     syn = {"car": "auto", "auto": "car", "vehicle": "car", "mortgage": "home", "house": "home"}
     words |= set(syn[w] for w in list(words) if w in syn)
     scores = []
     for i, it in enumerate(items):
-        hay = set(_re.findall(r"[a-z]+", " ".join(str((it or {}).get(k, "")) for k in ("type", "label", "name", "product", "product_type")).lower().replace("_", " ")))
+        # every text field of the item: the API names its own fields ("productName", "label", "type", ...)
+        hay = set(_re.findall(r"[^\W\d_]+", " ".join(str(v) for v in (it or {}).values() if isinstance(v, str)).lower().replace("_", " ")))
         scores.append(sum(1 for w in words if w in hay))
     best = max(scores) if scores else 0
-    if best == 0 or scores.count(best) > 1:
+    if best == 0:
         return -1
+    top = [i for i, s in enumerate(scores) if s == best]
+    if len(top) > 1:
+        # items that carry the very same name (two cards both called "Gold") are not an ambiguous reference: the
+        # first is returned and the brief's own rule for same-named items decides (seen on Freya: three cards named
+        # alike -> "you have no card of that name"). Different names that fit equally well stay ambiguous.
+        names = set(tuple(sorted(str(v).lower() for v in (items[i] or {}).values()
+                                 if isinstance(v, str) and any(w in str(v).lower() for w in words))) for i in top)
+        if len(names) > 1:
+            return -1
+        return top[0]
     return scores.index(best)
 
 

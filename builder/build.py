@@ -114,6 +114,8 @@ def main():
     ap.add_argument("inputs", nargs="+")
     ap.add_argument("--slot"); ap.add_argument("--no-deploy", action="store_true"); ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--no-selftest", action="store_true")
+    ap.add_argument("--reuse-read", action="store_true", help="compile and deploy the read kept in out/<slot>/ by an "
+                    "earlier run of this builder on the same inputs (after a builder fix in the compiler or engine)")
     ap.add_argument("--example", help="optional worked-example PolicyIR"); ap.add_argument("--example-brief", action="append", default=[])
     a = ap.parse_args()
     missing = [x for x in a.inputs if not os.path.exists(x)]
@@ -142,6 +144,10 @@ def main():
     briefs = prepare_briefs(briefs, work, tr)
     if os.environ.get("BANK_BASE_URL"):
         tr.log("service base address for the agent's tools: %s" % os.environ["BANK_BASE_URL"])
+    reuse = a.reuse_read and os.path.exists(os.path.join(work, "policy_ir.json"))
+    if not api and reuse and os.path.exists(os.path.join(work, "openapi.generated.json")):
+        api = [os.path.join(work, "openapi.generated.json")]
+        tr.log("reuse: the typed interface written from the service documents by the earlier run: %s" % api[0])
     if not api:
         # the services are described in prose only (no OpenAPI file): write the typed interface from the documents first
         from reader.contract2api import make_openapi
@@ -199,7 +205,15 @@ def main():
         return max(range(len(irs)), key=lambda k: scores[k])
 
     # 1 read (retried once as a whole: a failed read means no agent at all)
-    for attempt in (1, 2):
+    if reuse:
+        # the read is the model's work and is kept: a fix in the compiler or engine is applied to the same read
+        from reader import stage0
+        ir = json.load(open(os.path.join(work, "policy_ir.json"), encoding="utf-8"))
+        inv = json.load(open(os.path.join(work, "inventory.json"), encoding="utf-8"))
+        st = stage0.run(briefs, api[0])
+        tr.log("reuse: the read (PolicyIR) of the earlier run of this builder on these inputs: %s" % os.path.join(work, "policy_ir.json"))
+        a.no_selftest = True
+    for attempt in ((1, 2) if not reuse else ()):
         try:
             ir, st, inv = R.read(briefs, api[0], a.example, a.example_brief, log=lambda m: tr.log("read:", m),
                                  on_compiled=start_cases, select=None if a.no_selftest else select)
